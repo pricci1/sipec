@@ -1,0 +1,47 @@
+{
+  "name": "sipec-intro-ing-software",
+  "version": "0.0.1",
+  "homepage": "https://pricci1.github.io/sipec/",
+  "description": "Proyecto para Introducción Ingeniería de Software",
+  "main": "src/App.js",
+  "dependencies": {
+    "@reach/router": "^1.2.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.12.1",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-import": "^2.15.0",
+    "eslint-plugin-jsx-a11y": "^6.2.0",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-hooks": "^1.0.2",
+    "parcel-bundler": "^1.12.1",
+    "prettier": "^1.16.1"
+  },
+  "scripts": {
+    "clear-build-cache": "rm -rf .cache/ dist/",
+    "dev": "parcel public/index.html",
+    "build": "parcel build public/index.html",
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
+    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
+    "test": "echo \"Error: no tests for now\" && exit 1"
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 ChromeAndroid versions",
+    "last 2 Firefox versions",
+    "last 2 FirefoxAndroid versions",
+    "last 2 Safari versions",
+    "last 2 iOS versions",
+    "last 2 Edge versions",
+    "last 2 Opera versions",
+    "last 2 OperaMobile versions"
+  ]
+}
