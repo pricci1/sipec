@@ -6,10 +6,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const App = () => {
   return (
     <div>
-      <header>
+      <header className="bg-dark">
         <Link to="/">SIPEC</Link>
+        <br />
+        <span>Navbar here</span>
       </header>
-      <h2>Que?</h2>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-2 bg-info">Sidebar here</div>
+          <main className="col-10 bg-light">
+            Main content here <h2>Que?</h2>
+          </main>
+        </div>
+      </div>
     </div>
   );
 };
