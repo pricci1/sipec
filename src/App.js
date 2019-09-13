@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
-import APIProvider from "./components/APIProvider";
+import { APIProvider } from "./components/APIProvider";
 
 const App = () => {
   return (
