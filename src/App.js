@@ -10,7 +10,7 @@ const App = () => {
   return (
     <div>
       <header className="bg-dark">
-        <Navbar></Navbar>
+        <Navbar />
       </header>
       <div className="container-fluid">
         <div className="row">
