@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
     <div>
       <header className="bg-dark">
-        <Link to="/">SIPEC</Link>
-        <br />
-        <span>Navbar here</span>
+        <Navbar></Navbar>
       </header>
       <div className="container-fluid">
         <div className="row">
