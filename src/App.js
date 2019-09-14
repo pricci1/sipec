@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Link } from "@reach/router";
+import { Link, Router } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/sidebar/Sidebar";
+import ConsultaDIIO from "./pages/ConsultaDIIO";
 
 const App = () => {
   return (
@@ -18,7 +19,9 @@ const App = () => {
             <Sidebar />
           </div>
           <main className="col-10 bg-light">
-            Main content here <h2>Que?</h2>
+            <Router>
+              <ConsultaDIIO path="/consulta-diio" />
+            </Router>
           </main>
         </div>
       </div>
