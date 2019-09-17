@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import axios from "axios";
 
@@ -15,7 +14,7 @@ const ConsultaDIIO = () => {
   // diio, marca, vendedor, fecha compra
   const apiUrl = "https://5d80ecc899f8a20014cf9cc8.mockapi.io";
   const [data, setData] = useState([]);
-  // const [establecimientos, setEstablecimientos] = useState([]);
+  const [selectedTitular, setSelectedTitular] = useState();
 
   async function getTitulares() {
     // https://5d80ecc899f8a20014cf9cc8.mockapi.io/titulares
@@ -23,38 +22,33 @@ const ConsultaDIIO = () => {
     return titulares.data.map(({ id, name }) => ({ value: id, label: name }));
   }
 
-  function getEstablecimientos(idTitular) {
+  async function getEstablecimientos() {
     // https://5d80ecc899f8a20014cf9cc8.mockapi.io/titulares/:idTitular/establecimientos
-    // ASYNC
-    // hit API with idTitular and return list of Estableciemtos
-    return [
-      { value: "1", label: "Fundo La Paz" },
-      { value: "2", label: "Estancia Mallorca" }
-    ];
+    const idTitular = selectedTitular ? selectedTitular.value : null;
+    var establecimientos = [];
+    if (idTitular) {
+      establecimientos = await axios.get(
+        `${apiUrl}/titulares/${idTitular}/establecimientos`
+      );
+    }
+    return establecimientos.data.map(({ id, name }) => ({
+      value: id,
+      label: name
+    }));
   }
 
-  function getDiios(idEstablecimiento) {
+  async function getDiios(idTitular, idEstablecimiento) {
     // https://5d80ecc899f8a20014cf9cc8.mockapi.io/titulares/:idTitular/establecimientos/:idEstablecimiento/diios
-    return [
-      {
-        diio: "00001",
-        marca: "ACME",
-        vendedor: "Jim S",
-        fechaCompra: "10-10-2010"
-      },
-      {
-        diio: "00002",
-        marca: "ACME",
-        vendedor: "John T",
-        fechaCompra: "19-10-2010"
-      },
-      {
-        diio: "00006",
-        marca: "ACME",
-        vendedor: "Jim S",
-        fechaCompra: "11-11-2010"
-      }
-    ];
+    var diios = [];
+    diios = await axios.get(
+      `${apiUrl}/titulares/${idTitular}/establecimientos/${idEstablecimiento}/diios`
+    );
+    return diios.data.map(({ diio, marca, vendedor, fechaCompra }) => ({
+      diio: diio.toString(),
+      marca,
+      vendedor,
+      fechaCompra
+    }));
   }
 
   return (
@@ -68,8 +62,10 @@ const ConsultaDIIO = () => {
       <Formik
         initialValues={{ titular: null, establecimiento: null }}
         onSubmit={(values, { setSubmitting }) => {
-          setData(getDiios(values.establecimiento.value));
-          setSubmitting(false);
+          getDiios(values.titular.value, values.establecimiento.value).then(
+            diios => setData(diios)
+          );
+          setSubmitting(false); // This can also be used for displaying a spinner
         }}
         validationSchema={Yup.object().shape({
           titular: Yup.object()
@@ -99,14 +95,18 @@ const ConsultaDIIO = () => {
               <TitularSelect
                 value={values.titular}
                 titulares={getTitulares}
-                onChange={setFieldValue}
+                onChange={(field, fieldValue) => {
+                  setSelectedTitular(fieldValue);
+                  setFieldValue(field, fieldValue);
+                }}
                 onBlur={setFieldTouched}
                 error={errors.titular}
                 touched={touched.titular}
               />
               <EstablecimientoSelect
+                key={selectedTitular ? selectedTitular.value : 0}
                 value={values.establecimiento}
-                establecimientos={getEstablecimientos(1)}
+                establecimientos={getEstablecimientos}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 error={errors.establecimiento}
@@ -176,9 +176,11 @@ const EstablecimientoSelect = props => {
   return (
     <>
       <label htmlFor="establecimiento">Seleccióne un establecimiento</label>
-      <Select
+      <AsyncSelect
         id="establecimiento"
-        options={props.establecimientos}
+        cacheOptions
+        defaultOptions
+        loadOptions={props.establecimientos}
         onChange={value => {
           props.onChange("establecimiento", value);
         }}
