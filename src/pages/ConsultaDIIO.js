@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
+import AsyncSelect from "react-select/async";
+import axios from "axios";
 
 import DiioTable from "../components/DiioTable";
 
@@ -11,16 +13,14 @@ const ConsultaDIIO = () => {
   //          Establecimiento
   // RETURN
   // diio, marca, vendedor, fecha compra
-  const [data, setData] = useState({ mail: "a", name: "def" });
+  const apiUrl = "https://5d80ecc899f8a20014cf9cc8.mockapi.io";
   const [data, setData] = useState([]);
   // const [establecimientos, setEstablecimientos] = useState([]);
 
-  function getTitulares() {
+  async function getTitulares() {
     // https://5d80ecc899f8a20014cf9cc8.mockapi.io/titulares
-    return [
-      { value: "1", label: "Jhon Locke" },
-      { value: "2", label: "Lady Bird" }
-    ];
+    const titulares = await axios.get(`${apiUrl}/titulares`);
+    return titulares.data.map(({ id, name }) => ({ value: id, label: name }));
   }
 
   function getEstablecimientos(idTitular) {
@@ -98,7 +98,7 @@ const ConsultaDIIO = () => {
             <form onSubmit={handleSubmit}>
               <TitularSelect
                 value={values.titular}
-                titulares={getTitulares()}
+                titulares={getTitulares}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 error={errors.titular}
@@ -152,9 +152,11 @@ const TitularSelect = props => {
   return (
     <>
       <label htmlFor="titular">Seleccióne un titular</label>
-      <Select
+      <AsyncSelect
         id="titular"
-        options={props.titulares}
+        cacheOptions
+        defaultOptions
+        loadOptions={props.titulares}
         onChange={value => {
           props.onChange("titular", value);
         }}
