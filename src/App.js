@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Login from "./components/User/Login";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <div className="col-2 bg-info">Sidebar here</div>
           <main className="col-10 bg-light">
             Main content here <h2>Que?</h2>
+            <Login></Login>
           </main>
         </div>
       </div>
