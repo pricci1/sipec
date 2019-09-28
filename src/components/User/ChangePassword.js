@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const ChangePassword = () => {
@@ -13,51 +13,52 @@ const ChangePassword = () => {
       })}
     >
       {props => {
-        const {
-          values,
-          touched,
-          errors,
-          dirty,
-          isSubmitting,
-          handleChange,
-          handleSubmit,
-          handleBlur,
-          handleReset
-        } = props;
+        const { touched, errors, handleSubmit } = props;
         return (
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="email" style={{ display: "block" }}>
-              Email
-            </label>
-            <input
-              id="email"
-              placeholder="Enter your email"
-              type="text"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={
-                errors.email && touched.email
-                  ? "text-input error"
-                  : "text-input"
-              }
-            />
-            {errors.email && touched.email && (
-              <div className="input-feedback">{errors.email}</div>
-            )}
-
-            <button
-              type="button"
-              className="btn"
-              onClick={handleReset}
-              disabled={!dirty || isSubmitting}
-            >
-              Reset
-            </button>
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-          </form>
+          <Form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <Field
+                name="password"
+                type="password"
+                className={
+                  "form-control" +
+                  (errors.password && touched.password ? " is-invalid" : "")
+                }
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className="invalid-feedback"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <Field
+                name="confirmPassword"
+                type="password"
+                className={
+                  "form-control" +
+                  (errors.confirmPassword && touched.confirmPassword
+                    ? " is-invalid"
+                    : "")
+                }
+              />
+              <ErrorMessage
+                name="confirmPassword"
+                component="div"
+                className="invalid-feedback"
+              />
+            </div>
+            <div className="form-group">
+              <button type="submit" className="btn btn-primary mr-2">
+                Register
+              </button>
+              <button type="reset" className="btn btn-secondary">
+                Reset
+              </button>
+            </div>
+          </Form>
         );
       }}
     </Formik>
