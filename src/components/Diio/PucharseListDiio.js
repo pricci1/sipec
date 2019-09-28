@@ -16,7 +16,7 @@ const DiioTable = props => {
       width: 200})
   ));
 
-  function viewIndex(index, item) {
+  function getColumnItem(index, item) {
     if(index == 0){
       return <DiioDetailsModal text={item[index]}/>
     } else {
@@ -24,13 +24,13 @@ const DiioTable = props => {
     }
   }
 
-  var j = {};
+  var jsonRow = {};
   data.map(item => (
     columns.map((col, index) => (
-      j[String(col.field)] = viewIndex(index, item)
+      jsonRow[String(col.field)] = getColumnItem(index, item)
     )),
-    rows.push(j),
-    j = {}
+    rows.push(jsonRow),
+    jsonRow = {}
   ));
 
   const finalData = {columns, rows};
