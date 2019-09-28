@@ -4,14 +4,14 @@ import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { APIProvider } from "./components/APIProvider";
 
+import Navbar from "./components/Navbar";
+
 const App = () => {
   return (
     <APIProvider>
       <div>
         <header className="bg-dark">
-          <Link to="/">SIPEC</Link>
-          <br />
-          <span>Navbar here</span>
+          <Navbar />
         </header>
         <div className="container-fluid">
           <div className="row">
