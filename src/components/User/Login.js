@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import * as Yup from "yup";
+import APIContext from "../APIProvider";
 
 const Login = () => {
+  const api = useContext(APIContext);
+  const [loginError, setLoginError] = useState(false);
+
   return (
     <div className="jumbotron">
+      {loginError ? <h3 className="text-danger">Hay un error</h3> : null}
       <Formik
         initialValues={{ email: "" }}
         validationSchema={Yup.object().shape({
@@ -14,7 +19,9 @@ const Login = () => {
           password: Yup.string().required("Password is required")
         })}
         onSubmit={fields => {
-          alert("SUCCESS!! :-)\n\n" + JSON.stringify(fields, null, 4));
+          api.login(fields.email, fields.password).then(resp => {
+            resp.success ? setLoginError(false) : setLoginError(true);
+          });
         }}
       >
         {props => {
