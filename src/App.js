@@ -1,8 +1,9 @@
-import React, {  } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NewPucharseDiio from "./components/Diio/NewPucharseDiio"
+//import DiioTable from "./components/Diio/PucharseListDiio";
 const App = () => {
   return (
     <div>
