@@ -11,7 +11,7 @@ const Login = () => {
     <div className="jumbotron">
       {loginError ? <h3 className="text-danger">Hay un error</h3> : null}
       <Formik
-        initialValues={{ email: "" }}
+        initialValues={{ email: "", password: "" }}
         validationSchema={Yup.object().shape({
           email: Yup.string()
             .email()
