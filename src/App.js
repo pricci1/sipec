@@ -2,25 +2,23 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Login from "./components/User/Login";
-import APIProvider from "./components/APIProvider";
+import { APIProvider } from "./components/APIProvider";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar/Sidebar";
 
 const App = () => {
   return (
     <APIProvider>
       <div>
         <header className="bg-dark">
-          <Link to="/">SIPEC</Link>
-          <br />
-          <span>Navbar here</span>
+          <Navbar />
         </header>
         <div className="container-fluid">
           <div className="row">
-            <div className="col-2 bg-info">Sidebar here</div>
-            <main className="col-10 bg-light">
-              Main content here <h2>Que?</h2>
-              <Login></Login>
-            </main>
+            <div className="col-2">
+              <Sidebar />
+            </div>
+            <main className="col-10">Main content here</main>
           </div>
         </div>
       </div>

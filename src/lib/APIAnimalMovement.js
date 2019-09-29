@@ -1,4 +1,4 @@
-import axios from "axios";
+import API from "./API";
 
 class APIAnimalMovement {
   constructor() {
@@ -7,7 +7,9 @@ class APIAnimalMovement {
   }
 
   getSomething = async () => {
-    data = get("path/");
+    data = API.get("path/");
     /* then you have to use the data for something*/
   };
 }
+
+export default APIAnimalMovement;
