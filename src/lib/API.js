@@ -4,7 +4,7 @@ class API {
   constructor() {
     // check if token in storage and copy it to token
     this.token = "asdfsaf9sdf9sdfsdjfsdifsdfso9dfnfof";
-    this.apiUrl = "https://sipec.cl/api/v1/";
+    this.apiUrl = "https://sipec-backend.herokuapp.com/";
   }
 
   login = (email, password) => {
