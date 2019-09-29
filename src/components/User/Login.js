@@ -2,10 +2,15 @@ import React, { useContext, useState } from "react";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import * as Yup from "yup";
 import APIContext from "../APIProvider";
+import { navigate } from "@reach/router";
 
 const Login = () => {
   const api = useContext(APIContext);
   const [loginError, setLoginError] = useState(false);
+
+  const successfulLogin = () => {
+    navigate("/");
+  };
 
   return (
     <div className="jumbotron">
@@ -18,16 +23,17 @@ const Login = () => {
             .required("Required"),
           password: Yup.string().required("Password is required")
         })}
-        onSubmit={fields => {
+        onSubmit={(fields, { setSubmitting }) => {
           api.login(fields.email, fields.password).then(resp => {
-            resp.success ? setLoginError(false) : setLoginError(true);
+            resp.success ? successfulLogin() : setLoginError(true);
+            setSubmitting(false);
           });
         }}
       >
         {props => {
-          const { touched, errors } = props;
+          const { touched, errors, handleSubmit, isSubmitting } = props;
           return (
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <Field
@@ -61,7 +67,11 @@ const Login = () => {
                 />
               </div>
               <div className="form-group">
-                <button type="submit" className="btn btn-primary mr-2">
+                <button
+                  type="submit"
+                  className="btn btn-primary mr-2"
+                  disabled={isSubmitting}
+                >
                   Sign In
                 </button>
                 <button type="reset" className="btn btn-secondary">
