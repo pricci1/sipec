@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/User/Login";
-import APIProvider from "./components/APIProvider";
+import { APIProvider } from "./components/APIProvider";
 
 const App = () => {
   return (
