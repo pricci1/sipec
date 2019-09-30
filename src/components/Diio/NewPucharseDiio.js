@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { Formik, Field } from "formik";
-import AsyncSelect from "react-select/async";
+import Selector from "./Utilities/FormikSelector"
+import * as Yup from "yup";
+
+const buyDiioSchema = Yup.object().shape({
+  sellerType: Yup.string().required("Required"),
+  sellerRut: Yup.string().required("Required"),
+  buyerType: Yup.string().required("Required"),
+  buyerRut: Yup.string().required("Required"),
+  buyerEstablishmentRup: Yup.string().required("Required")
+});
 
 const NewPucharseDiio = () => {
   async function getSellerTypes() {
@@ -14,7 +23,6 @@ const NewPucharseDiio = () => {
     ];
   }
   const [selectedSellerRut, setSelectedSellerRut] = useState();
-
 
   const getBuyerRut = () => {
     return "123456789";
@@ -33,10 +41,10 @@ const NewPucharseDiio = () => {
     return [{ value: "1", label: "Vaca" }, { value: "2", label: "Chancho" }];
   }
   async function getDiioBrands() {
-    return [{ value: "1", label: "Acme" }, { value: "2", label: "Logi" }];;
+    return [{ value: "1", label: "Acme" }, { value: "2", label: "Logi" }];
   }
   async function getDiioTypes() {
-    return[{ value: "1", label: "Tipo1" }, { value: "2", label: "Tipo2" }];;
+    return [{ value: "1", label: "Tipo1" }, { value: "2", label: "Tipo2" }];
   }
 
   return (
@@ -56,6 +64,7 @@ const NewPucharseDiio = () => {
           diioBrand: null,
           diioRanges: []
         }}
+        validationSchema={buyDiioSchema}
       >
         {props => {
           const {
@@ -118,8 +127,7 @@ const NewPucharseDiio = () => {
                   fieldValue={values.buyerEstablishmentRup}
                   labelName="Establecimiento"
                   onChange={(field, fieldValue) => {
-										setFieldValue(field, fieldValue.value);
-										
+                    setFieldValue(field, fieldValue.value);
                   }}
                   onBlur={setFieldTouched}
                   touched={touched.selectedBuyerEstablishmentRup}
@@ -155,7 +163,6 @@ const NewPucharseDiio = () => {
                 labelName="Tipo"
                 onChange={(field, fieldValue) => {
                   setFieldValue(field, fieldValue.label);
-                 
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.selectedSpecie}
@@ -175,17 +182,19 @@ const NewPucharseDiio = () => {
                       startDiio: values.startDiio,
                       endDiio: values.endDiio
                     }
-									]);
-									setFieldValue("specie", null)
-									setFieldValue("diioBrand", null)
-									setFieldValue("diioType", null)
-									setFieldValue("startDiio", null)
-									setFieldValue("endDiio", null)
-									
+                  ]);
+                  setFieldValue("specie", null);
+                  setFieldValue("diioBrand", null);
+                  setFieldValue("diioType", null);
+                  setFieldValue("startDiio", null);
+                  setFieldValue("endDiio", null);
                 }}
               >
                 Agregar Rango
               </button>
+
+              
+              <button type="submit">Realizar compra</button>
             </form>
           );
         }}
@@ -194,26 +203,5 @@ const NewPucharseDiio = () => {
   );
 };
 
-const Selector = props => {
-  //props: {fieldName: "", data:..., fieldValue:"", labelName:""}
-  return (
-    <>
-      <label htmlFor={props.name}>{props.labelName}</label>
-      <AsyncSelect
-        id={props.fieldName}
-        cacheOptions
-        defaultOptions
-        loadOptions={props.data}
-        onChange={value => {
-          props.onChange(props.fieldName, value);
-        }}
-        onBlur={value => {
-          props.onBlur(props.fieldName, value);
-        }}
-        value={props.value}
-      />
-    </>
-  );
-};
 
 export default NewPucharseDiio;
