@@ -4,6 +4,8 @@ class API {
   constructor() {
     // check if token in storage and copy it to token
     this.token = localStorage.token || null;
+    this.client = localStorage.client || null;
+    this.uid = localStorage.uid || null;
     this.apiUrl = "https://sipec-backend.herokuapp.com";
   }
 
@@ -33,7 +35,9 @@ class API {
       const getResponse = await axios.get(path, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `bearer ${this.token}`
+          "access-token": this.token,
+          client: this.client,
+          uid: this.uid
         }
       });
       if (getResponse.status === 200) {
@@ -56,7 +60,9 @@ class API {
     const postResponse = await axios.get(path, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `bearer ${this.token}`
+        "access-token": this.token,
+        client: this.client,
+        uid: this.uid
       },
       ...obj
     });
