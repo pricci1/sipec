@@ -16,7 +16,7 @@
     "components": "^0.1.0",
     "mdbreact": "^4.20.0",
     "re": "^0.1.4",
-    "react-bootstrap": "^1.0.0-beta.12",
+    "react-bootstrap": "^1.0.0-beta.12"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
