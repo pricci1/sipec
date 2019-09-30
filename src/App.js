@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
+import AnimalMoves from "./pages/AnimalMoves";
+
+
+
+
+
+
 
 const App = () => {
   return (
@@ -15,7 +22,8 @@ const App = () => {
         <div className="row">
           <div className="col-2 bg-info">Sidebar here</div>
           <main className="col-10 bg-light">
-            Main content here <h2>Que?</h2>
+           
+            <AnimalMoves></AnimalMoves>
           </main>
         </div>
       </div>
