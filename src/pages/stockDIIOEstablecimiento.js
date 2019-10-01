@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Formik, Field } from "formik";
 
 import Selector from "../components/Diio/Utilities/FormikSelector";
-import DatePicker from "react-datepicker";
+import { Datepicker } from "react-formik-ui";
 
 import SIPECtable from "../components/AnimalMoves/SIPECtable";
 
@@ -137,23 +137,21 @@ const StockDIIOEstablecimiento = () => {
               <p></p>
               <h3>Fecha</h3>
 
-              <h3>Desde: </h3>
-              <DatePicker
+              <Datepicker
                 selected={values.desde}
                 //   dateFormat="MMMM d, yyyy"
                 //   className="form-control"
                 name="desde"
-                onChange={date => setFieldValue("desde", date)}
+                label="Desde"
               />
-              {/* {errors.password && touched.password && errors.password} */}
-              <h3>Hasta: </h3>
-              <DatePicker
+              <Datepicker
                 selected={values.hasta}
                 //   dateFormat="MMMM d, yyyy"
                 //   className="form-control"
                 name="hasta"
-                onChange={date => setFieldValue("hasta", date)}
+                label="Hasta"
               />
+
               {/* {errors.password && touched.password && errors.password} */}
 
               <button type="submit" disabled={isSubmitting}>

@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Formik, Field } from "formik";
+import { Datepicker } from "react-formik-ui";
 import Selector from "../components/Diio/Utilities/FormikSelector";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 
 import SIPECtable from "../components/AnimalMoves/SIPECtable";
 
@@ -58,21 +59,19 @@ const ListadoBajaDIIO = () => {
               <p></p>
               <h3>Rango DIIO</h3>
               <p></p>
-              <h3>Desde</h3>
-              <DatePicker
+              <Datepicker
                 selected={values.desde}
                 //   dateFormat="MMMM d, yyyy"
                 //   className="form-control"
                 name="desde"
-                onChange={date => setFieldValue("desde", date)}
+                label="Desde"
               />
-              <h3>Hasta</h3>
-              <DatePicker
+              <Datepicker
                 selected={values.hasta}
                 //   dateFormat="MMMM d, yyyy"
                 //   className="form-control"
                 name="hasta"
-                onChange={date => setFieldValue("hasta", date)}
+                label="Hasta"
               />
 
               <button type="submit" disabled={isSubmitting}>
