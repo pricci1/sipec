@@ -20,9 +20,7 @@ const EstablishmentOriginSelect = props => {
         }}
         value={props.value}
       />
-      {!!props.error && props.touched && (
-        <div className="text-danger">{props.error}</div>
-      )}
+      
     </>
   );
 };

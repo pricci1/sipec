@@ -21,9 +21,7 @@ const EstablishmentDestinationSelect = props => {
           value={props.value}
           isDisabled={props.establishmentDestination === 0}
         />
-        {!!props.error && props.touched && (
-          <div className="text-danger">{props.error}</div>
-        )}
+        
       </>
     );
   };

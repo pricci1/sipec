@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { Formik } from "formik";
+import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import DatePickerField from "../components/AnimalMoves/DatePickerField"
+import DatePickerField from "../components/AnimalMoves/DatePickerField";
 import Dropdown from "../components/AnimalMoves/Dropdown";
 import RangeInput from "../components/AnimalMoves/RangeInput";
 import EstablishmentOriginSelect from "../components/AnimalMoves/EstablishmentOriginSelect";
+
 import EstablishmentDestinationSelect from "../components/AnimalMoves/EstablishmentDestinationSelect";
 import AnimalMovesTable from "../components/AnimalMoves/AnimalMovesTable";
+import RadioButton from "../components/AnimalMoves/RadioButton";
+import RadioButtonGroup from "../components/AnimalMoves/RadioButtonGroup"
+
 
 const AnimalMoves = () => {
   /*
@@ -26,7 +30,7 @@ const AnimalMoves = () => {
   // RETURN
   // nºde formulario,fecha de formulario, RUP origen, Establecimineto orgien, RUP destino, Establecimento Destino, salida, llegada, estado
   */
-  const apiUrl = "http://sipec-backend.herokuapp.com";
+  const apiUrl = "sipec-backend.herokuapp.com";
   const [data, setData] = useState([]);
 
   async function getEstablishment() {
@@ -41,16 +45,15 @@ const AnimalMoves = () => {
   async function getAnimalMoves(
     establishmentOrigin,
     establishmentDestination,
-    desde,
-    hasta,
-    nFormulario,
-    estadoFormulario,
-    lote,
-    DIIO
+    dateDepartue,
+    dateArrival,
+    nForm,
+    state,
+    radioGroup
   ) {
     //no terminada falta agregar a la tabla los datos que se sacan de get estableciminetos y combinarlos con moves
     var moves = [];
-    moves = await axios.get(`${apiUrl}/`);
+    moves = await axios.get(`${apiUrl}/animal_movement_table`);
     /*if (RUPDestino != null) {
       moves = moves.data.filter(d => (d.rupD = RUPDestino));
     }
@@ -62,7 +65,7 @@ const AnimalMoves = () => {
     }
     if (establecimientoDestino != null) {
       moves = moves.data.filter(d => (d.estaD = establecimientoDestino));
-    }*/
+    }
     if (desde != null) {
       moves = moves.data.filter(d => (d.desde = desde));
     }
@@ -74,27 +77,24 @@ const AnimalMoves = () => {
     }
     if (estadoFormulario != null) {
       moves = moves.data.filter(d => (d.rup = estadoFormulario));
-    }
+    }*/
+    console.log(moves);
 
     return moves.data.map(
       ({
-        RUPOrigen,
-        establecimientoOrigen,
-        RUPDestino,
-        establecimientoDestino,
-        desde,
-        hasta,
-        nFormulario,
-        estadoFormulario
+        establishmentOrigin,
+        establishmentDestination,
+        dateDepartue,
+        dateArrival,
+        id,
+        state
       }) => ({
-        RUPOrigen,
-        establecimientoOrigen,
-        RUPDestino,
-        establecimientoDestino,
-        desde,
-        hasta,
-        nFormulario,
-        estadoFormulario
+        establishmentOrigin,
+        establishmentDestination,
+        dateDepartue,
+        dateArrival,
+        id,
+        state
       })
     );
   }
@@ -110,47 +110,38 @@ const AnimalMoves = () => {
           dateDepartue: "",
           nForm: "",
           state: "",
-          nFormulario: "",
-          estadoFormulario: "",
-          lote: "",
-          diio: ""
+          radioGroup: ""
         }}
         onSubmit={(values, { setSubmitting }) => {
           getAnimalMoves(
             values.establishmentOrigin.value,
             values.establishmentDestination.value,
-            values.desde.value,
-            values.hasta.value,
-            values.nFormulario.value,
-            values.estadoFormulario.value,
-            values.lote.value,
-            values.diio.value
+            values.dateDepartue.value,
+            values.dateArrival.value,
+            values.nForm.value,
+            values.state.value,
+            values.radioGroup.value
           ).then(moves => setData(moves));
           setSubmitting(false); // This can also be used for displaying a spinner
         }}
         validationSchema={Yup.object().shape({
-          rupOrigen: Yup.object()
+          establishmentOrigin: Yup.object()
             .nullable()
             .required(),
-          rupDestino: Yup.object()
+          establishmentDestination: Yup.object()
             .nullable()
             .required(),
-          establecimientoOrigen: Yup.object()
+
+          dateDepartue: Yup.object()
             .nullable()
             .required(),
-          establecimientoDestino: Yup.object()
+          dateArrival: Yup.object()
             .nullable()
             .required(),
-          desde: Yup.object()
+          nForm: Yup.object()
             .nullable()
             .required(),
-          hasta: Yup.object()
-            .nullable()
-            .required(),
-          nFormulario: Yup.object()
-            .nullable()
-            .required(),
-          estadoFormulario: Yup.object()
+          state: Yup.object()
             .nullable()
             .required(),
           lote: Yup.object()
@@ -230,30 +221,26 @@ const AnimalMoves = () => {
                   options={["Aceptado", "Con problemas", "En transito"]}
                 />
               </div>
-              <div className="radio">
-                <label htmlFor="lote">
-                  <input
-                    id="lote"
-                    type="radio"
-                    value={values.lote}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  Por Lote
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input
-                    id="diio"
-                    type="radio"
-                    value={values.diio}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  Por DIIO
-                </label>
-              </div>
+              <RadioButtonGroup
+                id="radioGroup"
+                value={values.radioGroup}
+                error={errors.radioGroup}
+                touched={touched.radioGroup}
+              >
+                <Field
+                  component={RadioButton}
+                  name="radioGroup"
+                  id="lote"
+                  label="Por lote"
+                />
+                <Field
+                  component={RadioButton}
+                  name="radioGroup"
+                  id="diio"
+                  label="Por DIIO"
+                />
+              </RadioButtonGroup>
+              
               <button
                 type="button"
                 className="btn btn-secondary"
@@ -266,6 +253,9 @@ const AnimalMoves = () => {
                 type="submit"
                 disabled={isSubmitting}
                 className="btn btn-primary ml-1"
+                onClick={() => {
+                  alert(JSON.stringify(data));
+                }}
               >
                 Submit
               </button>
@@ -287,7 +277,7 @@ const AnimalMoves = () => {
           "Estado"
         ]}
         data={data.map(moves => [
-          moves.nFormulario,
+          moves.id,
           moves.RUPOrigen,
           moves.establecimientoOrigen,
           moves.RUPDestino,
@@ -300,12 +290,8 @@ const AnimalMoves = () => {
     </>
   );
 };
-//mejorar calidad de codigo, se pueden pasar a componentes los inputs asociados
+
 //crear boton de nuevo movimiento
 //crear modal
-
-
-
-
 
 export default AnimalMoves;
