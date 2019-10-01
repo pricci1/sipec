@@ -21,7 +21,7 @@ const App = () => {
               <Sidebar />
             </div>
             <main className="col-10">
-              <NotAppliedDroppedDiio/>
+              <NewPurchaseDiio/>
               {/* <Login /> */}
             </main>
           </div>
