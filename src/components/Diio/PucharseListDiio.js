@@ -1,8 +1,8 @@
 import React from "react";
 import { MDBDataTable } from 'mdbreact';
-import DiioDetailsModal from "./PucharseDetailsDiio";
+import PucharseDetailsDiioModal from "./PucharseDetailsDiioModal";
 
-const DiioTable = props => {
+const PucharseListDiio = props => {
   const { headers, data } = props;
 
   let columns = [];
@@ -18,7 +18,7 @@ const DiioTable = props => {
 
   function getColumnItem(index, item) {
     if(index == 0){
-      return <DiioDetailsModal text={item[index]}/>
+      return <PucharseDetailsDiioModal text={item[index]}/>
     } else {
       return item[index]
     }
@@ -52,4 +52,4 @@ const DiioTable = props => {
   );
 };
 
-export default DiioTable;
+export default PucharseListDiio;
