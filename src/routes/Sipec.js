@@ -2,9 +2,8 @@ import React, { useContext, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "../components/User/Login";
 import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar/Sidebar";
 import APIContext from "../components/APIProvider";
-
+import MenuRouter from "./MenuRouter";
 const Sipec = () => {
   const api = useContext(APIContext);
   const [logged, setLogged] = useState(false);
@@ -17,12 +16,7 @@ const Sipec = () => {
       <div className="container-fluid">
         <div className="row">
           {logged ? (
-            <>
-              <div className="col-2">
-                <Sidebar />
-              </div>
-              <main className="col-10">hola</main>
-            </>
+            <MenuRouter />
           ) : (
             <>
               <div className="col-3"></div>
