@@ -1,27 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Formik, Field } from "formik";
-import Selector from "./Utilities/FormikSelector"
+import Selector from "./Utilities/FormikSelector";
 import * as Yup from "yup";
+import { postDiioPurchase, getProviders } from "../../lib/APIDiio";
+import APIContext from "../APIProvider";
 
 const buyDiioSchema = Yup.object().shape({
   seller_type: Yup.string().required("Required"),
-  seller_rut: Yup.string().required("Required"),
+  provider_id: Yup.string().required("Required"),
   buyer_type: Yup.string().required("Required"),
   buyer_rut: Yup.string().required("Required"),
-  buyer_establishment_rup: Yup.string().required("Required")
+  establishment_id: Yup.string().required("Required")
 });
 
 const NewPurchaseDiio = () => {
+  const api = useContext(APIContext);   
+
   async function getSellerTypes() {
     return [{ value: 1, label: "Productor" }, { value: 2, label: "Proveedor" }];
   }
 
-  async function getSellersNames() {
-    return [
-      { value: 195245924, label: "Agro" },
-      { value: 64480138, label: "PolloSuper" }
-    ];
-  }
   const [selectedSellerRut, setSelectedSellerRut] = useState();
 
   const getBuyerRut = () => {
@@ -33,18 +31,15 @@ const NewPurchaseDiio = () => {
 
   async function getBuyerEstablishments() {
     return [
-      { value: "10.3.04.0122", label: "El Salto de Pilmaiquen" },
-      { value: "10.3.04.0499", label: "La Mosqueta" }
+      { value: 1, label: "El Salto de Pilmaiquen" },
+      { value: 2, label: "La Mosqueta" }
     ];
   }
-  async function getSpecies() {
-    return [{ value: "1", label: "Vaca" }, { value: "2", label: "Chancho" }];
-  }
-  async function getDiioBrands() {
-    return [{ value: "1", label: "Acme" }, { value: "2", label: "Logi" }];
-  }
-  async function getDiioTypes() {
-    return [{ value: "1", label: "Tipo1" }, { value: "2", label: "Tipo2" }];
+
+  async function getProvidersApi() {
+    const data = await getProviders(api);
+    console.log(data);
+    return data;
   }
 
   return (
@@ -53,16 +48,21 @@ const NewPurchaseDiio = () => {
       <Formik
         initialValues={{
           seller_type: null,
-          seller_rut: null, //id
+          provider_id: null, //id
           buyer_type: null,
           buyer_rut: getBuyerRut(), //id
-          buyer_establishment_rup: null, //id
-          specie: null,
-          diioType: null,
+          establishment_id: null, //id
           startDiio: null,
           endDiio: null,
-          diioBrand: null,
           diio_ranges: []
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          postDiioPurchase(
+            api,
+            values.provider_id,
+            values.establishment_id,
+            JSON.stringify(values.diio_ranges)
+          );
         }}
         validationSchema={buyDiioSchema}
       >
@@ -95,8 +95,8 @@ const NewPurchaseDiio = () => {
                 data={getSellerTypes}
               />
               <Selector
-                fieldName="seller_rut"
-                fieldValue={values.seller_rut}
+                fieldName="provider_id"
+                fieldValue={values.provider_id}
                 labelName="Nombre"
                 onChange={(field, fieldValue) => {
                   setFieldValue(field, fieldValue.value);
@@ -104,16 +104,16 @@ const NewPurchaseDiio = () => {
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.selectedSellerType}
-                data={getSellersNames}
+                data={getProvidersApi}
               />
               <label>Rut: {selectedSellerRut}</label>
               <h3>Datos de Comprador</h3>
               <Selector
-                fieldName="buyer  _type"
+                fieldName="buyer_type"
                 fieldValue={values.seller_type}
                 labelName="Tipo"
                 onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.label);
+                  setFieldValue(field, fieldValue.value);
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.selectedSellerType}
@@ -123,8 +123,8 @@ const NewPurchaseDiio = () => {
                 <p>Rut: {values.buyer_rut}</p>
                 <p>Name: {getBuyerName()}</p>
                 <Selector
-                  fieldName="buyer_establishment_rup"
-                  fieldValue={values.buyer_establishment_rup}
+                  fieldName="establishment_id"
+                  fieldValue={values.establishment_id}
                   labelName="Establecimiento"
                   onChange={(field, fieldValue) => {
                     setFieldValue(field, fieldValue.value);
@@ -135,57 +135,15 @@ const NewPurchaseDiio = () => {
                 />
               </div>
               <h3>Validación de Rangos</h3>
-              <Selector
-                fieldName="specie"
-                fieldValue={values.specie}
-                labelName="Especie"
-                onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.label);
-                }}
-                onBlur={setFieldTouched}
-                touched={touched.selectedSpecie}
-                data={getSpecies}
-              />
-              <Selector
-                fieldName="diioBrand"
-                fieldValue={values.diioBrand}
-                labelName="Marca"
-                onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.label);
-                }}
-                onBlur={setFieldTouched}
-                touched={touched.selectedSpecie}
-                data={getDiioBrands}
-              />
-              <Selector
-                fieldName="diioType"
-                fieldValue={values.diioBrand}
-                labelName="Tipo"
-                onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.label);
-                }}
-                onBlur={setFieldTouched}
-                touched={touched.selectedSpecie}
-                data={getDiioTypes}
-              />
               <p>Rango</p>
-              <Field type="text" name="startDiio" placeholder="Desde" />
-              <Field type="text" name="endDiio" placeholder="Hasta" />
+              
               <button
+                type="button"
                 onClick={() => {
                   setFieldValue("diio_ranges", [
                     ...values.diio_ranges,
-                    {
-                      brand: values.diioBrand,
-                      type: values.diioType,
-                      specie: values.specie,
-                      startDiio: values.startDiio,
-                      endDiio: values.endDiio
-                    }
+                    [values.startDiio, values.endDiio]
                   ]);
-                  setFieldValue("specie", null);
-                  setFieldValue("diioBrand", null);
-                  setFieldValue("diioType", null);
                   setFieldValue("startDiio", null);
                   setFieldValue("endDiio", null);
                 }}
@@ -193,7 +151,6 @@ const NewPurchaseDiio = () => {
                 Agregar Rango
               </button>
 
-              
               <button type="submit">Realizar compra</button>
             </form>
           );
@@ -202,6 +159,5 @@ const NewPurchaseDiio = () => {
     </div>
   );
 };
-
 
 export default NewPurchaseDiio;

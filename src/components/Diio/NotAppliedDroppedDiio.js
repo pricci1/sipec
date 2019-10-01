@@ -76,6 +76,7 @@ const NotAppliedDroppedDiio = () => {
               <Field type="text" name="startDiio" placeholder="Desde" />
               <Field type="text" name="endDiio" placeholder="Hasta" />
               <button
+			  	type="button"
                 onClick={() => {
                   setFieldValue("diioRanges", [
                     ...values.diioRanges,
