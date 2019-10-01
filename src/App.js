@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Login from "./components/User/Login";
 import { APIProvider } from "./components/APIProvider";
-
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
 
@@ -19,7 +19,10 @@ const App = () => {
             <div className="col-2">
               <Sidebar />
             </div>
-            <main className="col-10">Main content here</main>
+            <main className="col-10">
+              Main content here
+              <Login />
+            </main>
           </div>
         </div>
       </div>

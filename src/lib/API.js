@@ -3,46 +3,61 @@ import axios from "axios";
 class API {
   constructor() {
     // check if token in storage and copy it to token
-    this.token = "asdfsaf9sdf9sdfsdjfsdifsdfso9dfnfof";
-    this.apiUrl = "https://sipec.cl/api/v1/";
+    this.token = localStorage.token || null;
+    this.apiUrl = "https://sipec-backend.herokuapp.com/";
   }
 
-  login = (email, password) => {
-    // axios to backend
+  login = async (email, password) => {
+    var response = { success: false };
+    await axios
+      .post(this.apiUrl + "auth/sign_in", { email, password })
+      .then(resp => {
+        if (resp.status === 200) {
+          this.token = resp.headers["access-token"];
+          response.success = true;
+        } else {
+          response.success = false;
+          this.token = null;
+        }
+      })
+      .catch(error => console.log(error));
+    localStorage.token = this.token;
 
-    // if token
-    this.token = "asdasd";
-
-    // else
-
-    this.token = null;
-
-    // return backend response
+    return response;
   };
 
   logout = () => {
     this.token = null;
+    localStorage.token = this.token;
   };
 
   recoverAccount;
 
   get = async url => {
-    await axios.get(url, {
-      headers: {
-        "Content-Type": "blank",
-        Authorization: `token ${this.token}`
-      }
-    });
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${this.token}`
+        }
+      })
+      .then(({ data }) => {
+        return data;
+      });
   };
 
   post = (url, obj) => {
-    axios.get(url, {
-      headers: {
-        "Content-Type": "blak",
-        Authorization: `token ${this.token}`
-      },
-      ...obj
-    });
+    axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${this.token}`
+        },
+        ...obj
+      })
+      .then(({ data }) => {
+        return data;
+      });
   };
 }
 
