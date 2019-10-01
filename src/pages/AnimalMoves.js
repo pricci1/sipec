@@ -267,7 +267,7 @@ const AnimalMoves = () => {
           "Salida",
           "Llegada"
         ]}
-        data={data.map(moves => [
+        data={data.map( moves => [
           moves.id,
           moves.created_at,
           moves.rup_origin,
