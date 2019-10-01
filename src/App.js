@@ -1,24 +1,31 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
-import PucharseListDiio from "./components/Diio/PucharseListDiio";
+import Login from "./components/User/Login";
+import { APIProvider } from "./components/APIProvider";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar/Sidebar";
 
 const App = () => {
   return (
-    <div>
-      <header className="bg-dark">
-        <Link to="/">SIPEC</Link>
-        <br />
-        <span>Navbar here</span>
-      </header>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-2 bg-info">Sidebar here</div>
-            <   PucharseListDiio headers={[/*Aquí van los headers de la tabla (como en el playpen)*/]} data={[/*Aquí va la data (como en el playpen)*/]}/>
+    <APIProvider>
+      <div>
+        <header className="bg-dark">
+          <Navbar />
+        </header>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-2">
+              <Sidebar />
+            </div>
+            <main className="col-10">
+              Main content here
+              <Login />
+            </main>
+          </div>
         </div>
       </div>
-    </div>
+    </APIProvider>
   );
 };
 
