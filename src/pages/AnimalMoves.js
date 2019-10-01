@@ -10,8 +10,7 @@ import EstablishmentOriginSelect from "../components/AnimalMoves/EstablishmentOr
 import EstablishmentDestinationSelect from "../components/AnimalMoves/EstablishmentDestinationSelect";
 import AnimalMovesTable from "../components/AnimalMoves/AnimalMovesTable";
 import RadioButton from "../components/AnimalMoves/RadioButton";
-import RadioButtonGroup from "../components/AnimalMoves/RadioButtonGroup"
-
+import RadioButtonGroup from "../components/AnimalMoves/RadioButtonGroup";
 
 const AnimalMoves = () => {
   /*
@@ -30,11 +29,12 @@ const AnimalMoves = () => {
   // RETURN
   // nºde formulario,fecha de formulario, RUP origen, Establecimineto orgien, RUP destino, Establecimento Destino, salida, llegada, estado
   */
-  const apiUrl = "sipec-backend.herokuapp.com";
+  const apiUrl = "http://sipec-backend.herokuapp.com";
   const [data, setData] = useState([]);
 
   async function getEstablishment() {
     const Establecimento = await axios.get(`${apiUrl}/establishments`);
+    console.log(Establecimento.data);
     return Establecimento.data.map(({ id, name, rup }) => ({
       value: id,
       label: rup + "/" + name
@@ -52,10 +52,13 @@ const AnimalMoves = () => {
     radioGroup
   ) {
     //no terminada falta agregar a la tabla los datos que se sacan de get estableciminetos y combinarlos con moves
-    var moves = [];
-    moves = await axios.get(`${apiUrl}/animal_movement_table`);
-    /*if (RUPDestino != null) {
-      moves = moves.data.filter(d => (d.rupD = RUPDestino));
+
+    var moves = await axios.get(`${apiUrl}/animal_movement_table`);
+    console.log(moves.data);
+    /*if (establishmentOrigin != false) {
+      moves = moves.data.filter(
+        d => (d.origin_establishment.id = establishmentOrigin)
+      );
     }
     if (RUPOrigen != null) {
       moves = moves.data.filter(d => (d.rupO = RUPOrigen));
@@ -82,19 +85,21 @@ const AnimalMoves = () => {
 
     return moves.data.map(
       ({
-        establishmentOrigin,
-        establishmentDestination,
-        dateDepartue,
-        dateArrival,
-        id,
-        state
+        animal_move: { arrival, departure, created_at, id },
+        destination_establishment: {
+          rup: rup_destination,
+          name: name_destination
+        },
+        origin_establishment: { rup: rup_origin, name: name_origin }
       }) => ({
-        establishmentOrigin,
-        establishmentDestination,
-        dateDepartue,
-        dateArrival,
-        id,
-        state
+        arrival,
+        departure,
+        created_at,
+        rup_destination,
+        name_destination,
+        rup_origin,
+        name_origin,
+        id
       })
     );
   }
@@ -121,35 +126,22 @@ const AnimalMoves = () => {
             values.nForm.value,
             values.state.value,
             values.radioGroup.value
-          ).then(moves => setData(moves));
+          ).then(response => {
+            setData(response);
+            console.log(response);
+          });
+
           setSubmitting(false); // This can also be used for displaying a spinner
         }}
         validationSchema={Yup.object().shape({
-          establishmentOrigin: Yup.object()
-            .nullable()
-            .required(),
-          establishmentDestination: Yup.object()
-            .nullable()
-            .required(),
-
-          dateDepartue: Yup.object()
-            .nullable()
-            .required(),
-          dateArrival: Yup.object()
-            .nullable()
-            .required(),
-          nForm: Yup.object()
-            .nullable()
-            .required(),
-          state: Yup.object()
-            .nullable()
-            .required(),
-          lote: Yup.object()
-            .nullable()
-            .required(),
-          diio: Yup.object()
-            .nullable()
-            .required()
+          establishmentOrigin: Yup.object().nullable(),
+          establishmentDestination: Yup.object().nullable(),
+          dateDepartue: Yup.object().nullable(),
+          dateArrival: Yup.object().nullable(),
+          nForm: Yup.object().nullable(),
+          state: Yup.object().nullable(),
+          lote: Yup.object().nullable(),
+          diio: Yup.object().nullable()
         })}
       >
         {props => {
@@ -240,7 +232,7 @@ const AnimalMoves = () => {
                   label="Por DIIO"
                 />
               </RadioButtonGroup>
-              
+
               <button
                 type="button"
                 className="btn btn-secondary"
@@ -273,18 +265,17 @@ const AnimalMoves = () => {
           "RUP Destino",
           "Establecimiento Destino",
           "Salida",
-          "Llegada",
-          "Estado"
+          "Llegada"
         ]}
         data={data.map(moves => [
           moves.id,
-          moves.RUPOrigen,
-          moves.establecimientoOrigen,
-          moves.RUPDestino,
-          moves.establecimientoDestino,
-          moves.desde,
-          moves.hasta,
-          moves.estadoFormulario
+          moves.created_at,
+          moves.rup_origin,
+          moves.name_origin,
+          moves.rup_destination,
+          moves.name_destination,
+          moves.departure,
+          moves.arrival
         ])}
       />
     </>

@@ -20,7 +20,7 @@ const AnimalMovesTable = props => {
           <tr key={index + 1}>
             <th scope="row">{index + 1}</th>
             {item.map(el => (
-              <td key={el.replace(" ", "-")}>{el}</td>
+              <td key={el}>{el}</td>
             ))}
           </tr>
         ))}
