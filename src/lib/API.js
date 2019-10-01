@@ -24,7 +24,11 @@ class API {
         }
       })
       .catch(error => {
-        response.type = JSON.parse(error.request.response).errors[0];
+        try {
+          response.type = JSON.parse(error.request.response).errors[0];
+        } catch (error) {
+          response.type = "Unknown error.";
+        }
       });
     localStorage.token = this.token;
 

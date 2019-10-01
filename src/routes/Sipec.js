@@ -4,6 +4,7 @@ import Login from "../components/User/Login";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar/Sidebar";
 import APIContext from "../components/APIProvider";
+import MenuRouter from "./Menu";
 
 const Sipec = () => {
   const api = useContext(APIContext);
@@ -21,7 +22,9 @@ const Sipec = () => {
               <div className="col-2">
                 <Sidebar />
               </div>
-              <main className="col-10">main context</main>
+              <main className="col-10">
+                <MenuRouter />
+              </main>
             </>
           ) : (
             <>
