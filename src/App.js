@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Login from "./components/User/Login";
+import NewPurchaseDiio from "./components/Diio/NewPucharseDiio"
+import NotAppliedDroppedDiio from "./components/Diio/NotAppliedDroppedDiio"
 import { APIProvider } from "./components/APIProvider";
 
 import ListadoBajaDIIO from "./pages/listadoBajaDIIO";
@@ -27,6 +29,8 @@ const App = () => {
             <main className="col-10">
               <ListadoBajaDIIO />
               <StockDIIOEstablecimiento />
+              <NotAppliedDroppedDiio/>
+              {/* <Login /> */}
             </main>
           </div>
         </div>
