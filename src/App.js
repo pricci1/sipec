@@ -5,6 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { APIProvider } from "./components/APIProvider";
 
 import ListadoBajaDIIO from "./pages/listadoBajaDIIO";
+import StockDIIOEstablecimiento from "./pages/stockDIIOEstablecimiento";
+
 import SIPECTable from "./components/AnimalMoves/SIPECtable";
 
 import Navbar from "./components/Navbar";
@@ -23,7 +25,8 @@ const App = () => {
               <Sidebar />
             </div>
             <main className="col-10">
-              <ListadoBajaDIIO />
+              {/* <ListadoBajaDIIO /> */}
+              <StockDIIOEstablecimiento />
             </main>
           </div>
         </div>

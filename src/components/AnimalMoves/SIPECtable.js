@@ -115,6 +115,29 @@ const AnimalMovesTable = props => {
         acessor: "fecha"
       }
     ];
+  } else if (cases == "buscarfolioproductor") {
+    headers = [
+      {
+        Header: "NRegistro",
+        acessor: "nregistro"
+      },
+      {
+        Header: "Vendedor",
+        acessor: "vendedor"
+      },
+      {
+        Header: "Comprador",
+        acessor: "comprador"
+      },
+      {
+        Header: "Fecha",
+        acessor: "fecha"
+      },
+      {
+        Header: "Nombre",
+        acessor: "nombre"
+      }
+    ];
   } else {
     headers = [
       {
