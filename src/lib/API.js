@@ -9,21 +9,28 @@ class API {
     this.apiUrl = "https://sipec-backend.herokuapp.com";
   }
 
-  login = (email, password) => {
-    // axios to backend
+  login = async (email, password) => {
+    var response = { success: false };
+    await axios
+      .post(this.apiUrl + "auth/sign_in", { email, password })
+      .then(resp => {
+        if (resp.status === 200) {
+          this.token = resp.headers["access-token"];
+          response.success = true;
+        } else {
+          response.success = false;
+          this.token = null;
+        }
+      })
+      .catch(error => console.log(error));
+    localStorage.token = this.token;
 
-    // if token
-    this.token = "asdasd";
-
-    // else
-
-    this.token = null;
-
-    // return backend response
+    return response;
   };
 
   logout = () => {
     this.token = null;
+    localStorage.token = this.token;
   };
 
   recoverAccount;
