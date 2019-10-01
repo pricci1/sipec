@@ -11,15 +11,12 @@ const PucharseDetailsDiioModal = props => {
         <a style={{color: 'blue'}} onClick={handleShow} href="/">{props.text}</a>
         <div className="modal" show={show} onHide={handleClose}>
           <div className="modal-header" closeButton>
-            <h4 className="modal-title">Modal heading</h4>
+            <h4 className="modal-title">Información de el Movimiento</h4>
           </div>
           <div className="modal-body">{props.text}</div>
           <div className="modal-footer">
             <div role="button" className="btn btn-primary" onClick={handleClose}>
               Close
-            </div>
-            <div role="button" className="btn btn-secondary" onClick={handleClose}>
-              Save Changes
             </div>
           </div>
         </div>

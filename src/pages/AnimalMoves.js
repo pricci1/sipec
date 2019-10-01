@@ -276,7 +276,7 @@ const AnimalMoves = () => {
           "Llegada",
           "Estado"
         ]}
-        data={data.map(moves => [
+        data={data.map( moves => [
           moves.id,
           moves.RUPOrigen,
           moves.establecimientoOrigen,
@@ -285,7 +285,8 @@ const AnimalMoves = () => {
           moves.desde,
           moves.hasta,
           moves.estadoFormulario
-        ])}
+        ]
+        )}
       />
     </>
   );
