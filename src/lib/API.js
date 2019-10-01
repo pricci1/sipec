@@ -6,7 +6,8 @@ class API {
     this.token = localStorage.token || null;
     this.client = localStorage.client || null;
     this.uid = localStorage.uid || null;
-    this.apiUrl = "https://sipec-backend.herokuapp.com";
+    this.apiUrl = "http://localhost:3000";
+    //this.apiUrl = "https://sipec-backend.herokuapp.com";
   }
 
   login = async (email, password) => {
@@ -64,7 +65,7 @@ class API {
   post = async (url, obj) => {
     const path = this.apiUrl + url;
     var results = { success: false };
-    const postResponse = await axios.get(path, {
+    const postResponse = await axios.post(path, {
       headers: {
         "Content-Type": "application/json",
         "access-token": this.token,
@@ -75,6 +76,7 @@ class API {
     });
     if (Math.floor(postResponse.status / 100) === 2) {
       results.success = true;
+      results.data = postResponse.data
     }
     // TODO: If the response says that the token is not valid, redirect to login
     return results;
