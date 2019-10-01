@@ -4,6 +4,9 @@ import { Link } from "@reach/router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { APIProvider } from "./components/APIProvider";
 
+import ListadoBajaDIIO from "./pages/listadoBajaDIIO";
+import SIPECTable from "./components/AnimalMoves/SIPECtable";
+
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
 
@@ -19,7 +22,9 @@ const App = () => {
             <div className="col-2">
               <Sidebar />
             </div>
-            <main className="col-10">Main content here</main>
+            <main className="col-10">
+              <ListadoBajaDIIO />
+            </main>
           </div>
         </div>
       </div>
