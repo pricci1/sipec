@@ -4,14 +4,14 @@ import Selector from "./Utilities/FormikSelector"
 import * as Yup from "yup";
 
 const buyDiioSchema = Yup.object().shape({
-  sellerType: Yup.string().required("Required"),
-  sellerRut: Yup.string().required("Required"),
-  buyerType: Yup.string().required("Required"),
-  buyerRut: Yup.string().required("Required"),
-  buyerEstablishmentRup: Yup.string().required("Required")
+  seller_type: Yup.string().required("Required"),
+  seller_rut: Yup.string().required("Required"),
+  buyer_type: Yup.string().required("Required"),
+  buyer_rut: Yup.string().required("Required"),
+  buyer_establishment_rup: Yup.string().required("Required")
 });
 
-const NewPucharseDiio = () => {
+const NewPurchaseDiio = () => {
   async function getSellerTypes() {
     return [{ value: 1, label: "Productor" }, { value: 2, label: "Proveedor" }];
   }
@@ -52,17 +52,17 @@ const NewPucharseDiio = () => {
       <h2>Nueva Compra</h2>
       <Formik
         initialValues={{
-          sellerType: null,
-          sellerRut: null,
-          buyerType: null,
-          buyerRut: getBuyerRut(),
-          buyerEstablishmentRup: null,
+          seller_type: null,
+          seller_rut: null, //id
+          buyer_type: null,
+          buyer_rut: getBuyerRut(), //id
+          buyer_establishment_rup: null, //id
           specie: null,
           diioType: null,
           startDiio: null,
           endDiio: null,
           diioBrand: null,
-          diioRanges: []
+          diio_ranges: []
         }}
         validationSchema={buyDiioSchema}
       >
@@ -84,8 +84,8 @@ const NewPucharseDiio = () => {
             <form onSubmit={handleSubmit}>
               <h3>Datos de Vendedor</h3>
               <Selector
-                fieldName="sellerType"
-                fieldValue={values.sellerType}
+                fieldName="seller_type"
+                fieldValue={values.seller_type}
                 labelName="Tipo"
                 onChange={(field, fieldValue) => {
                   setFieldValue(field, fieldValue.label);
@@ -95,8 +95,8 @@ const NewPucharseDiio = () => {
                 data={getSellerTypes}
               />
               <Selector
-                fieldName="sellerRut"
-                fieldValue={values.sellerRut}
+                fieldName="seller_rut"
+                fieldValue={values.seller_rut}
                 labelName="Nombre"
                 onChange={(field, fieldValue) => {
                   setFieldValue(field, fieldValue.value);
@@ -109,8 +109,8 @@ const NewPucharseDiio = () => {
               <label>Rut: {selectedSellerRut}</label>
               <h3>Datos de Comprador</h3>
               <Selector
-                fieldName="sellerType"
-                fieldValue={values.sellerType}
+                fieldName="buyer  _type"
+                fieldValue={values.seller_type}
                 labelName="Tipo"
                 onChange={(field, fieldValue) => {
                   setFieldValue(field, fieldValue.label);
@@ -120,11 +120,11 @@ const NewPucharseDiio = () => {
                 data={getSellerTypes}
               />
               <div>
-                <p>Rut: {values.buyerRut}</p>
+                <p>Rut: {values.buyer_rut}</p>
                 <p>Name: {getBuyerName()}</p>
                 <Selector
-                  fieldName="buyerEstablishmentRup"
-                  fieldValue={values.buyerEstablishmentRup}
+                  fieldName="buyer_establishment_rup"
+                  fieldValue={values.buyer_establishment_rup}
                   labelName="Establecimiento"
                   onChange={(field, fieldValue) => {
                     setFieldValue(field, fieldValue.value);
@@ -173,8 +173,8 @@ const NewPucharseDiio = () => {
               <Field type="text" name="endDiio" placeholder="Hasta" />
               <button
                 onClick={() => {
-                  setFieldValue("diioRanges", [
-                    ...values.diioRanges,
+                  setFieldValue("diio_ranges", [
+                    ...values.diio_ranges,
                     {
                       brand: values.diioBrand,
                       type: values.diioType,
@@ -204,4 +204,4 @@ const NewPucharseDiio = () => {
 };
 
 
-export default NewPucharseDiio;
+export default NewPurchaseDiio;

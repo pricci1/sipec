@@ -16,7 +16,7 @@ const App = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-2 bg-info">Sidebar here</div>
-          <NotAppliedDroppedDiio/>
+          <NewPucharseDiio/>
         </div>
       </div>
     </div>
