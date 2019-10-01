@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import AsyncSelect from "react-select/async";
 import axios from "axios";
-
+import DatePickerField from "../components/AnimalMoves/DatePickerField"
+import Dropdown from "../components/AnimalMoves/Dropdown";
+import RangeInput from "../components/AnimalMoves/RangeInput";
+import EstablishmentOriginSelect from "../components/AnimalMoves/EstablishmentOriginSelect";
+import EstablishmentDestinationSelect from "../components/AnimalMoves/EstablishmentDestinationSelect";
 import AnimalMovesTable from "../components/AnimalMoves/AnimalMovesTable";
 
 const AnimalMoves = () => {
@@ -23,25 +26,21 @@ const AnimalMoves = () => {
   // RETURN
   // nºde formulario,fecha de formulario, RUP origen, Establecimineto orgien, RUP destino, Establecimento Destino, salida, llegada, estado
   */
-  const apiUrl = "";
+  const apiUrl = "http://sipec-backend.herokuapp.com";
   const [data, setData] = useState([]);
-  //const [selectedRUP, setSelectedRUP] = useState();
-  const [selectedEstablecimiento, setSelectedEstablecimiento] = useState();
 
-  async function getEstablecimiento() {
-    const Establecimento = await axios.get(`${apiUrl}/Establecimiento`);
-    return Establecimento.data.map(({ id, name }) => ({
+  async function getEstablishment() {
+    const Establecimento = await axios.get(`${apiUrl}/establishments`);
+    return Establecimento.data.map(({ id, name, rup }) => ({
       value: id,
-      label: name
+      label: rup + "/" + name
     }));
     //RUP como id
   }
 
   async function getAnimalMoves(
-    RUPOrigen,
-    establecimientoOrigen,
-    RUPDestino,
-    establecimientoDestino,
+    establishmentOrigin,
+    establishmentDestination,
     desde,
     hasta,
     nFormulario,
@@ -51,8 +50,8 @@ const AnimalMoves = () => {
   ) {
     //no terminada falta agregar a la tabla los datos que se sacan de get estableciminetos y combinarlos con moves
     var moves = [];
-    moves = await axios.get(`${apiUrl}/MovimientoAnimal`);
-    if (RUPDestino != null) {
+    moves = await axios.get(`${apiUrl}/`);
+    /*if (RUPDestino != null) {
       moves = moves.data.filter(d => (d.rupD = RUPDestino));
     }
     if (RUPOrigen != null) {
@@ -63,7 +62,7 @@ const AnimalMoves = () => {
     }
     if (establecimientoDestino != null) {
       moves = moves.data.filter(d => (d.estaD = establecimientoDestino));
-    }
+    }*/
     if (desde != null) {
       moves = moves.data.filter(d => (d.desde = desde));
     }
@@ -105,23 +104,21 @@ const AnimalMoves = () => {
       <h2>Movimiento Animal</h2>
       <Formik
         initialValues={{
-          rupOrigen: null,
-          establecimientoOrigen: null,
-          rupDestino: null,
-          establecimientoDestino: null,
-          desde: null,
-          hasta: null,
-          nFormulario: null,
-          estadoFormulario: null,
-          lote: null,
-          diio: null
+          establishmentOrigin: "",
+          establishmentDestination: "",
+          dateArrival: "",
+          dateDepartue: "",
+          nForm: "",
+          state: "",
+          nFormulario: "",
+          estadoFormulario: "",
+          lote: "",
+          diio: ""
         }}
         onSubmit={(values, { setSubmitting }) => {
           getAnimalMoves(
-            values.rupOrigen.value,
-            values.establecimientoOrigen.value,
-            values.rupDestino.value,
-            values.establecimientoDestino.value,
+            values.establishmentOrigin.value,
+            values.establishmentDestination.value,
             values.desde.value,
             values.hasta.value,
             values.nFormulario.value,
@@ -180,71 +177,57 @@ const AnimalMoves = () => {
           } = props;
           return (
             <form onSubmit={handleSubmit}>
-              <RupOrigenSelect
-                value={values.rupOrigen}
-                establecimientos={getEstablecimiento}
-                onChange={(field, fieldValue) => {
-                  setSelectedEstablecimiento(fieldValue);
-                  setFieldValue(field, fieldValue);
-                }}
-                onBlur={setFieldTouched}
-                error={errors.titular}
-                touched={touched.titular}
-              />
-              <RupDestinoSelect
-                key={
-                  selectedEstablecimiento ? selectedEstablecimiento.value : 0
-                }
-                value={values.establecimiento}
-                establecimientos={getEstablecimiento}
+              <EstablishmentOriginSelect
+                value={values.establishmentOrigin}
+                establishmentOrigin={getEstablishment}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
-                error={errors.establecimiento}
-                touched={touched.establecimiento}
+                error={errors.establishmentOrigin}
+                touched={touched.establishmentOrigin}
               />
+              <EstablishmentDestinationSelect
+                value={values.establishmentDestination}
+                establishmentDestination={getEstablishment}
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                error={errors.establishmentDestination}
+                touched={touched.establishmentDestination}
+              />
+
               <div>
-                <label htmlFor="Desde">Desde</label>
-                <input
-                  id={"desde"}
-                  title={"Desde"}
-                  type="text"
-                  value={values.desde}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                <label htmlFor="dateDeparture">Desde</label>
+                <DatePickerField
+                  name="dateDeparture"
+                  value={values.dateDeparture}
+                  onChange={setFieldValue}
                 />
               </div>
               <div>
-                <label htmlFor="Hasta"> Hasta</label>
-                <input
-                  id={"hasta"}
-                  title={"Hasta"}
-                  type="text"
-                  value={values.hasta}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                <label htmlFor="dateArrival">Hasta</label>
+                <DatePickerField
+                  name="dateArrival"
+                  value={values.dateArrival}
+                  onChange={setFieldValue}
                 />
               </div>
+
               <div>
-                <label htmlFor="nFormulario">Nº Formulario</label>
-                <input
-                  id={"nFormulario"}
+                <RangeInput
+                  id={"nForm"}
                   title={"Nº Formulario"}
-                  type="text"
-                  value={values.nFormulario}
+                  value={values.nForm}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                
               </div>
               <div>
-                <label htmlFor="estadoFormulario">Estado Formulario</label>
-                <input
-                  id={"estado Formulario"}
-                  title={"Hasta"}
-                  type="text"
-                  value={values.hasta}
+                <Dropdown
+                  id={"state"}
+                  title={"Estado Formulario"}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  value={values.state}
+                  options={["Aceptado", "Con problemas", "En transito"]}
                 />
               </div>
               <div className="radio">
@@ -320,55 +303,9 @@ const AnimalMoves = () => {
 //mejorar calidad de codigo, se pueden pasar a componentes los inputs asociados
 //crear boton de nuevo movimiento
 //crear modal
-const RupOrigenSelect = props => {
-  return (
-    <>
-      <label htmlFor="RUP">Seleccione RUP/Establecimento Origen</label>
-      <AsyncSelect
-        id="RUP"
-        cacheOptions
-        defaultOptions
-        loadOptions={props.titulares}
-        onChange={value => {
-          props.onChange("RUP", value);
-        }}
-        onBlur={value => {
-          props.onBlur("RUP", value);
-        }}
-        value={props.value}
-      />
-      {!!props.error && props.touched && (
-        <div className="text-danger">{props.error}</div>
-      )}
-    </>
-  );
-};
 
-const RupDestinoSelect = props => {
-  return (
-    <>
-      <label htmlFor="establecimiento">
-        Seleccióne un RUP/Establecimiento Destino
-      </label>
-      <AsyncSelect
-        id="establecimiento"
-        cacheOptions
-        defaultOptions
-        loadOptions={props.establecimientos}
-        onChange={value => {
-          props.onChange("establecimiento", value);
-        }}
-        onBlur={value => {
-          props.onBlur("establecimiento", value);
-        }}
-        value={props.value}
-        isDisabled={props.establecimientos === 0}
-      />
-      {!!props.error && props.touched && (
-        <div className="text-danger">{props.error}</div>
-      )}
-    </>
-  );
-};
+
+
+
 
 export default AnimalMoves;
