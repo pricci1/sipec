@@ -8,7 +8,7 @@ class API {
   }
 
   login = async (email, password) => {
-    var response = { success: false };
+    var response = { success: false, type: "" };
     await axios
       .post(this.apiUrl + "auth/sign_in", { email, password })
       .then(resp => {
@@ -17,10 +17,13 @@ class API {
           response.success = true;
         } else {
           response.success = false;
+          response.type = resp.status;
           this.token = null;
         }
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        response.type = JSON.parse(error.request.response).errors[0];
+      });
     localStorage.token = this.token;
 
     return response;

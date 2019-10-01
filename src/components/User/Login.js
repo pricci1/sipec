@@ -2,19 +2,19 @@ import React, { useContext, useState } from "react";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import * as Yup from "yup";
 import APIContext from "../APIProvider";
-import { navigate } from "@reach/router";
 
-const Login = () => {
+const Login = ({ setLoggedCallback }) => {
   const api = useContext(APIContext);
   const [loginError, setLoginError] = useState(false);
+  const [error, setError] = useState("null");
 
   const successfulLogin = () => {
-    navigate("/");
+    setLoggedCallback(true);
   };
 
   return (
     <div className="jumbotron">
-      {loginError ? <h3 className="text-danger">Hay un error</h3> : null}
+      {loginError ? <h3 className="text-danger">{error}</h3> : null}
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={Yup.object().shape({
@@ -27,6 +27,7 @@ const Login = () => {
           api.login(fields.email, fields.password).then(resp => {
             resp.success ? successfulLogin() : setLoginError(true);
             setSubmitting(false);
+            setError(resp.type);
           });
         }}
       >
