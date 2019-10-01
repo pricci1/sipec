@@ -71,6 +71,7 @@ class API {
   post = async (url, obj) => {
     const path = this.apiUrl + url;
     var results = { success: false };
+    try {
       const postResponse = await axios.post(path, {
         headers: {
           "Content-Type": "application/json",
@@ -83,6 +84,10 @@ class API {
       if (Math.floor(postResponse.status / 100) === 2) {
         results.success = true;
       }
+    } catch (error) {
+      results.success = false;
+      results.data = error;
+    }
     // TODO: If the response says that the token is not valid, redirect to login
     return results;
   };
