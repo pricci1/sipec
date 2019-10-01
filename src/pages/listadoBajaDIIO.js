@@ -1,5 +1,6 @@
 import React from "react";
 import { Formik, Field } from "formik";
+import DatePicker from "react-datepicker";
 
 import SIPECtable from "../components/AnimalMoves/SIPECtable";
 
@@ -9,18 +10,7 @@ const ListadoBajaDIIO = () => (
     <div>
       <h2>Buscar Baja de DIIO</h2>
       <Formik
-        initialValues={{ email: "", password: "" }}
-        validate={values => {
-          let errors = {};
-          if (!values.email) {
-            errors.email = "Required";
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = "Invalid email address";
-          }
-          return errors;
-        }}
+        initialValues={{ desde: "", hasta: "", especie: "" }}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
             alert(JSON.stringify(values, null, 2));
@@ -35,39 +25,50 @@ const ListadoBajaDIIO = () => (
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting
+          isSubmitting,
+          setFieldValue
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <p>Especie</p>
-            <input
-              type="email"
-              name="email"
+            <text>Especie</text>
+
+            <Field name="especie" component="select" placeholder="Especie">
+              <option value="abejas">Abejas</option>
+              <option value="bovino">Bovino</option>
+              <option value="caracol">Caracol</option>
+            </Field>
+            {/* <input
+              type="text"
+              name="especie"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.email}
+              value={values.especie}
+            /> */}
+            {/* {errors.email && touched.email && errors.email} */}
+            <p></p>
+            <text>Rango DIIO</text>
+            <p></p>
+            <text>Desde</text>
+            <DatePicker
+              selected={values.desde}
+              //   dateFormat="MMMM d, yyyy"
+              //   className="form-control"
+              name="desde"
+              onChange={date => setFieldValue("desde", date)}
             />
-            {errors.email && touched.email && errors.email}
-            <p>Rango DIIO</p>
-            <input
-              type="password"
-              name="password"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.password}
+            {/* {errors.password && touched.password && errors.password} */}
+            <text>Hasta</text>
+            <DatePicker
+              selected={values.hasta}
+              //   dateFormat="MMMM d, yyyy"
+              //   className="form-control"
+              name="hasta"
+              onChange={date => setFieldValue("hasta", date)}
             />
-            {errors.password && touched.password && errors.password}
-            <input
-              type="password"
-              name="password"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.password}
-            />
-            {errors.password && touched.password && errors.password}
+            {/* {errors.password && touched.password && errors.password} */}
 
             <button type="submit" disabled={isSubmitting}>
-              Submit
+              Filtrar
             </button>
           </form>
         )}
