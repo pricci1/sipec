@@ -1,5 +1,5 @@
 import React from "react";
-import { MDBDataTable } from 'mdbreact';
+import { MDBDataTable } from "mdbreact";
 import PucharseDetailsDiioModal from "./PucharseDetailsDiioModal";
 
 const PucharseListDiio = props => {
@@ -8,33 +8,37 @@ const PucharseListDiio = props => {
   let columns = [];
   let rows = [];
 
-  headers.map(header => (
+  headers.map(header =>
     columns.push({
-      label: header, 
-      field: header.toLowerCase(), 
-      sort: 'asc',
-      width: 200})
-  ));
+      label: header,
+      field: header.toLowerCase(),
+      sort: "asc",
+      width: 200
+    })
+  );
 
   function getColumnItem(index, item) {
-    if(index == 0){
-      return <PucharseDetailsDiioModal text={item[index]}/>
+    if (index == 0) {
+      return <PucharseDetailsDiioModal text={item[index]} />;
     } else {
-      return item[index]
+      return item[index];
     }
   }
 
   var jsonRow = {};
-  data.map(item => (
-    columns.map((col, index) => (
-      jsonRow[String(col.field)] = getColumnItem(index, item)
-    )),
-    rows.push(jsonRow),
-    jsonRow = {}
-  ));
+  data.map(
+    item => (
+      columns.map(
+        (col, index) =>
+          (jsonRow[String(col.field)] = getColumnItem(index, item))
+      ),
+      rows.push(jsonRow),
+      (jsonRow = {})
+    )
+  );
 
-  const finalData = {columns, rows};
-  
+  const finalData = { columns, rows };
+
   return (
     <MDBDataTable
       striped

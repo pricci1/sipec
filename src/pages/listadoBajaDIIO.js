@@ -1,83 +1,99 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Formik, Field } from "formik";
+import Selector from "../components/Diio/Utilities/FormikSelector";
 import DatePicker from "react-datepicker";
 
 import SIPECtable from "../components/AnimalMoves/SIPECtable";
 
-const ListadoBajaDIIO = () => (
-  <div>
-    <h1>Listado Baja de DIIO</h1>
+import { getSpecies } from "../lib/APIDiio";
+import APIContext from "../components/APIProvider";
+
+const ListadoBajaDIIO = () => {
+  const api = useContext(APIContext);
+
+  async function getSpeciesAPI() {
+    const data = await getSpecies(api);
+    console.log(data);
+    return data;
+  }
+  //   async function getSpecies() {
+  //     return [
+  //       { value: "abejas", label: "Abejas" },
+  //       { value: "bovino", label: "Bovino" },
+  //       { value: "caracol", label: "Caracol" }
+  //     ];
+  //   }
+
+  return (
     <div>
-      <h2>Buscar Baja de DIIO</h2>
-      <Formik
-        initialValues={{ desde: "", hasta: "", especie: "" }}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          setFieldValue
-          /* and other goodies */
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <text>Especie</text>
+      <h1>Listado Baja de DIIO</h1>
+      <div>
+        <h2>Buscar Baja de DIIO</h2>
+        <Formik
+          initialValues={{ desde: "", hasta: "", especie: "" }}
+          onSubmit={(values, { setSubmitting }) => {
+            setTimeout(() => {
+              alert(JSON.stringify(values, null, 2));
+              setSubmitting(false);
+            }, 400);
+          }}
+        >
+          {({
+            values,
+            //   errors,
+            touched,
+            //   handleChange,
+            //   handleBlur,
+            handleSubmit,
+            isSubmitting,
+            setFieldValue,
+            setFieldTouched
+            /* and other goodies */
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <Selector
+                fieldName="specie"
+                fieldValue={values.specie}
+                labelName="Especie"
+                onChange={(field, fieldValue) => {
+                  setFieldValue(field, fieldValue.label);
+                }}
+                onBlur={setFieldTouched}
+                touched={touched.selectedSpecie}
+                // data={getSpecies}
+                data={getSpeciesAPI}
+              />
+              <p></p>
+              <h3>Rango DIIO</h3>
+              <p></p>
+              <h3>Desde</h3>
+              <DatePicker
+                selected={values.desde}
+                //   dateFormat="MMMM d, yyyy"
+                //   className="form-control"
+                name="desde"
+                onChange={date => setFieldValue("desde", date)}
+              />
+              <h3>Hasta</h3>
+              <DatePicker
+                selected={values.hasta}
+                //   dateFormat="MMMM d, yyyy"
+                //   className="form-control"
+                name="hasta"
+                onChange={date => setFieldValue("hasta", date)}
+              />
 
-            <Field name="especie" component="select" placeholder="Especie">
-              <option value="abejas">Abejas</option>
-              <option value="bovino">Bovino</option>
-              <option value="caracol">Caracol</option>
-            </Field>
-            {/* <input
-              type="text"
-              name="especie"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.especie}
-            /> */}
-            {/* {errors.email && touched.email && errors.email} */}
-            <p></p>
-            <text>Rango DIIO</text>
-            <p></p>
-            <text>Desde</text>
-            <DatePicker
-              selected={values.desde}
-              //   dateFormat="MMMM d, yyyy"
-              //   className="form-control"
-              name="desde"
-              onChange={date => setFieldValue("desde", date)}
-            />
-            {/* {errors.password && touched.password && errors.password} */}
-            <text>Hasta</text>
-            <DatePicker
-              selected={values.hasta}
-              //   dateFormat="MMMM d, yyyy"
-              //   className="form-control"
-              name="hasta"
-              onChange={date => setFieldValue("hasta", date)}
-            />
-            {/* {errors.password && touched.password && errors.password} */}
-
-            <button type="submit" disabled={isSubmitting}>
-              Filtrar
-            </button>
-          </form>
-        )}
-      </Formik>
+              <button type="submit" disabled={isSubmitting}>
+                Filtrar
+              </button>
+            </form>
+          )}
+        </Formik>
+      </div>
+      <div>
+        <SIPECtable cases="listadebajas" />
+      </div>
     </div>
-    <div>
-      <SIPECtable cases="listadebajas" />
-    </div>
-  </div>
-);
-
+  );
+};
 export default ListadoBajaDIIO;

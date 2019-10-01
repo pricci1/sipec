@@ -30,8 +30,8 @@ const StockDIIOEstablecimiento = () => (
       >
         {({
           values,
-          errors,
-          touched,
+          // errors,
+          // touched,
           handleChange,
           handleBlur,
           handleSubmit,
