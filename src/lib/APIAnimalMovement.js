@@ -1,15 +1,27 @@
-import API from "./API";
+import { useContext } from "React";
+import APIContext from "../components/APIProvider";
 
-class APIAnimalMovement {
-  constructor() {
-    // check if token in storage and copy it to token
-    this.variable = "asdfsaf9sdf9sdfsdjfsdifsdfso9dfnfof";
-  }
+const api = useContext(APIContext);
 
-  getSomething = async () => {
-    data = API.get("path/");
-    /* then you have to use the data for something*/
-  };
-}
+export const getAllDiios = async apiInstance => {
+  await apiInstance.get(...);
+  
+};
 
-export default APIAnimalMovement;
+export const getDiiosRange = (apiInstance, from, to) => {
+  apiInstance
+    .get(...)
+    .then(...);
+
+};
+
+export const postDiio = async (apiInstance, diio) => {
+  await apiInstance.post(...);
+  ...
+};
+
+export const anotherThingYouCanDoWithDiios = async (apiInstance, stuff, andMore) => {
+  await apiInstance.get(...);
+  await apiInstance.post(...);
+  
+};
