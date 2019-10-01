@@ -25,7 +25,7 @@ const App = () => {
               <Sidebar />
             </div>
             <main className="col-10">
-              {/* <ListadoBajaDIIO /> */}
+              <ListadoBajaDIIO />
               <StockDIIOEstablecimiento />
             </main>
           </div>
