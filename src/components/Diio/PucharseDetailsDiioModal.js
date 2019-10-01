@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
+import { async } from "q";
 
 const DiioDetailsModal = props => {
   const [show, setShow] = useState(false);
