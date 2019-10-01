@@ -16,21 +16,13 @@ const ListadoBajaDIIO = () => {
     console.log(data);
     return data;
   }
-  //   async function getSpecies() {
-  //     return [
-  //       { value: "abejas", label: "Abejas" },
-  //       { value: "bovino", label: "Bovino" },
-  //       { value: "caracol", label: "Caracol" }
-  //     ];
-  //   }
-
   return (
     <div>
       <h1>Listado Baja de DIIO</h1>
       <div>
         <h2>Buscar Baja de DIIO</h2>
         <Formik
-          initialValues={{ desde: "", hasta: "", especie: "" }}
+          initialValues={{ desde: "", hasta: "", specie: "" }}
           onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
               alert(JSON.stringify(values, null, 2));
