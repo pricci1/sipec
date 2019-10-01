@@ -64,7 +64,7 @@ class API {
   post = async (url, obj) => {
     const path = this.apiUrl + url;
     var results = { success: false };
-    const postResponse = await axios.get(path, {
+    const postResponse = await axios.post(path, {
       headers: {
         "Content-Type": "application/json",
         "access-token": this.token,
