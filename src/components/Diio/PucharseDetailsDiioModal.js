@@ -1,30 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import { Modal, Button } from "react-bootstrap";
+import axios from "axios";
 
-const PucharseDetailsDiioModal = props => {
+const DiioDetailsModal = props => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-  
-    return (
-      <>
-        <a style={{color: 'blue'}} onClick={handleShow} href="/">{props.text}</a>
-        <div className="modal" show={show} onHide={handleClose}>
-          <div className="modal-header" closeButton>
-            <h4 className="modal-title">Modal heading</h4>
-          </div>
-          <div className="modal-body">{props.text}</div>
-          <div className="modal-footer">
-            <div type="button" className="btn btn-primary" onClick={handleClose}>
-              Close
-            </div>
-            <div type="button" className="btn btn-secondary" onClick={handleClose}>
-              Save Changes
-            </div>
-          </div>
-        </div>
-      </>
+  const apiUrl = "https://5d80ecc899f8a20014cf9cc8.mockapi.io";
+
+  const [details, setDetails] = useState([]);
+
+  async function getPurchaseDiioDetails() {
+    const detail = await axios.get(
+      `${apiUrl}/diio_purchases/${props.diio_purchase_id}`
     );
+    console.log(detail);
+    setDetails(detail.data);
   }
-  
-  export default PucharseDetailsDiioModal;
+
+  useEffect(() => {
+    getPurchaseDiioDetails();
+  }, []);
+
+  return (
+    <>
+      <a style={{ color: "blue" }} onClick={handleShow}>
+        {props.diio_purchase_id}
+      </a>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {details.estado}
+          <br />
+          {details.rut_comprador}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+};
+
+export default DiioDetailsModal;
