@@ -1,16 +1,13 @@
-// export const getDiiosRange = (apiInstance, from, to) => {
-//   apiInstance
-//     .get(...)
-//     .then(...);
 
-export const postDiioPurchase = (
+export const postDiioPurchase = async(
   apiInstance,
   provider_id,
   establishment_id,
   diio_ranges
 ) => {
   let data = { provider_id, establishment_id, diio_ranges };
-  apiInstance.post("/diio_purchases/range", data);
+  const result = await apiInstance.post("/diio_purchases/range", data);
+  return result
 };
 
 export const getProviders = async apiInstance => {
@@ -21,3 +18,20 @@ export const getProviders = async apiInstance => {
   }));
   
 };
+
+export const dropDiioRanges = async(
+  apiInstance,
+  range,
+  motive
+) => {
+  let data = {range, motive}
+  apiInstance.post('diio_drops', data)
+}
+
+export const getSpecies = async apiInstance =>{
+  const result = await apiInstance.get("/species");
+  return result.data.map(({id, name}) => ({
+    value:id, 
+    label: name
+  }))
+}

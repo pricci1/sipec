@@ -18,6 +18,8 @@ const NotAppliedDroppedDiio = () => {
     return [{ value: "1", label: "Nose" }, { value: "2", label: "Pq Si" }];
   }
 
+  const [startDiio, setstartDiio] = useState();
+  const [endDiio, setendDiio] = useState();
   return (
     <div>
       <h2>Baja de Diio no aplicados</h2>
@@ -73,8 +75,7 @@ const NotAppliedDroppedDiio = () => {
                 data={getDropReasons}
               />
               <h4>Rangos</h4>
-              <Field type="text" name="startDiio" placeholder="Desde" />
-              <Field type="text" name="endDiio" placeholder="Hasta" />
+              
               <button
 			  	type="button"
                 onClick={() => {
