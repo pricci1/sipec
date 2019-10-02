@@ -73,7 +73,7 @@ const PucharseDetailsDiioModal = props => {
         }}
       >
         <h2>Detalles compra</h2>
-        <hr></hr>
+        <hr />
         <p>
           <b>Marca:</b> {details.brand}
         </p>
@@ -100,7 +100,9 @@ const PucharseDetailsDiioModal = props => {
         <p>
           <b>Nombre:</b> {details.purchaser_name}
         </p>
-        <button onClick={props.onClose}>Cerrar</button>
+        <button className="btn btn-outline-primary" onClick={props.onClose}>
+          Cerrar
+        </button>
       </div>
     </div>,
     document.querySelector("#modal")

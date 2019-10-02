@@ -51,7 +51,7 @@ const MenuRouter = () => {
 
   return (
     <>
-      <div className="col-2">
+      <div style={{ padding: "0px" }} className="col-2">
         <Sidebar />
       </div>
       <main className="col-10">
