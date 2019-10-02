@@ -42,7 +42,7 @@ const AnimalMoves = () => {
     );
     setloading(false)
   }
-  getEstablishment()
+  useEffect(() => getEstablishment(), []);
   useEffect(()=> {getEstablishment()}, []);
   async function getAnimalMovements() {
     const moves = await apiInstance.get("/animal_movement_table")
