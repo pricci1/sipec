@@ -46,10 +46,12 @@ export const getModels = async apiInstance => {
   }));
 };
 
-export const getDataStockDIIOEstablecimiento = async apiInstance => {
-  const result = await apiInstance.get("/diio_stock_table");
-  return result.data.map(({ id, model }) => ({
-    value: id,
-    label: model
-  }));
-};
+// export const getDataStockDIIOEstablecimiento = async apiInstance => {
+//   const result = await apiInstance.get("/diio_stock_table");
+//   return result.data.map(({data,index}) => ({
+//     const{Nregister, vendor, comprador, fecha, nombre  }=data
+//     return(
+
+//     )
+//   }));
+// };
