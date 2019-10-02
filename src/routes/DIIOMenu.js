@@ -13,6 +13,13 @@ const DiioMenu = ({ children }) => (
             className="btn btn-danger"
             style={{ textDecoration: "none", color: "#FFF" }}
           >
+            Lista Compra
+          </Link>
+          <Link
+            to="compra"
+            className="btn btn-danger"
+            style={{ textDecoration: "none", color: "#FFF" }}
+          >
             Compra
           </Link>
           <Link

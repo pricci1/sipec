@@ -4,7 +4,7 @@ import "./sidebar.css";
 
 const Sidebar = () => {
   const pageLinks = [
-    { text: "Administración DIIOs", linkTo: "/diio" },
+    { text: "Administración DIIOs", linkTo: "/diio/lista-compra" },
     { text: "Administración animal con DIIO", linkTo: "/animal-diio" },
     { text: "Establecimiento", linkTo: "/establecimientos" },
     { text: "Existencias animales", linkTo: "/existencias" },
