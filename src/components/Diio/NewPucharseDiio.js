@@ -84,9 +84,15 @@ const NewPurchaseDiio = () => {
           postDiioPurchase(
             api,
             values.provider_id,
-            values.establishment_id,
-            JSON.stringify(values.diio_ranges)
-          );
+            values.establishment_id.value,
+            JSON.stringify(
+              values.diio_ranges.map(range => [range.desde, range.hasta])
+            )
+          ).then(resp => {
+            resp.success
+              ? alert("Compra realizada")
+              : alert("Error en la compra");
+          });
           setSubmitting(false);
         }}
       >
