@@ -1,11 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "../components/User/Login";
 import Navbar from "../components/Navbar";
-import APIContext from "../components/APIProvider";
 import MenuRouter from "./MenuRouter";
 const Sipec = () => {
-  const api = useContext(APIContext);
   const [logged, setLogged] = useState(false);
   return (
     <div>

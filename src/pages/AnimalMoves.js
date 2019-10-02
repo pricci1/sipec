@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { Formik } from "formik";
+import { Formik, Field } from "formik";
 import * as Yup from "yup";
-import AsyncSelect from "react-select/async";
 import axios from "axios";
+import DatePickerField from "../components/AnimalMoves/DatePickerField";
+import Dropdown from "../components/AnimalMoves/Dropdown";
+import RangeInput from "../components/AnimalMoves/RangeInput";
+import EstablishmentOriginSelect from "../components/AnimalMoves/EstablishmentOriginSelect";
 
+import EstablishmentDestinationSelect from "../components/AnimalMoves/EstablishmentDestinationSelect";
 import AnimalMovesTable from "../components/AnimalMoves/AnimalMovesTable";
+import RadioButton from "../components/AnimalMoves/RadioButton";
+import RadioButtonGroup from "../components/AnimalMoves/RadioButtonGroup";
 
 const AnimalMoves = () => {
   /*
@@ -23,37 +29,36 @@ const AnimalMoves = () => {
   // RETURN
   // nºde formulario,fecha de formulario, RUP origen, Establecimineto orgien, RUP destino, Establecimento Destino, salida, llegada, estado
   */
-  const apiUrl = "";
+  const apiUrl = "http://sipec-backend.herokuapp.com";
   const [data, setData] = useState([]);
-  //const [selectedRUP, setSelectedRUP] = useState();
-  const [selectedEstablecimiento, setSelectedEstablecimiento] = useState();
 
-  async function getEstablecimiento() {
-    const Establecimento = await axios.get(`${apiUrl}/Establecimiento`);
-    return Establecimento.data.map(({ id, name }) => ({
+  async function getEstablishment() {
+    const Establecimento = await axios.get(`${apiUrl}/establishments`);
+    console.log(Establecimento.data);
+    return Establecimento.data.map(({ id, name, rup }) => ({
       value: id,
-      label: name
+      label: rup + "/" + name
     }));
     //RUP como id
   }
 
   async function getAnimalMoves(
-    RUPOrigen,
-    establecimientoOrigen,
-    RUPDestino,
-    establecimientoDestino,
-    desde,
-    hasta,
-    nFormulario,
-    estadoFormulario,
-    lote,
-    DIIO
+    establishmentOrigin,
+    establishmentDestination,
+    dateDepartue,
+    dateArrival,
+    nForm,
+    state,
+    radioGroup
   ) {
     //no terminada falta agregar a la tabla los datos que se sacan de get estableciminetos y combinarlos con moves
-    var moves = [];
-    moves = await axios.get(`${apiUrl}/MovimientoAnimal`);
-    if (RUPDestino != null) {
-      moves = moves.data.filter(d => (d.rupD = RUPDestino));
+
+    var moves = await axios.get(`${apiUrl}/animal_movement_table`);
+    console.log(moves.data);
+    /*if (establishmentOrigin != false) {
+      moves = moves.data.filter(
+        d => (d.origin_establishment.id = establishmentOrigin)
+      );
     }
     if (RUPOrigen != null) {
       moves = moves.data.filter(d => (d.rupO = RUPOrigen));
@@ -75,27 +80,26 @@ const AnimalMoves = () => {
     }
     if (estadoFormulario != null) {
       moves = moves.data.filter(d => (d.rup = estadoFormulario));
-    }
+    }*/
+    console.log(moves);
 
     return moves.data.map(
       ({
-        RUPOrigen,
-        establecimientoOrigen,
-        RUPDestino,
-        establecimientoDestino,
-        desde,
-        hasta,
-        nFormulario,
-        estadoFormulario
+        animal_move: { arrival, departure, created_at, id },
+        destination_establishment: {
+          rup: rup_destination,
+          name: name_destination
+        },
+        origin_establishment: { rup: rup_origin, name: name_origin }
       }) => ({
-        RUPOrigen,
-        establecimientoOrigen,
-        RUPDestino,
-        establecimientoDestino,
-        desde,
-        hasta,
-        nFormulario,
-        estadoFormulario
+        arrival,
+        departure,
+        created_at,
+        rup_destination,
+        name_destination,
+        rup_origin,
+        name_origin,
+        id
       })
     );
   }
@@ -105,63 +109,39 @@ const AnimalMoves = () => {
       <h2>Movimiento Animal</h2>
       <Formik
         initialValues={{
-          rupOrigen: null,
-          establecimientoOrigen: null,
-          rupDestino: null,
-          establecimientoDestino: null,
-          desde: null,
-          hasta: null,
-          nFormulario: null,
-          estadoFormulario: null,
-          lote: null,
-          diio: null
+          establishmentOrigin: "",
+          establishmentDestination: "",
+          dateArrival: "",
+          dateDepartue: "",
+          nForm: "",
+          state: "",
+          radioGroup: ""
         }}
         onSubmit={(values, { setSubmitting }) => {
           getAnimalMoves(
-            values.rupOrigen.value,
-            values.establecimientoOrigen.value,
-            values.rupDestino.value,
-            values.establecimientoDestino.value,
-            values.desde.value,
-            values.hasta.value,
-            values.nFormulario.value,
-            values.estadoFormulario.value,
-            values.lote.value,
-            values.diio.value
-          ).then(moves => setData(moves));
+            values.establishmentOrigin.value,
+            values.establishmentDestination.value,
+            values.dateDepartue.value,
+            values.dateArrival.value,
+            values.nForm.value,
+            values.state.value,
+            values.radioGroup.value
+          ).then(response => {
+            setData(response);
+            console.log(response);
+          });
+
           setSubmitting(false); // This can also be used for displaying a spinner
         }}
         validationSchema={Yup.object().shape({
-          rupOrigen: Yup.object()
-            .nullable()
-            .required(),
-          rupDestino: Yup.object()
-            .nullable()
-            .required(),
-          establecimientoOrigen: Yup.object()
-            .nullable()
-            .required(),
-          establecimientoDestino: Yup.object()
-            .nullable()
-            .required(),
-          desde: Yup.object()
-            .nullable()
-            .required(),
-          hasta: Yup.object()
-            .nullable()
-            .required(),
-          nFormulario: Yup.object()
-            .nullable()
-            .required(),
-          estadoFormulario: Yup.object()
-            .nullable()
-            .required(),
-          lote: Yup.object()
-            .nullable()
-            .required(),
-          diio: Yup.object()
-            .nullable()
-            .required()
+          establishmentOrigin: Yup.object().nullable(),
+          establishmentDestination: Yup.object().nullable(),
+          dateDepartue: Yup.object().nullable(),
+          dateArrival: Yup.object().nullable(),
+          nForm: Yup.object().nullable(),
+          state: Yup.object().nullable(),
+          lote: Yup.object().nullable(),
+          diio: Yup.object().nullable()
         })}
       >
         {props => {
@@ -180,97 +160,79 @@ const AnimalMoves = () => {
           } = props;
           return (
             <form onSubmit={handleSubmit}>
-              <RupOrigenSelect
-                value={values.rupOrigen}
-                establecimientos={getEstablecimiento}
-                onChange={(field, fieldValue) => {
-                  setSelectedEstablecimiento(fieldValue);
-                  setFieldValue(field, fieldValue);
-                }}
-                onBlur={setFieldTouched}
-                error={errors.titular}
-                touched={touched.titular}
-              />
-              <RupDestinoSelect
-                key={
-                  selectedEstablecimiento ? selectedEstablecimiento.value : 0
-                }
-                value={values.establecimiento}
-                establecimientos={getEstablecimiento}
+              <EstablishmentOriginSelect
+                value={values.establishmentOrigin}
+                establishmentOrigin={getEstablishment}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
-                error={errors.establecimiento}
-                touched={touched.establecimiento}
+                error={errors.establishmentOrigin}
+                touched={touched.establishmentOrigin}
               />
+              <EstablishmentDestinationSelect
+                value={values.establishmentDestination}
+                establishmentDestination={getEstablishment}
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                error={errors.establishmentDestination}
+                touched={touched.establishmentDestination}
+              />
+
               <div>
-                <label htmlFor="Desde">Desde</label>
-                <input
-                  id={"desde"}
-                  title={"Desde"}
-                  type="text"
-                  value={values.desde}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                <label htmlFor="dateDeparture">Desde</label>
+                <DatePickerField
+                  name="dateDeparture"
+                  value={values.dateDeparture}
+                  onChange={setFieldValue}
                 />
               </div>
               <div>
-                <label htmlFor="Hasta"> Hasta</label>
-                <input
-                  id={"hasta"}
-                  title={"Hasta"}
-                  type="text"
-                  value={values.hasta}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                <label htmlFor="dateArrival">Hasta</label>
+                <DatePickerField
+                  name="dateArrival"
+                  value={values.dateArrival}
+                  onChange={setFieldValue}
                 />
               </div>
+
               <div>
-                <label htmlFor="nFormulario">Nº Formulario</label>
-                <input
-                  id={"nFormulario"}
+                <RangeInput
+                  id={"nForm"}
                   title={"Nº Formulario"}
-                  type="text"
-                  value={values.nFormulario}
+                  value={values.nForm}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                
               </div>
               <div>
-                <label htmlFor="estadoFormulario">Estado Formulario</label>
-                <input
-                  id={"estado Formulario"}
-                  title={"Hasta"}
-                  type="text"
-                  value={values.hasta}
+                <Dropdown
+                  id={"state"}
+                  title={"Estado Formulario"}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  value={values.state}
+                  options={["Aceptado", "Con problemas", "En transito"]}
                 />
               </div>
-              <div className="radio">
-                <label htmlFor="lote">
-                  <input
-                    id="lote"
-                    type="radio"
-                    value={values.lote}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  Por Lote
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input
-                    id="diio"
-                    type="radio"
-                    value={values.diio}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  Por DIIO
-                </label>
-              </div>
+              <RadioButtonGroup
+                id="radioGroup"
+                value={values.radioGroup}
+                error={errors.radioGroup}
+                touched={touched.radioGroup}
+              >
+                <Field
+                  component={RadioButton}
+                  name="radioGroup"
+                  id="lote"
+                  label="Por lote"
+                />
+                <Field
+                  component={RadioButton}
+                  name="radioGroup"
+                  id="diio"
+                  label="Por DIIO"
+                />
+              </RadioButtonGroup>
+
               <button
                 type="button"
                 className="btn btn-secondary"
@@ -283,6 +245,9 @@ const AnimalMoves = () => {
                 type="submit"
                 disabled={isSubmitting}
                 className="btn btn-primary ml-1"
+                onClick={() => {
+                  alert(JSON.stringify(data));
+                }}
               >
                 Submit
               </button>
@@ -301,74 +266,24 @@ const AnimalMoves = () => {
           "Establecimiento Destino",
           "Salida",
           "Llegada",
-          "Estado"
+          "Ver Detalle"
         ]}
-        data={data.map(moves => [
-          moves.nFormulario,
-          moves.RUPOrigen,
-          moves.establecimientoOrigen,
-          moves.RUPDestino,
-          moves.establecimientoDestino,
-          moves.desde,
-          moves.hasta,
-          moves.estadoFormulario
+        data={data.map( moves => [
+          moves.id,
+          moves.created_at,
+          moves.rup_origin,
+          moves.name_origin,
+          moves.rup_destination,
+          moves.name_destination,
+          moves.departure,
+          moves.arrival
         ])}
       />
     </>
   );
 };
-//mejorar calidad de codigo, se pueden pasar a componentes los inputs asociados
+
 //crear boton de nuevo movimiento
 //crear modal
-const RupOrigenSelect = props => {
-  return (
-    <>
-      <label htmlFor="RUP">Seleccione RUP/Establecimento Origen</label>
-      <AsyncSelect
-        id="RUP"
-        cacheOptions
-        defaultOptions
-        loadOptions={props.titulares}
-        onChange={value => {
-          props.onChange("RUP", value);
-        }}
-        onBlur={value => {
-          props.onBlur("RUP", value);
-        }}
-        value={props.value}
-      />
-      {!!props.error && props.touched && (
-        <div className="text-danger">{props.error}</div>
-      )}
-    </>
-  );
-};
-
-const RupDestinoSelect = props => {
-  return (
-    <>
-      <label htmlFor="establecimiento">
-        Seleccióne un RUP/Establecimiento Destino
-      </label>
-      <AsyncSelect
-        id="establecimiento"
-        cacheOptions
-        defaultOptions
-        loadOptions={props.establecimientos}
-        onChange={value => {
-          props.onChange("establecimiento", value);
-        }}
-        onBlur={value => {
-          props.onBlur("establecimiento", value);
-        }}
-        value={props.value}
-        isDisabled={props.establecimientos === 0}
-      />
-      {!!props.error && props.touched && (
-        <div className="text-danger">{props.error}</div>
-      )}
-    </>
-  );
-};
 
 export default AnimalMoves;
