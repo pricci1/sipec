@@ -1,12 +1,10 @@
 import React, { useState, useContext } from "react";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import DatePickerField from "../components/AnimalMoves/DatePickerField";
 import Dropdown from "../components/AnimalMoves/Dropdown";
 import RangeInput from "../components/AnimalMoves/RangeInput";
 import EstablishmentOriginSelect from "../components/AnimalMoves/EstablishmentOriginSelect";
-
 import EstablishmentDestinationSelect from "../components/AnimalMoves/EstablishmentDestinationSelect";
 import AnimalMovesTable from "../components/AnimalMoves/AnimalMovesTable";
 import RadioButton from "../components/AnimalMoves/RadioButton";
@@ -47,9 +45,9 @@ const AnimalMoves = () => {
     //no terminada falta agregar a la tabla los datos que se sacan de get estableciminetos y combinarlos con moves
 
     var moves = getAnimalMovements();
-    var dataMap = moves.data.map(obj => ({
+    /*var dataMap = moves.data.map(obj => ({
       diio: obj.diios.map(o => ({ diio_data: o[0].diio_type_id }))
-    }));
+    }));*/
 
     var movesMap = moves.data.map(
       ({
@@ -85,7 +83,6 @@ const AnimalMoves = () => {
 
     if (dateDeparture != "") {
       var dtd = new Date(dateDeparture);
-      //console.log(dt.getTime());
       movesMap = movesMap.filter(d => new Date(d.departure).getTime() >= dtd);
     }
     if (dateArrival != "") {
@@ -99,20 +96,26 @@ const AnimalMoves = () => {
     if (state != null) {
       if (state == "Aceptado"){
         movesMap = movesMap.filter(d => {d.diio == 1;console.log(d.diio);});
-      }//pr tr
+      }
+      if (state == "Con problemas"){
+        movesMap = movesMap.filter(d => {d.diio == 2;console.log(d.diio);});
+      }
+      if (state == "En transito"){
+        movesMap = movesMap.filter(d => {d.diio == 3;console.log(d.diio);});
+      }
         
       
     }
     if (radioGroup != null) {
       if (radioGroup == "lote") {
-        movesMap = movesMap.filter(d => d.id == null);
+        movesMap = movesMap.filter(d => d.diio == []);
       }
       if (radioGroup == "diio") {
+        movesMap = movesMap.filter(d => d.diio != []);
         console.log(movesMap);
-        //movesMap = movesMap.filter(d => (d.id == 0));
       }
     }
-    //console.log(movesMap);
+    
 
     return movesMap;
   }
