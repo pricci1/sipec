@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Formik, Field } from "formik";
-
+import APIContext from "../APIProvider"
 import Selector from "./Utilities/FormikSelector";
 import * as Yup from "yup";
+import {dropDiioRanges} from "../../lib/APIDiio"
 
 const NotAppliedDroppedDiio = () => {
+  const api = useContext(APIContext);  
+
   const getOwnerRut = () => {
     return "123456789";
   };
@@ -12,26 +15,36 @@ const NotAppliedDroppedDiio = () => {
     return "Ignacio Figueroa";
   };
   async function getSpecies() {
-    return [{ value: "1", label: "Vaca" }, { value: "2", label: "Chancho" }];
+    return [{ value: 1, label: "Vaca" }, { value: 2, label: "Chancho" }];
   }
   async function getDropReasons() {
-    return [{ value: "1", label: "Nose" }, { value: "2", label: "Pq Si" }];
+    return [{ value: 1, label: "Nose" }, { value: 2, label: "Pq Si" }];
   }
+  const [species, setspecies] = useState();
+  const [diio_ranges, setdiio_ranges] = useState([]);
 
-  const [startDiio, setstartDiio] = useState();
-  const [endDiio, setendDiio] = useState();
   return (
     <div>
       <h2>Baja de Diio no aplicados</h2>
       <Formik
         initialValues={{
           ownerRut: getOwnerRut(),
-          diioRanges: [],
           specie: null,
           startDiio: null,
           endDiio: null,
-          dropReason: null
+          dropReason: null,
+          ranges:[]
         }}
+
+        onSubmit = {(values, {setSubmitting}) => {
+          values.ranges = diio_ranges
+          dropDiioRanges(
+            api, 
+            JSON.stringify(diio_ranges),
+            values.dropReason,
+            );
+            setSubmitting(false);  
+          }}
       >
         {props => {
           const {
@@ -68,32 +81,29 @@ const NotAppliedDroppedDiio = () => {
                 fieldValue={values.dropReason}
                 labelName="Motivo Baja"
                 onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.label);
+                  console.log(fieldValue);
+                  
+                  setFieldValue(field, fieldValue.value);
                 }}
-                onBlur={setFieldValue}
+                onBlur={setFieldTouched}
                 touched={touched.selectedDropReason}
                 data={getDropReasons}
               />
               <h4>Rangos</h4>
-              
-              <button
-			  	type="button"
+              <Field type="text" name="startDiio" placeholder="Desde" />
+              <Field type="text" name="endDiio" placeholder="Hasta" />
+
+              <button 
+                type="button"
                 onClick={() => {
-                  setFieldValue("diioRanges", [
-                    ...values.diioRanges,
-                    {
-                      startDiio: values.startDiio,
-                      endDiio: values.endDiio
-                    }
-                  ]);
-                  setFieldValue("startDiio", null);
-                  setFieldValue("endDiio", null);
-                  handleReset;
+                  setdiio_ranges([
+                    ...diio_ranges,
+                    [values.startDiio, values.endDiio]
+                  ])
+                  
                 }}
-              >
-                Agregar Rango
-              </button>
-              <button type="submit" disabled={isSubmitting}>
+              >Agregar Rango</button>
+              <button type="submit"  disabled={isSubmitting}>
                 Cargar Baja
               </button>
             </form>

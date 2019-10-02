@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Formik, Field } from "formik";
 import Selector from "./Utilities/FormikSelector";
 import * as Yup from "yup";
@@ -6,11 +6,11 @@ import { postDiioPurchase, getProviders } from "../../lib/APIDiio";
 import APIContext from "../APIProvider";
 
 const buyDiioSchema = Yup.object().shape({
-  seller_type: Yup.string().required("Required"),
-  provider_id: Yup.string().required("Required"),
-  buyer_type: Yup.string().required("Required"),
-  buyer_rut: Yup.string().required("Required"),
-  establishment_id: Yup.string().required("Required")
+  seller_type: Yup.string().nullable().required("Required"),
+  provider_id: Yup.string().nullable().required("Required"),
+  buyer_type: Yup.string().nullable().required("Required"),
+  buyer_rut: Yup.string().nullable().required("Required"),
+  establishment_id: Yup.string().nullable().required("Required")
 });
 
 const NewPurchaseDiio = () => {
@@ -38,7 +38,6 @@ const NewPurchaseDiio = () => {
 
   async function getProvidersApi() {
     const data = await getProviders(api);
-    console.log(data);
     return data;
   }
 
@@ -56,6 +55,7 @@ const NewPurchaseDiio = () => {
           endDiio: null,
           diio_ranges: []
         }}
+        validationSchema={buyDiioSchema}
         onSubmit={(values, { setSubmitting }) => {
           postDiioPurchase(
             api,
@@ -63,8 +63,9 @@ const NewPurchaseDiio = () => {
             values.establishment_id,
             JSON.stringify(values.diio_ranges)
           );
+          setSubmitting(false);          
         }}
-        validationSchema={buyDiioSchema}
+        
       >
         {props => {
           const {
@@ -91,8 +92,9 @@ const NewPurchaseDiio = () => {
                   setFieldValue(field, fieldValue.label);
                 }}
                 onBlur={setFieldTouched}
-                touched={touched.selectedSellerType}
+                touched={touched.seller_type}
                 data={getSellerTypes}
+                errors={errors.seller_type}
               />
               <Selector
                 fieldName="provider_id"
@@ -103,7 +105,7 @@ const NewPurchaseDiio = () => {
                   setSelectedSellerRut(fieldValue.value);
                 }}
                 onBlur={setFieldTouched}
-                touched={touched.selectedSellerType}
+                touched={touched.provider_id}
                 data={getProvidersApi}
               />
               <label>Rut: {selectedSellerRut}</label>
@@ -136,7 +138,9 @@ const NewPurchaseDiio = () => {
               </div>
               <h3>Validación de Rangos</h3>
               <p>Rango</p>
-              
+              <Field type="text" placeholder="Desde" name="startDiio"/>
+              <Field type="text" placeholder="Hasta" name="endDiio"/>
+
               <button
                 type="button"
                 onClick={() => {
@@ -150,7 +154,7 @@ const NewPurchaseDiio = () => {
               >
                 Agregar Rango
               </button>
-
+              
               <button type="submit">Realizar compra</button>
             </form>
           );

@@ -1,32 +1,38 @@
 import React from "react";
 import { Link } from "@reach/router";
-import { Navbar } from "react-bootstrap";
+import { ButtonGroup } from "react-bootstrap";
 
 const DiioMenu = ({ children }) => (
   <div>
-    <Navbar bg="light">
-      <Link
-        to="lista-compra"
-        className="btn btn-danger"
-        style={{ textDecoration: "none", color: "#000" }}
-      >
-        Compra
-      </Link>
-      <Link
-        to="inventario"
-        className="btn btn-danger"
-        style={{ textDecoration: "none", color: "#000" }}
-      >
-        Inventario
-      </Link>
-      <Link
-        to="baja-diios"
-        className="btn btn-danger"
-        style={{ textDecoration: "none", color: "#000" }}
-      >
-        DIIOS de Baja
-      </Link>
-    </Navbar>
+    <div className="row">
+      <div className="col-md-2"></div>
+      <div className="col-md-6 d-flex flex-column">
+        <ButtonGroup>
+          <Link
+            to="lista-compra"
+            className="btn btn-danger"
+            style={{ textDecoration: "none", color: "#FFF" }}
+          >
+            Compra
+          </Link>
+          <Link
+            to="inventario"
+            className="btn btn-danger"
+            style={{ textDecoration: "none", color: "#FFF" }}
+          >
+            Inventario
+          </Link>
+          <Link
+            to="baja-diios"
+            className="btn btn-danger"
+            style={{ textDecoration: "none", color: "#FFF" }}
+          >
+            DIIOS de Baja
+          </Link>
+        </ButtonGroup>
+      </div>
+      <div className="col-md-4"></div>
+    </div>
     {children}
   </div>
 );

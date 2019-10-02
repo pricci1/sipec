@@ -19,13 +19,14 @@ export const getProviders = async apiInstance => {
   
 };
 
-export const dropDiioRanges = async(
+export const dropDiioRanges = (
   apiInstance,
   range,
   motive
 ) => {
+  
   let data = {range, motive}
-  apiInstance.post('diio_drops', data)
+  apiInstance.post('/diio_drops', data)
 }
 
 export const getSpecies = async apiInstance =>{
