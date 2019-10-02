@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { MDBDataTable } from "mdbreact";
 import PucharseDetailsDiioModal from "./PucharseDetailsDiioModal";
+import "./purchaseListDiio.css";
 
 const PucharseListDiio = props => {
   const { headers, data } = props;
@@ -32,7 +33,7 @@ const PucharseListDiio = props => {
     if (index == 0) {
       return (
         <a style={{ color: "blue" }} onClick={() => handleModal(item[index])}>
-          {item[index]}
+          <b>{item[index]}</b>
         </a>
       );
     } else {
@@ -56,8 +57,9 @@ const PucharseListDiio = props => {
 
   return (
     <>
-    <h2>Lista de Compras DIIO</h2>
+      <h2 className="title">Lista de Compras DIIO</h2>
       <MDBDataTable
+        className="data-table"
         striped
         scrollY
         hover

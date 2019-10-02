@@ -1,0 +1,34 @@
+.title,
+.body {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 0px;
+}
+
+.body {
+  margin-left: 20px;
+}
+
+.title {
+  margin-left: 0px;
+}
+
+.field {
+  border-radius: 5px;
+  border-style: solid;
+  border-color: darkgray;
+  border-width: 1px;
+  height: 38px;
+}
+
+.rangos {
+  display: flex;
+}
+
+.selector {
+  max-width: 200px;
+}
+
+.rango-diio {
+  max-width: 400px;
+}

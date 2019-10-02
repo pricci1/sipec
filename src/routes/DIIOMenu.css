@@ -1,0 +1,13 @@
+.btn-danger {
+  text-decoration: none;
+  color: #fff;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 11pt;
+  background-color: rgba(226, 44, 44, 0.8);
+  border-style: solid;
+  border-color: white;
+}
+.btn-danger:hover,
+.btn-danger:active {
+  background-color: rgba(226, 44, 44, 1);
+}
