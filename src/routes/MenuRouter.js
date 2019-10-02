@@ -6,6 +6,8 @@ import AnimalMovementMenu from "./AnimalMovementMenu";
 import PurchaseListDiioTab from "./DIIOMenuTabs/PurchaseListDiioTab"
 import NotAppliedDroppedDiio from "../components/Diio/NotAppliedDroppedDiio";
 import NewPurchaseDiio from "../components/Diio/NewPucharseDiio";
+import StockDIIOEstablecimiento from "../pages/stockDIIOEstablecimiento";
+import ListadoBajaDIIO from "../pages/listadoBajaDIIO";
 
 const MenuRouter = () => {
   return (
@@ -16,11 +18,11 @@ const MenuRouter = () => {
       <main className="col-10">
         <Router>
           <DiioMenu path="/diio">
-            <PurchaseListDiioTab
-              path="lista-compra"
-            />
+            <PurchaseListDiioTab path="lista-compra"/>
             <NewPurchaseDiio path="compra"/>
+            <StockDIIOEstablecimiento path="inventario" />
             <NotAppliedDroppedDiio path="baja-diios" />
+            <ListadoBajaDIIO path="lista-baja-diios" />
           </DiioMenu>
           <AnimalMovementMenu path="/movimiento-animal"></AnimalMovementMenu>
         </Router>

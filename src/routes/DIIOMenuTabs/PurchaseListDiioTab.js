@@ -40,8 +40,6 @@ const PurchaseListDiioTab = () => {
     );
   }
 
-  //console.log(data);
-
   useEffect(() => {
     getDiioPurchases();
   }, []);

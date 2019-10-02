@@ -20,6 +20,13 @@ const DiioMenu = ({ children }) => (
           <Link to="baja-diios" className="btn btn-danger">
             DIIOs de Baja
           </Link>
+          <Link
+            to="lista-baja-diios"
+            className="btn btn-danger"
+            style={{ textDecoration: "none", color: "#FFF" }}
+          >
+            Lista Baja de DIIOS
+          </Link>
         </ButtonGroup>
       </div>
       <div className="col-md-4"></div>
