@@ -3,7 +3,7 @@ import { MDBDataTable } from "mdbreact";
 import PucharseDetailsDiioModal from "./PucharseDetailsDiioModal";
 
 const PucharseListDiio = props => {
-  const { headers, data } = props;
+  const { headers, data, title } = props;
 
   const [show, setShow] = useState(false);
   const [purchaseDiioId, setPurchaseDiioId] = useState(0);
@@ -56,7 +56,7 @@ const PucharseListDiio = props => {
 
   return (
     <>
-    <h2>Lista de Compras DIIO</h2>
+    <h2>{title}</h2>
       <MDBDataTable
         striped
         scrollY
