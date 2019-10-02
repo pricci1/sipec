@@ -12,7 +12,7 @@ class API {
   login = async (email, password) => {
     var response = { success: false, type: "" };
     await axios
-      .post(this.apiUrl + "auth/sign_in", { email, password })
+      .post(this.apiUrl + "/auth/sign_in", { email, password })
       .then(resp => {
         if (resp.status === 200) {
           this.token = resp.headers["access-token"];
@@ -71,7 +71,7 @@ class API {
   post = async (url, obj) => {
     const path = this.apiUrl + url;
     var results = { success: false };
-    const postResponse = await axios.get(path, {
+    const postResponse = await axios.post(path, {
       headers: {
         "Content-Type": "application/json",
         "access-token": this.token,
