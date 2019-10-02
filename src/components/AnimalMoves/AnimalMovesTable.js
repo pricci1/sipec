@@ -17,8 +17,8 @@ const AnimalMovesTable = props => {
   ));
 
   function getColumnItem(index, item) {
-    if(index == 0){
-      return <ModalAnimalMoves text={item[index]}/>
+    if(index == 8){
+      return <ModalAnimalMoves />
     } else {
       return item[index]
     }
