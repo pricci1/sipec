@@ -21,11 +21,10 @@ export const getProviders = async apiInstance => {
 
 export const dropDiioRanges = (
   apiInstance,
-  range,
-  motive
+  range
 ) => {
   
-  let data = {range, motive}
+  let data = {range}
   apiInstance.post('/diio_drops', data)
 }
 

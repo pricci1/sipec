@@ -40,8 +40,7 @@ const NotAppliedDroppedDiio = () => {
           values.ranges = diio_ranges
           dropDiioRanges(
             api, 
-            JSON.stringify(diio_ranges),
-            values.dropReason,
+            JSON.stringify(diio_ranges)
             );
             setSubmitting(false);  
           }}
@@ -81,8 +80,6 @@ const NotAppliedDroppedDiio = () => {
                 fieldValue={values.dropReason}
                 labelName="Motivo Baja"
                 onChange={(field, fieldValue) => {
-                  console.log(fieldValue);
-                  
                   setFieldValue(field, fieldValue.value);
                 }}
                 onBlur={setFieldTouched}
@@ -98,7 +95,12 @@ const NotAppliedDroppedDiio = () => {
                 onClick={() => {
                   setdiio_ranges([
                     ...diio_ranges,
-                    [values.startDiio, values.endDiio]
+                    [
+                      values.startDiio,
+                      values.endDiio,
+                      values.specie,
+                      values.dropReason
+                  ]
                   ])
                   
                 }}
