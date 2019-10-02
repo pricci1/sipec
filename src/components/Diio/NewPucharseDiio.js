@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Formik, Field } from "formik";
+import { Formik, Field, FieldArray } from "formik";
 import Selector from "./Utilities/FormikSelector";
 import * as Yup from "yup";
 import { postDiioPurchase, getProviders } from "../../lib/APIDiio";
@@ -9,19 +9,32 @@ import "./newPucharseDiio.css";
 const buyDiioSchema = Yup.object().shape({
   seller_type: Yup.string()
     .nullable()
-    .required("Required"),
+    .required("Requerido"),
   provider_id: Yup.string()
     .nullable()
-    .required("Required"),
+    .required("Requerido"),
   buyer_type: Yup.string()
     .nullable()
-    .required("Required"),
+    .required("Requerido"),
   buyer_rut: Yup.string()
     .nullable()
-    .required("Required"),
+    .required("Requerido"),
   establishment_id: Yup.string()
     .nullable()
-    .required("Required")
+    .required("Requerido"),
+  diio_ranges: Yup.array().of(
+    Yup.object()
+      .shape({
+        desde: Yup.number()
+
+          .min(0, "Desde debe ser >= 0")
+          .required("Requerido"),
+        hasta: Yup.number()
+          .min(Yup.ref("desde"), `"Hasta" debe ser igual o mayor a "Desde"`)
+          .required("Requerido")
+      })
+      .required()
+  )
 });
 
 const NewPurchaseDiio = () => {
@@ -148,34 +161,54 @@ const NewPurchaseDiio = () => {
               <div className="validacion">
                 <h4>Validación de Rangos</h4>
                 <p>Rango</p>
-                <div className="rango">
-                  <Field
-                    className="field"
-                    type="text"
-                    placeholder="Desde"
-                    name="startDiio"
-                  />{" "}
-                  <Field
-                    className="field"
-                    type="text"
-                    placeholder="Hasta"
-                    name="endDiio"
-                  />
-                  <button
-                    className="btn btn-outline-primary"
-                    type="button"
-                    onClick={() => {
-                      setFieldValue("diio_ranges", [
-                        ...values.diio_ranges,
-                        [values.startDiio, values.endDiio]
-                      ]);
-                      setFieldValue("startDiio", null);
-                      setFieldValue("endDiio", null);
-                    }}
-                  >
-                    Agregar Rango
-                  </button>
-                </div>
+                <FieldArray
+                  name="diio_ranges"
+                  render={arrayHelpers => (
+                    <div name="rango">
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() =>
+                          arrayHelpers.push({ desde: 0, hasta: 0 })
+                        }
+                      >
+                        Añadir rango
+                      </button>
+                      {values.diio_ranges && values.diio_ranges.length > 0
+                        ? values.diio_ranges.map((_, index) => (
+                            <div key={index}>
+                              <div className="form-inline">
+                                <Field
+                                  type="number"
+                                  className="form-control mr-3"
+                                  name={`diio_ranges[${index}].desde`}
+                                />
+                                <Field
+                                  type="number"
+                                  className="form-control"
+                                  name={`diio_ranges[${index}].hasta`}
+                                />
+                                <button
+                                  type="button"
+                                  className="btn btn-danger m-3"
+                                  onClick={() => arrayHelpers.remove(index)}
+                                >
+                                  -
+                                </button>
+                                {errors.diio_ranges &&
+                                  errors.diio_ranges[index] && (
+                                    <div className="text-danger">
+                                      {errors.diio_ranges[index].desde || ""}
+                                      {errors.diio_ranges[index].hasta || ""}
+                                    </div>
+                                  )}
+                              </div>
+                            </div>
+                          ))
+                        : null}
+                    </div>
+                  )}
+                />
               </div>
               <br />
               <hr />
