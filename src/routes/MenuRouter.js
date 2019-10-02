@@ -7,25 +7,6 @@ import PucharseListDiio from "../components/Diio/PucharseListDiio";
 import NotAppliedDroppedDiio from "../components/Diio/NotAppliedDroppedDiio";
 import axios from "axios";
 
-<<<<<<< HEAD
-const props = { headers: ["a", "b"], data: ["data a", "data b"] };
-const MenuRouter = () => (
-  <>
-    <div style={{ padding: "0px" }} className="col-2">
-      <Sidebar />
-    </div>
-    <main className="col-10">
-      <Router>
-        <DiioMenu path="/diio">
-          <PucharseListDiio props={props} path="lista-compra" />
-          <NotAppliedDroppedDiio path="baja-diios" />
-        </DiioMenu>
-        <AnimalMovementMenu path="/movimiento-animal"></AnimalMovementMenu>
-      </Router>
-    </main>
-  </>
-);
-=======
 const MenuRouter = () => {
   const [data, setData] = useState([]);
 
@@ -103,5 +84,4 @@ const MenuRouter = () => {
     </>
   );
 };
->>>>>>> c4457779ff3ad39283e3851d1a1f598f2ea567f4
 export default MenuRouter;
