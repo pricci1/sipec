@@ -21,16 +21,16 @@ export const getProviders = async apiInstance => {
 
 export const dropDiioRanges = (
   apiInstance,
-  range,
-  motive
+  range
 ) => {
   
-  let data = {range, motive}
+  let data = {range}
   apiInstance.post('/diio_drops', data)
 }
 
 export const getSpecies = async apiInstance =>{
   const result = await apiInstance.get("/species");
+  console.log(result)
   return result.data.map(({id, name}) => ({
     value:id, 
     label: name

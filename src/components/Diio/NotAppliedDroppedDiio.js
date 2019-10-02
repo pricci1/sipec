@@ -3,7 +3,7 @@ import { Formik, Field } from "formik";
 import APIContext from "../APIProvider";
 import Selector from "./Utilities/FormikSelector";
 import * as Yup from "yup";
-import { dropDiioRanges } from "../../lib/APIDiio";
+import { dropDiioRanges, getSpecies } from "../../lib/APIDiio";
 import "./notAppliedDroppedDiio.css";
 
 const NotAppliedDroppedDiio = () => {
@@ -15,11 +15,12 @@ const NotAppliedDroppedDiio = () => {
   const getOwnerName = () => {
     return "Ignacio Figueroa";
   };
-  async function getSpecies() {
-    return [{ value: 1, label: "Vaca" }, { value: 2, label: "Chancho" }];
+  async function getSpeciesData() {
+    const data = await getSpecies(api);
+    return data;
   }
   async function getDropReasons() {
-    return [{ value: 1, label: "Nose" }, { value: 2, label: "Pq Si" }];
+    return [{ value: 1, label: "Motivo 1" }, { value: 2, label: "Motivo 2" }];
   }
   const [species, setspecies] = useState();
   const [diio_ranges, setdiio_ranges] = useState([]);
@@ -39,7 +40,7 @@ const NotAppliedDroppedDiio = () => {
         }}
         onSubmit={(values, { setSubmitting }) => {
           values.ranges = diio_ranges;
-          dropDiioRanges(api, JSON.stringify(diio_ranges), values.dropReason);
+          dropDiioRanges(api, JSON.stringify(diio_ranges));
           setSubmitting(false);
         }}
       >
@@ -71,7 +72,7 @@ const NotAppliedDroppedDiio = () => {
                   }}
                   onBlur={setFieldTouched}
                   touched={touched.selectedSpecie}
-                  data={getSpecies}
+                  data={getSpeciesData}
                 />
                 <br />
                 <Selector
@@ -79,8 +80,6 @@ const NotAppliedDroppedDiio = () => {
                   fieldValue={values.dropReason}
                   labelName="Motivo Baja"
                   onChange={(field, fieldValue) => {
-                    console.log(fieldValue);
-
                     setFieldValue(field, fieldValue.value);
                   }}
                   onBlur={setFieldTouched}
@@ -88,7 +87,7 @@ const NotAppliedDroppedDiio = () => {
                   data={getDropReasons}
                 />
               </div>
-              <br />
+              <br/>
               <h4>Rangos de DIIO</h4>
               <div className="rangos">
                 <Field
@@ -109,13 +108,19 @@ const NotAppliedDroppedDiio = () => {
                   onClick={() => {
                     setdiio_ranges([
                       ...diio_ranges,
-                      [values.startDiio, values.endDiio]
+                      [
+                        values.startDiio,
+                        values.endDiio,
+                        values.specie,
+                        values.dropReason
+                      ]
                     ]);
                   }}
                 >
                   Agregar Rango
                 </button>
               </div>
+
               <br />
               <hr />
               <button
