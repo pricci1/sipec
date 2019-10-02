@@ -80,6 +80,9 @@ const PucharseDetailsDiioModal = props => {
         <p>
           <b>Estado:</b> {getStringState(details.confirmed)}
         </p>
+        <p>
+          <b>Fecha:</b> {details.date}
+        </p>
         <h4>Datos del Vendedor</h4>
         <p>
           <b>Rol:</b> {details.provider_type}
@@ -92,9 +95,11 @@ const PucharseDetailsDiioModal = props => {
           <b>Tipo:</b> {details.purchaser_type}
         </p>
         <p>
-          <b>RUT:</b> {details.provider_rut}
+          <b>RUT:</b> {details.purchaser_rut}
         </p>
-        <p></p>
+        <p>
+          <b>Nombre:</b> {details.purchaser_name}
+        </p>
         <button onClick={props.onClose}>Cerrar</button>
       </div>
     </div>,

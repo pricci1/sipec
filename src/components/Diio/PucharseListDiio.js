@@ -56,6 +56,7 @@ const PucharseListDiio = props => {
 
   return (
     <>
+    <h2>Lista de Compras DIIO</h2>
       <MDBDataTable
         striped
         scrollY
@@ -79,4 +80,4 @@ const PucharseListDiio = props => {
   );
 };
 
-export default DiioTable;
+export default PucharseListDiio;
