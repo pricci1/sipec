@@ -134,21 +134,19 @@ const NewPurchaseDiio = () => {
                   touched={touched.selectedSellerType}
                   data={getSellerTypes}
                 />
-                <div>
-                  <p>Rut: {values.buyer_rut}</p>
-                  <p>Name: {getBuyerName()}</p>
-                  <Selector
-                    fieldName="establishment_id"
-                    fieldValue={values.establishment_id}
-                    labelName="Establecimiento"
-                    onChange={(field, fieldValue) => {
-                      setFieldValue(field, fieldValue.value);
-                    }}
-                    onBlur={setFieldTouched}
-                    touched={touched.selectedBuyerEstablishmentRup}
-                    data={getBuyerEstablishments}
-                  />
-                </div>
+                <p>Rut: {values.buyer_rut}</p>
+                <p>Nombre: {getBuyerName()}</p>
+                <Selector
+                  fieldName="establishment_id"
+                  fieldValue={values.establishment_id}
+                  labelName="Establecimiento"
+                  onChange={(field, fieldValue) => {
+                    setFieldValue(field, fieldValue.value);
+                  }}
+                  onBlur={setFieldTouched}
+                  touched={touched.selectedBuyerEstablishmentRup}
+                  data={getBuyerEstablishments}
+                />
               </div>
               <div className="validacion">
                 <h4>Validación de Rangos</h4>
