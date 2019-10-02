@@ -83,6 +83,7 @@ class API {
       });
       if (Math.floor(postResponse.status / 100) === 2) {
         results.success = true;
+        results.data = postResponse.data
       }
     } catch (error) {
       results.success = false;

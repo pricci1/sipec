@@ -6,6 +6,7 @@ import Login from "./components/User/Login";
 import { APIProvider } from "./components/APIProvider";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
+import CreateAnimalMoves from './components/AnimalMoves/CreateAnimalMoves'
 
 const App = () => {
   return (
