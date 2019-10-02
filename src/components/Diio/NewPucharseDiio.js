@@ -57,13 +57,13 @@ const NewPurchaseDiio = () => {
       <h2>Nueva Compra</h2>
       <Formik
         initialValues={{
-          seller_type: null,
-          provider_id: null, //id
-          buyer_type: null,
+          seller_type: "",
+          provider_id: "", //id
+          buyer_type: "",
           buyer_rut: getBuyerRut(), //id
-          establishment_id: null, //id
-          startDiio: null,
-          endDiio: null,
+          establishment_id: "", //id
+          startDiio: "",
+          endDiio: "",
           diio_ranges: []
         }}
         validationSchema={buyDiioSchema}
@@ -99,9 +99,7 @@ const NewPurchaseDiio = () => {
                   fieldName="seller_type"
                   fieldValue={values.seller_type}
                   labelName="Tipo"
-                  onChange={(field, fieldValue) => {
-                    setFieldValue(field, fieldValue.label);
-                  }}
+                  onChange={setFieldValue}
                   onBlur={setFieldTouched}
                   touched={touched.seller_type}
                   data={getSellerTypes}
@@ -118,6 +116,7 @@ const NewPurchaseDiio = () => {
                   onBlur={setFieldTouched}
                   touched={touched.provider_id}
                   data={getProvidersApi}
+                  errors={errors.provider_id}
                 />
                 <label>Rut: {selectedSellerRut}</label>
               </div>
@@ -127,12 +126,11 @@ const NewPurchaseDiio = () => {
                   fieldName="buyer_type"
                   fieldValue={values.seller_type}
                   labelName="Tipo"
-                  onChange={(field, fieldValue) => {
-                    setFieldValue(field, fieldValue.value);
-                  }}
+                  onChange={setFieldValue}
                   onBlur={setFieldTouched}
-                  touched={touched.selectedSellerType}
+                  touched={touched.buyer_type}
                   data={getSellerTypes}
+                  errors={errors.buyer_type}
                 />
                 <p>Rut: {values.buyer_rut}</p>
                 <p>Nombre: {getBuyerName()}</p>
@@ -140,12 +138,11 @@ const NewPurchaseDiio = () => {
                   fieldName="establishment_id"
                   fieldValue={values.establishment_id}
                   labelName="Establecimiento"
-                  onChange={(field, fieldValue) => {
-                    setFieldValue(field, fieldValue.value);
-                  }}
+                  onChange={setFieldValue}
                   onBlur={setFieldTouched}
-                  touched={touched.selectedBuyerEstablishmentRup}
+                  touched={touched.establishment_id}
                   data={getBuyerEstablishments}
+                  errors={errors.establishment_id}
                 />
               </div>
               <div className="validacion">
@@ -157,14 +154,13 @@ const NewPurchaseDiio = () => {
                     type="text"
                     placeholder="Desde"
                     name="startDiio"
-                  />
+                  />{" "}
                   <Field
                     className="field"
                     type="text"
                     placeholder="Hasta"
                     name="endDiio"
                   />
-
                   <button
                     className="btn btn-outline-primary"
                     type="button"
