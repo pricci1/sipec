@@ -284,7 +284,8 @@ const AnimalMoves = () => {
           "RUP Destino",
           "Establecimiento Destino",
           "Salida",
-          "Llegada"
+          "Llegada",
+          "Ver Detalle"
         ]}
         data={data.map(moves => [
           moves.id,
