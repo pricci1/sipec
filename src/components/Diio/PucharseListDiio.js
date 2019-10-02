@@ -4,7 +4,7 @@ import PucharseDetailsDiioModal from "./PucharseDetailsDiioModal";
 import "./purchaseListDiio.css";
 
 const PucharseListDiio = props => {
-  const { headers, data } = props;
+  const { headers, data, title } = props;
 
   const [show, setShow] = useState(false);
   const [purchaseDiioId, setPurchaseDiioId] = useState(0);
@@ -57,7 +57,7 @@ const PucharseListDiio = props => {
 
   return (
     <>
-      <h2 className="title">Lista de Compras DIIO</h2>
+    <h2>{title}</h2>
       <MDBDataTable
         className="data-table"
         striped
