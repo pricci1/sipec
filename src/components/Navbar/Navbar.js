@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "@reach/router";
-import APIContext from "./APIProvider";
+import "./Navbar.css";
+import APIContext from "../APIProvider";
 
 const Navbar = ({ setLoggedOutCallback, isLogged }) => {
   const api = useContext(APIContext);
@@ -11,9 +12,9 @@ const Navbar = ({ setLoggedOutCallback, isLogged }) => {
   };
 
   return (
-    <nav className="navbar navbar-dark bg-dark flex-md-nowrap p-0 shadow">
+    <nav className="navbar flex-md-nowrap p-0">
       <Link className="navbar-brand col-sm-3 col-md-2 mr-0" to="#">
-        SIPEC
+        Sistema de información pecuaria SIPEC
       </Link>
       <ul className="navbar-nav px-3">
         <li className="nav-item text-nowrap">

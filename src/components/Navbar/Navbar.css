@@ -1,0 +1,16 @@
+.navbar {
+  background-color: #f2f2f2;
+  color: #001c41;
+  border-bottom-style: solid;
+  border-color: darkgrey;
+  border-width: 1px;
+}
+
+.navbar-brand {
+  margin-bottom: 0.5vw;
+  font-size: 22pt;
+}
+
+.navbar-link {
+  margin-right: 3vw;
+}
