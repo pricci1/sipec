@@ -25,7 +25,17 @@ class ModalAnimalMoves extends React.Component {
                 <button onClick={this.show.bind(this)}>Ver</button>
 
                 <Rodal visible={this.state.visible} onClose={this.hide.bind(this)}>
-                    <div>Información del Movimiento</div>
+                    <div> Información de Movimiento</div>
+                    <body>
+                      <li> N° de Formulario: {this.props.nformulario}</li>
+                      <li> Fecha de Formulario: {this.props.fechaformulario}</li>
+                      <li> RUP Origen: {this.props.ruporigen}</li>
+                      <li> Est. Origen: {this.props.establecimientoorigen}</li>
+                      <li> RUP Destino: {this.props.rupdestino}</li>
+                      <li> Est. Destino: {this.props.establecimientodestino}</li>
+                      <li> Salida: {this.props.salida}</li>
+                      <li> Llegada: {this.props.llega}</li>
+                    </body>
                 </Rodal>
             </div>
         )
