@@ -9,17 +9,17 @@ export const postDiioPurchase = async (
   return result;
 };
 
-export const dropDiioRanges = async (apiInstance, range, motive) => {
-  let data = { range, motive };
-  apiInstance.post("diio_drops", data);
-};
-
 export const getProviders = async apiInstance => {
   const result = await apiInstance.get("/providers");
   return result.data.map(({ id, rut }) => ({
     value: id,
     label: rut
   }));
+};
+
+export const dropDiioRanges = (apiInstance, range, motive) => {
+  let data = { range, motive };
+  apiInstance.post("/diio_drops", data);
 };
 
 export const getSpecies = async apiInstance => {

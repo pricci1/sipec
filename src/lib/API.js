@@ -12,20 +12,33 @@ class API {
   }
 
   login = async (email, password) => {
-    var response = { success: false };
+    var response = { success: false, type: "" };
     await axios
-      .post(this.apiUrl + "auth/sign_in", { email, password })
+      .post(this.apiUrl + "/auth/sign_in", { email, password })
       .then(resp => {
         if (resp.status === 200) {
           this.token = resp.headers["access-token"];
+          this.client = resp.headers["client"];
+          this.uid = resp.headers["uid"];
+          this.currentUserId = resp.data.data["id"];
           response.success = true;
         } else {
           response.success = false;
+          response.type = resp.status;
           this.token = null;
         }
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        try {
+          response.type = JSON.parse(error.request.response).errors[0];
+        } catch (error) {
+          response.type = "Unknown error.";
+        }
+      });
     localStorage.token = this.token;
+    localStorage.client = this.client;
+    localStorage.uid = this.uid;
+    localStorage.currentUserId = this.currentUserId;
 
     return response;
   };
@@ -66,17 +79,23 @@ class API {
   post = async (url, obj) => {
     const path = this.apiUrl + url;
     var results = { success: false };
-    const postResponse = await axios.post(path, {
-      headers: {
-        "Content-Type": "application/json",
-        "access-token": this.token,
-        client: this.client,
-        uid: this.uid
-      },
-      ...obj
-    });
-    if (Math.floor(postResponse.status / 100) === 2) {
-      results.success = true;
+    try {
+      const postResponse = await axios.post(path, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": this.token,
+          client: this.client,
+          uid: this.uid
+        },
+        ...obj
+      });
+      if (Math.floor(postResponse.status / 100) === 2) {
+        results.success = true;
+        results.data = postResponse.data;
+      }
+    } catch (error) {
+      results.success = false;
+      results.data = error;
     }
     // TODO: If the response says that the token is not valid, redirect to login
     return results;

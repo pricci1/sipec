@@ -13,28 +13,12 @@ import StockDIIOEstablecimiento from "./pages/stockDIIOEstablecimiento";
 
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
+import Sipec from "./routes/Sipec";
 
 const App = () => {
   return (
     <APIProvider>
-      <div>
-        <header className="bg-dark">
-          <Navbar />
-        </header>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-2">
-              <Sidebar />
-            </div>
-            <main className="col-10">
-              <ListadoBajaDIIO />
-              <StockDIIOEstablecimiento />
-              {/* <NotAppliedDroppedDiio/> */}
-              {/* <Login /> */}
-            </main>
-          </div>
-        </div>
-      </div>
+      <Sipec />
     </APIProvider>
   );
 };
