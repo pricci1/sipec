@@ -11,7 +11,7 @@ const AnimalMovementMenu = ({children}) => {
           <Link to='create_animal_moves' className="btn btn-primary" style={{margin: 5}}>
             Crear movimiento animal
           </Link>
-          <Link to='create_animal_moves' className="btn btn-primary" style={{margin: 5}}>
+          <Link to='animal_moves' className="btn btn-primary" style={{margin: 5}}>
             Listado de movimiento animal
           </Link>
           
