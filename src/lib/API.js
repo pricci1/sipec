@@ -8,7 +8,7 @@ class API {
     this.uid = localStorage.uid || null;
     this.apiUrl = "https://sipec-backend.herokuapp.com";
     // this.apiUrl = "http://192.168.0.30:3000";
-    // this.apiUrl = "http://192.168.0.12:3000";
+    //this.apiUrl = "http://192.168.0.26:3000";
   }
 
   login = async (email, password) => {
