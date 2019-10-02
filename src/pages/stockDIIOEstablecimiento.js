@@ -9,6 +9,8 @@ import SIPECtable from "../components/AnimalMoves/SIPECtable";
 import { getSpecies, getBrands, getModels } from "../lib/APIDiio";
 import APIContext from "../components/APIProvider";
 
+import InventoryDiioTab from "../routes/DIIOMenuTabs/InventoryDiioTab";
+
 const StockDIIOEstablecimiento = () => {
   const api = useContext(APIContext);
 
@@ -168,7 +170,9 @@ const StockDIIOEstablecimiento = () => {
         </Formik>
       </div>
       <div>
-        <SIPECtable cases="buscarfolioproductor" />
+        {/* <SIPECtable cases="buscarfolioproductor" /> */}
+
+        <InventoryDiioTab />
       </div>
     </div>
   );

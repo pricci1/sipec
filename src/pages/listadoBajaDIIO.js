@@ -4,10 +4,14 @@ import { Datepicker } from "react-formik-ui";
 import Selector from "../components/Diio/Utilities/FormikSelector";
 // import DatePicker from "react-datepicker";
 
-import SIPECtable from "../components/AnimalMoves/SIPECtable";
+// import SIPECtable from "../components/AnimalMoves/SIPECtable";
 
 import { getSpecies } from "../lib/APIDiio";
 import APIContext from "../components/APIProvider";
+
+import PucharseListDiio from "../components/Diio/PucharseListDiio";
+import PurchaseListDiioTab from "../routes/DIIOMenuTabs/PurchaseListDiioTab";
+import InventoryDiioTab from "../routes/DIIOMenuTabs/InventoryDiioTab";
 
 const ListadoBajaDIIO = () => {
   const api = useContext(APIContext);
@@ -86,7 +90,8 @@ const ListadoBajaDIIO = () => {
         </Formik>
       </div>
       <div>
-        <SIPECtable cases="listadebajas" />
+        {/* <SIPECtable cases="listadebajas" /> */}
+        {/* <InventoryDiioTab /> */}
       </div>
     </div>
   );
