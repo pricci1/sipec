@@ -1,6 +1,7 @@
 
 export const getEstablishment = async apiInstance => {
-  const Establecimento = await apiInstance.get(`establishments`);
+  const Establecimento = await apiInstance.get("/establishments");
+  console.log(Establecimento)
   return Establecimento.data.map(({ name, rup }) => ({
     value: rup,
     label: rup + "/" + name

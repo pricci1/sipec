@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import DatePickerField from "../components/AnimalMoves/DatePickerField";
@@ -10,9 +10,9 @@ import AnimalMovesTable from "../components/AnimalMoves/AnimalMovesTable";
 import RadioButton from "../components/AnimalMoves/RadioButton";
 import RadioButtonGroup from "../components/AnimalMoves/RadioButtonGroup";
 import APIContext from "../components/APIProvider"
-import {getEstablishment, getAnimalMovements} from "../lib/APIAnimalMovement"
+
 const AnimalMoves = () => {
-  const api = useContext(APIContext)
+  const apiInstance = useContext(APIContext)
   /*
     // FORM
   // Inputs:    Desde
@@ -30,9 +30,25 @@ const AnimalMoves = () => {
   // nºde formulario,fecha de formulario, RUP origen, Establecimineto orgien, RUP destino, Establecimento Destino, salida, llegada, estado
   */
   const [data, setData] = useState([]);
-
-  
-
+  const [establishment, setestablishment] = useState([]);
+  const [moves, setmoves] = useState([]);
+  const [loading, setloading] = useState(true);
+  async function getEstablishment () {
+    const Establecimento = await apiInstance.get("/establishments");
+    setestablishment(Establecimento.data.map(({ name, rup }) => ({
+      value: rup,
+      label: rup + "/" + name
+      }))
+    );
+    setloading(false)
+  }
+  getEstablishment()
+  useEffect(()=> {getEstablishment()}, []);
+  async function getAnimalMovements() {
+    const moves = await apiInstance.get("/animal_movement_table")
+    setmoves(moves)
+  }
+  useEffect(()=> {getAnimalMovements()}, []);
   async function getAnimalMoves(
     establishmentOrigin,
     establishmentDestination,
@@ -44,7 +60,6 @@ const AnimalMoves = () => {
   ) {
     //no terminada falta agregar a la tabla los datos que se sacan de get estableciminetos y combinarlos con moves
 
-    var moves = getAnimalMovements();
     /*var dataMap = moves.data.map(obj => ({
       diio: obj.diios.map(o => ({ diio_data: o[0].diio_type_id }))
     }));*/
@@ -119,6 +134,9 @@ const AnimalMoves = () => {
 
     return movesMap;
   }
+  if(loading){
+    return(<div></div>)
+  }
 
   return (
     <>
@@ -176,9 +194,9 @@ const AnimalMoves = () => {
           } = props;
           return (
             <form onSubmit={handleSubmit}>
-              <EstablishmentOriginSelect
+              {/* <EstablishmentOriginSelect
                 value={values.establishmentOrigin}
-                establishmentOrigin={getEstablishment(api)}
+                establishmentOrigin={establishment}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 error={errors.establishmentOrigin}
@@ -186,12 +204,12 @@ const AnimalMoves = () => {
               />
               <EstablishmentDestinationSelect
                 value={values.establishmentDestination}
-                establishmentDestination={getEstablishment(api)}
+                establishmentDestination={establishment}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 error={errors.establishmentDestination}
                 touched={touched.establishmentDestination}
-              />
+              /> */}
 
               <div>
                 <label htmlFor="dateDeparture">Desde</label>
