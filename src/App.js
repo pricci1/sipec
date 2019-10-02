@@ -22,7 +22,7 @@ const App = () => {
             </div>
             <main className="col-10">
               Main content here
-              <CreateAnimalMoves />
+              <Login />
             </main>
           </div>
         </div>

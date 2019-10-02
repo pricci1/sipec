@@ -57,6 +57,9 @@ const CreateAnimalMoves = () => {
       finalRange: finalRange
     };
     const response = await api.post("/create_animal_movement",params)
+    if(response.data.status == "ok"){
+      alert("Se creó el movimiento con éxito")
+    }
   }
 
   return (
