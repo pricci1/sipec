@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MDBDataTable } from "mdbreact";
 import PucharseDetailsDiioModal from "./PucharseDetailsDiioModal";
 
-const DiioTable = props => {
+const PucharseListDiio = props => {
   const { headers, data } = props;
 
   const [show, setShow] = useState(false);
