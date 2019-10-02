@@ -11,6 +11,7 @@
     "classnames": "^2.2.6",
     "formik": "^1.5.8",
     "mdbreact": "^4.21.0",
+    "perf_hooks": "0.0.1",
     "react": "^16.10.1",
     "react-datepicker": "^2.9.6",
     "react-dom": "^16.10.1",
