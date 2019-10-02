@@ -21,7 +21,7 @@ const DiioMenu = ({ children }) => (
             DIIOs de Baja
           </Link>
           <Link to="lista-baja-diios" className="btn btn-danger">
-            Lista Baja de DIIOS
+            Lista Baja de DIIOs
           </Link>
         </ButtonGroup>
       </div>
