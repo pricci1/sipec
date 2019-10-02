@@ -7,6 +7,11 @@ const PurchaseListDiioTab = () => {
   const api = useContext(APIContext);
   const [data, setData] = useState([]);
 
+  useEffect(() => {
+    // Inside useEffect with [] as deps to run only once
+    // If it's not, there will be infinite request to the backend
+    getDiioPurchasesApi();
+  }, []);
   async function getDiioPurchasesApi() {
     const data = await getDiioPurchases(api, 1);
 
@@ -37,7 +42,7 @@ const PurchaseListDiioTab = () => {
       return "Espera";
     }
   }
-  getDiioPurchasesApi();
+
   return (
     <PucharseListDiio
       headers={[
