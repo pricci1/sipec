@@ -7,7 +7,7 @@ const SpeciesDropdown = () => {
     async function getSpecies() {
         const response = await api.get('/species');
         setspecies(response.data);
-    }
+    } 
     useEffect(()=> {getSpecies()}, []);
     return (
       <div>
