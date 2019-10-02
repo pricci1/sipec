@@ -9,7 +9,7 @@ import NotAppliedDroppedDiio from "../components/Diio/NotAppliedDroppedDiio";
 const props = { headers: ["a", "b"], data: ["data a", "data b"] };
 const MenuRouter = () => (
   <>
-    <div className="col-2">
+    <div style={{ padding: "0px" }} className="col-2">
       <Sidebar />
     </div>
     <main className="col-10">

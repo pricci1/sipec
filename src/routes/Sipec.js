@@ -9,7 +9,6 @@ const Sipec = () => {
     <div>
       <header className="bg-dark">
         <Navbar setLoggedOutCallback={setLogged} isLogged={logged} />
-        <p></p>
       </header>
       <div className="container-fluid">
         <div className="row">
