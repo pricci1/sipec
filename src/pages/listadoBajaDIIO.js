@@ -12,6 +12,7 @@ import APIContext from "../components/APIProvider";
 import PucharseListDiio from "../components/Diio/PucharseListDiio";
 import PurchaseListDiioTab from "../routes/DIIOMenuTabs/PurchaseListDiioTab";
 import InventoryDiioTab from "../routes/DIIOMenuTabs/InventoryDiioTab";
+import ListDroppedDiioTab from "../routes/DIIOMenuTabs/ListDroppedDiioTab";
 
 const ListadoBajaDIIO = () => {
   const api = useContext(APIContext);
@@ -92,6 +93,7 @@ const ListadoBajaDIIO = () => {
       <div>
         {/* <SIPECtable cases="listadebajas" /> */}
         {/* <InventoryDiioTab /> */}
+        <ListDroppedDiioTab />
       </div>
     </div>
   );
