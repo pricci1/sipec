@@ -61,20 +61,24 @@ const ListadoBajaDIIO = () => {
               <p></p>
               <Datepicker
                 selected={values.desde}
-                //   dateFormat="MMMM d, yyyy"
-                //   className="form-control"
+                dateFormat="MMMM d, yyyy"
+                className="form-control"
                 name="desde"
                 label="Desde"
               />
               <Datepicker
                 selected={values.hasta}
-                //   dateFormat="MMMM d, yyyy"
-                //   className="form-control"
+                dateFormat="MMMM d, yyyy"
+                className="form-control"
                 name="hasta"
                 label="Hasta"
               />
 
-              <button type="submit" disabled={isSubmitting}>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={isSubmitting}
+              >
                 Filtrar
               </button>
             </form>

@@ -6,7 +6,7 @@ import { Datepicker } from "react-formik-ui";
 
 import SIPECtable from "../components/AnimalMoves/SIPECtable";
 
-import { getSpecies, getBrand } from "../lib/APIDiio";
+import { getSpecies, getBrands, getModels } from "../lib/APIDiio";
 import APIContext from "../components/APIProvider";
 
 const StockDIIOEstablecimiento = () => {
@@ -18,8 +18,14 @@ const StockDIIOEstablecimiento = () => {
     return data;
   }
 
-  async function getBrandAPI() {
-    const data = await getBrand(api);
+  async function getBrandsAPI() {
+    const data = await getBrands(api);
+    console.log(data);
+    return data;
+  }
+
+  async function getModelsAPI() {
+    const data = await getModels(api);
     console.log(data);
     return data;
   }
@@ -35,7 +41,7 @@ const StockDIIOEstablecimiento = () => {
             vendedor: "",
             establecimiento: "",
             rup: "",
-            marca: "",
+            brand: "",
             tipo: "",
             desde: "",
             hasta: ""
@@ -97,8 +103,7 @@ const StockDIIOEstablecimiento = () => {
                 value={values.rup}
               />
               <p></p>
-              <h4>Marca</h4>
-              {/* <Selector
+              <Selector
                 fieldName="brand"
                 fieldValue={values.specie}
                 labelName="Marca"
@@ -107,20 +112,21 @@ const StockDIIOEstablecimiento = () => {
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.selectedSpecie}
-                data={getBrandAPI}
-              /> */}
-              <Field name="marca" component="select" placeholder="Marca">
-                <option value="cromasa">CROMASA</option>
-                <option value="marca1">MARCA1</option>
-                <option value="marca2">MARCA2</option>
-              </Field>
-              <h4>Tipo</h4>
+                data={getBrandsAPI}
+              />
+              <p></p>
+              <Selector
+                fieldName="tipo"
+                fieldValue={values.specie}
+                labelName="Tipo"
+                onChange={(field, fieldValue) => {
+                  setFieldValue(field, fieldValue.label);
+                }}
+                onBlur={setFieldTouched}
+                touched={touched.selectedSpecie}
+                data={getModelsAPI}
+              />
 
-              <Field name="tipo" component="select" placeholder="Tipo">
-                <option value="abejas">Abejas</option>
-                <option value="bovino">Bovino</option>
-                <option value="caracol">Caracol</option>
-              </Field>
               <p></p>
               <Selector
                 fieldName="specie"
@@ -139,15 +145,15 @@ const StockDIIOEstablecimiento = () => {
 
               <Datepicker
                 selected={values.desde}
-                //   dateFormat="MMMM d, yyyy"
-                //   className="form-control"
+                dateFormat="MMMM d, yyyy"
+                className="form-control"
                 name="desde"
                 label="Desde"
               />
               <Datepicker
                 selected={values.hasta}
-                //   dateFormat="MMMM d, yyyy"
-                //   className="form-control"
+                dateFormat="MMMM d, yyyy"
+                className="form-control"
                 name="hasta"
                 label="Hasta"
               />

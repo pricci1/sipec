@@ -159,9 +159,9 @@ const AnimalMovesTable = props => {
     ];
   }
 
-  return <ReactTable data={data} columns={headers} />;
-
-  /*(
+  return (
+    <ReactTable data={data} columns={headers} defaultPageSize={10} />
+  ); /*(
 
 
     <table className="table table-striped">
