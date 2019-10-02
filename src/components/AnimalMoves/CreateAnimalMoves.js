@@ -3,9 +3,8 @@ import APIContext from "../APIProvider";
 import SpeciesDropdown from "./MinimalComponents/SpeciesDropdown";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {asyncContainer, Typeahead} from 'react-bootstrap-typeahead'; // ES2015
-import Autocomplete from 'react-autocomplete'
-
+import { asyncContainer, Typeahead } from "react-bootstrap-typeahead"; // ES2015
+import Autocomplete from "react-autocomplete";
 
 const CreateAnimalMoves = () => {
   const api = useContext(APIContext);
@@ -19,25 +18,34 @@ const CreateAnimalMoves = () => {
   const [finalRange, setfinalRange] = useState("");
   const [rupOptions, setrupOptions] = useState([]);
   const [rupLoading, setrupLoading] = useState(false);
-  const AsyncTypeahead = asyncContainer(Typeahead)
-  async function validateRUP(event){
-    const response = await api.post("/validate_rup", {rup:event.target.value})
-    if(response.data.status == "none"){
-        alert("RUP no existente")
+  const AsyncTypeahead = asyncContainer(Typeahead);
+  async function validateRUP(event) {
+    const response = await api.post("/validate_rup", {
+      rup: event.target.value
+    });
+    if (response.data.status == "none") {
+      alert("RUP no existente");
     }
   }
-  async function autocompleteOriginRUP(event){
-    setoriginRUP(event.target.value)
-    const response = await api.get("/autocomplete_rup?rup=" + event.target.value);
-    const data  = response.data.establishments.map(establishment => ({label: establishment.rup}))
+  async function autocompleteOriginRUP(event) {
+    setoriginRUP(event.target.value);
+    const response = await api.get(
+      "/autocomplete_rup?rup=" + event.target.value
+    );
+    const data = response.data.establishments.map(establishment => ({
+      label: establishment.rup
+    }));
     setrupOptions(data);
   }
-  async function autocompleteDestinyRUP(event){
-    setdestinyRUP(event.target.value)
-    const response = await api.get("/autocomplete_rup?rup=" + event.target.value);
-    const data  = response.data.establishments.map(establishment => ({label: establishment.rup}))
+  async function autocompleteDestinyRUP(event) {
+    setdestinyRUP(event.target.value);
+    const response = await api.get(
+      "/autocomplete_rup?rup=" + event.target.value
+    );
+    const data = response.data.establishments.map(establishment => ({
+      label: establishment.rup
+    }));
     setrupOptions(data);
-
   }
   function handleOriginRUPChange(event) {
     setoriginRUP(event.target.value);
@@ -74,9 +82,9 @@ const CreateAnimalMoves = () => {
       initialRange: initialRange,
       finalRange: finalRange
     };
-    const response = await api.post("/create_animal_movement",params)
-    if(response.data.status == "ok"){
-      alert("Se creó el movimiento con éxito")
+    const response = await api.post("/create_animal_movement", params);
+    if (response.data.status == "ok") {
+      alert("Se creó el movimiento con éxito");
     }
   }
 
@@ -88,45 +96,41 @@ const CreateAnimalMoves = () => {
         selected={registerDate}
         onChange={handleRegisterDateChange}
       />
-      <div className={"form-row"} style={{marginTop:10}}>
-      <div className={"form-group"}>
-        <span>Fecha de Llegada </span>
-        <DatePicker
-          className={"form-control"}
-          selected={arriveDate}
-          onChange={handleArriveDateChange}
-        />
-      </div>
+      <div className={"form-row"} style={{ marginTop: 10 }}>
+        <div className={"form-group"}>
+          <span>Fecha de Llegada </span>
+          <DatePicker
+            className={"form-control"}
+            selected={arriveDate}
+            onChange={handleArriveDateChange}
+          />
+        </div>
         <div className={"col-md-3"}>
-          <span style={{marginRight:30}}>RUP Origen</span>
-          <Autocomplete 
-            inputProps={{class:"form-control"}}
-            getItemValue={(item) => item.label}
+          <span style={{ marginRight: 30 }}>RUP Origen</span>
+          <Autocomplete
+            inputProps={{ class: "form-control" }}
+            getItemValue={item => item.label}
             items={rupOptions}
-            renderItem={(item, isHighlighted) =>
-              <div className="form-control">
-                {item.label}
-              </div>
-            }
+            renderItem={(item, isHighlighted) => (
+              <div className="form-control">{item.label}</div>
+            )}
             value={originRUP}
             onChange={autocompleteOriginRUP}
-            onSelect={(val) => setoriginRUP(val)}
+            onSelect={val => setoriginRUP(val)}
           />
         </div>
         <div className={"col-md-3"} style={{ marginBottom: 10 }}>
-          <span style={{marginRight:10}}>RUP Destino</span>
-          <Autocomplete 
-            inputProps={{class:"form-control"}}
-            getItemValue={(item) => item.label}
+          <span style={{ marginRight: 10 }}>RUP Destino</span>
+          <Autocomplete
+            inputProps={{ class: "form-control" }}
+            getItemValue={item => item.label}
             items={rupOptions}
-            renderItem={(item, isHighlighted) =>
-              <div className="form-control">
-                {item.label}
-              </div>
-            }
+            renderItem={(item, isHighlighted) => (
+              <div className="form-control">{item.label}</div>
+            )}
             value={destinyRUP}
             onChange={autocompleteDestinyRUP}
-            onSelect={(val) => setdestinyRUP(val)}
+            onSelect={val => setdestinyRUP(val)}
           />
         </div>
       </div>
@@ -162,7 +166,9 @@ const CreateAnimalMoves = () => {
           ></input>
         </div>
       </div>
-      <button onClick={sendRequest} className={"btn btn-success"}>Submit</button>
+      <button onClick={sendRequest} className={"btn btn-success"}>
+        Submit
+      </button>
     </div>
   );
 };
