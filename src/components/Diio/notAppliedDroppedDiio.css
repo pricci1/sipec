@@ -14,11 +14,10 @@
 }
 
 .field {
-  border-radius: 5px;
+  border-radius: 3px;
   border-style: solid;
   border-color: darkgray;
   border-width: 1px;
-  height: 38px;
 }
 
 .rangos {
