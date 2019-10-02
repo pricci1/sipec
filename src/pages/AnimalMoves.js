@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -11,8 +11,10 @@ import EstablishmentDestinationSelect from "../components/AnimalMoves/Establishm
 import AnimalMovesTable from "../components/AnimalMoves/AnimalMovesTable";
 import RadioButton from "../components/AnimalMoves/RadioButton";
 import RadioButtonGroup from "../components/AnimalMoves/RadioButtonGroup";
-
+import APIContext from "../components/APIProvider"
+import {getEstablishment, getAnimalMovements} from "../lib/APIAnimalMovement"
 const AnimalMoves = () => {
+  const api = useContext(APIContext)
   /*
     // FORM
   // Inputs:    Desde
@@ -29,17 +31,9 @@ const AnimalMoves = () => {
   // RETURN
   // nºde formulario,fecha de formulario, RUP origen, Establecimineto orgien, RUP destino, Establecimento Destino, salida, llegada, estado
   */
-  const apiUrl = "http://sipec-backend.herokuapp.com";
   const [data, setData] = useState([]);
 
-  async function getEstablishment() {
-    const Establecimento = await axios.get(`${apiUrl}/establishments`);
-    return Establecimento.data.map(({ name, rup }) => ({
-      value: rup,
-      label: rup + "/" + name
-    }));
-    //RUP como id
-  }
+  
 
   async function getAnimalMoves(
     establishmentOrigin,
@@ -52,7 +46,7 @@ const AnimalMoves = () => {
   ) {
     //no terminada falta agregar a la tabla los datos que se sacan de get estableciminetos y combinarlos con moves
 
-    var moves = await axios.get(`${apiUrl}/animal_movement_table`);
+    var moves = getAnimalMovements();
     var dataMap = moves.data.map(obj => ({
       diio: obj.diios.map(o => ({ diio_data: o[0].diio_type_id }))
     }));
@@ -181,7 +175,7 @@ const AnimalMoves = () => {
             <form onSubmit={handleSubmit}>
               <EstablishmentOriginSelect
                 value={values.establishmentOrigin}
-                establishmentOrigin={getEstablishment}
+                establishmentOrigin={getEstablishment(api)}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 error={errors.establishmentOrigin}
@@ -189,7 +183,7 @@ const AnimalMoves = () => {
               />
               <EstablishmentDestinationSelect
                 value={values.establishmentDestination}
-                establishmentDestination={getEstablishment}
+                establishmentDestination={getEstablishment(api)}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 error={errors.establishmentDestination}

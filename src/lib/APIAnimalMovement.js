@@ -1,27 +1,13 @@
-import { useContext } from "React";
-import APIContext from "../components/APIProvider";
 
-const api = useContext(APIContext);
+export const getEstablishment = async apiInstance => {
+  const Establecimento = await apiInstance.get(`establishments`);
+  return Establecimento.data.map(({ name, rup }) => ({
+    value: rup,
+    label: rup + "/" + name
+  }));
+}
 
-export const getAllDiios = async apiInstance => {
-  await apiInstance.get(...);
-  
-};
-
-export const getDiiosRange = (apiInstance, from, to) => {
-  apiInstance
-    .get(...)
-    .then(...);
-
-};
-
-export const postDiio = async (apiInstance, diio) => {
-  await apiInstance.post(...);
-  ...
-};
-
-export const anotherThingYouCanDoWithDiios = async (apiInstance, stuff, andMore) => {
-  await apiInstance.get(...);
-  await apiInstance.post(...);
-  
-};
+export const getAnimalMovements = async apiInstance => {
+  const moves = await apiInstance.get("/animal_movement_table")
+  return moves
+}
