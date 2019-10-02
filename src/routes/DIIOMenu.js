@@ -9,6 +9,9 @@ const DiioMenu = ({ children }) => (
       <div className="col-md-6 d-flex flex-column">
         <ButtonGroup>
           <Link to="lista-compra" className="btn btn-danger">
+            Lista Compra
+          </Link>
+          <Link to="compra" className="btn btn-danger">
             Compra
           </Link>
           <Link to="inventario" className="btn btn-danger">
