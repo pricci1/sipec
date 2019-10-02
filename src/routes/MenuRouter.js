@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import AnimalMovementMenu from "./AnimalMovementMenu";
 import PucharseListDiio from "../components/Diio/PucharseListDiio";
 import NotAppliedDroppedDiio from "../components/Diio/NotAppliedDroppedDiio";
+import CreateAnimalMoves from "../components/AnimalMoves/CreateAnimalMoves"
 
 const props = { headers: ["a", "b"], data: ["data a", "data b"] };
 const MenuRouter = () => (
@@ -18,7 +19,9 @@ const MenuRouter = () => (
           <PucharseListDiio props={props} path="lista-compra" />
           <NotAppliedDroppedDiio path="baja-diios" />
         </DiioMenu>
-        <AnimalMovementMenu path="/movimiento-animal"></AnimalMovementMenu>
+        <AnimalMovementMenu path="/movimientos">
+          <CreateAnimalMoves path='create_animal_moves' />
+        </AnimalMovementMenu>
       </Router>
     </main>
   </>
