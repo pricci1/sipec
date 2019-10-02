@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { MDBDataTable } from "mdbreact";
 import PucharseDetailsDiioModal from "./PucharseDetailsDiioModal";
+import "./purchaseListDiio.css";
 
 const PucharseListDiio = props => {
+  const { headers, data } = props;
+
+  const [show, setShow] = useState(false);
+  const [purchaseDiioId, setPurchaseDiioId] = useState(0);
+
+  const handleShowMessageClick = () => setShow(true);
+  const handleCloseModal = () => setShow(false);
+
+  const handleModal = props => {
+    handleShowMessageClick();
+    setPurchaseDiioId(props);
+  };
+
   let columns = [];
   let rows = [];
 
-  props.props.headers.map(header =>
+  headers.map(header =>
     columns.push({
       label: header,
       field: header.toLowerCase(),
@@ -17,14 +31,18 @@ const PucharseListDiio = props => {
 
   function getColumnItem(index, item) {
     if (index == 0) {
-      return <PucharseDetailsDiioModal text={item[index]} />;
+      return (
+        <a style={{ color: "blue" }} onClick={() => handleModal(item[index])}>
+          <b>{item[index]}</b>
+        </a>
+      );
     } else {
       return item[index];
     }
   }
 
   var jsonRow = {};
-  props.props.data.map(
+  data.map(
     item => (
       columns.map(
         (col, index) =>
@@ -38,19 +56,29 @@ const PucharseListDiio = props => {
   const finalData = { columns, rows };
 
   return (
-    <MDBDataTable
-      striped
-      scrollY
-      hover
-      bordered
-      small
-      maxHeight="370px"
-      data={finalData}
-      entriesLabel={["Mostrar entradas"]}
-      infoLabel={["Mostrando de", "a", "entradas, de"]}
-      paginationLabel={["Anterior", "Siguiente"]}
-      searchLabel={["Buscar"]}
-    />
+    <>
+      <h2 className="title">Lista de Compras DIIO</h2>
+      <MDBDataTable
+        className="data-table"
+        striped
+        scrollY
+        hover
+        bordered
+        small
+        maxHeight="370px"
+        data={finalData}
+        entriesLabel={["Mostrar entradas"]}
+        infoLabel={["Mostrando de", "a", "entradas, de"]}
+        paginationLabel={["Anterior", "Siguiente"]}
+        searchLabel={["Buscar"]}
+      />
+      {show ? (
+        <PucharseDetailsDiioModal
+          onClose={handleCloseModal}
+          purchase_diio_id={purchaseDiioId}
+        />
+      ) : null}
+    </>
   );
 };
 

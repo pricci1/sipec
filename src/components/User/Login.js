@@ -13,7 +13,7 @@ const Login = ({ setLoggedCallback }) => {
   };
 
   return (
-    <div className="jumbotron">
+    <div style={{ margin: "50px" }} className="jumbotron">
       {loginError ? <h3 className="text-danger">{error}</h3> : null}
       <Formik
         initialValues={{ email: "", password: "" }}
