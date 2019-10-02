@@ -14,6 +14,7 @@
     "mdbreact": "^4.21.0",
     "parcel": "^1.12.3",
     "perf_hooks": "0.0.1",
+    "path-to-regexp": "^3.1.0",
     "prop-types": "^15.7.2",
     "re": "^0.1.4",
     "react": "^16.10.1",

@@ -32,8 +32,14 @@ export const getSpecies = async apiInstance => {
   return result.data.map(({id, name}) => ({
     value:id, 
     label: name
-  }));
-};
+  }))
+}
+
+export const getDiioPurchases = async (apiInstance, id) => {
+  const diios = await apiInstance.get(`/diio_purchases/establishment/${id}`);
+  return diios.data
+}
+
 
 export const getBrands = async apiInstance => {
   const result = await apiInstance.get("/diio_purchases");

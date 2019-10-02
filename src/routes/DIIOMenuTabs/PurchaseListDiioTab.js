@@ -1,29 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PucharseListDiio from "../../components/Diio/PucharseListDiio";
-import axios from "axios";
+import APIContext from "../../components/APIProvider";
+import { getDiioPurchases } from "../../lib/APIDiio";
 
 const PurchaseListDiioTab = () => {
+  const api = useContext(APIContext);
   const [data, setData] = useState([]);
 
-  const backendUrl = "http://sipec-backend.herokuapp.com";
+  async function getDiioPurchasesApi() {
+    const data = await getDiioPurchases(api, 1);
 
-  function getStringState(state) {
-    if (state) {
-      return "Vendido";
-    } else {
-      return "Espera";
-    }
-  }
-
-  async function getDiioPurchases() {
-    var diios = [];
-    diios = await axios.get(`${backendUrl}/diio_purchases/establishment/1`);
-
-    var purchaser_rut = diios.data.establishment.rup;
-    var purchaser_name = diios.data.establishment.name;
-
+    var purchaser_rut = data.establishment.rup;
+    var purchaser_name = data.establishment.name;
     setData(
-      diios.data.purchases.map(
+      data.purchases.map(
         ({
           provider_name,
           purchase: { id, confirmed, brand, created_at: date }
@@ -40,9 +30,14 @@ const PurchaseListDiioTab = () => {
     );
   }
 
-  useEffect(() => {
-    getDiioPurchases();
-  }, []);
+  function getStringState(state) {
+    if (state) {
+      return "Vendido";
+    } else {
+      return "Espera";
+    }
+  }
+  getDiioPurchasesApi();
   return (
     <PucharseListDiio
       headers={[
@@ -61,6 +56,7 @@ const PurchaseListDiioTab = () => {
         getStringState(purchase.confirmed),
         purchase.purchaser_rut
       ])}
+      title="Lista de Compras DIIO"
     />
   );
 };

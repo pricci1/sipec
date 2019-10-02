@@ -6,7 +6,7 @@ import "./DIIOMenu.css";
 const DiioMenu = ({ children }) => (
   <div>
     <div className="row">
-      <div className="col-md-6 d-flex flex-column">
+      <div className=" d-flex flex-column">
         <ButtonGroup>
           <Link to="lista-compra" className="btn btn-danger">
             Lista Compra
@@ -20,12 +20,8 @@ const DiioMenu = ({ children }) => (
           <Link to="baja-diios" className="btn btn-danger">
             DIIOs de Baja
           </Link>
-          <Link
-            to="lista-baja-diios"
-            className="btn btn-danger"
-            style={{ textDecoration: "none", color: "#FFF" }}
-          >
-            Lista Baja de DIIOS
+          <Link to="lista-baja-diios" className="btn btn-danger">
+            Lista Baja de DIIOs
           </Link>
         </ButtonGroup>
       </div>

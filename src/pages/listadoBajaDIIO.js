@@ -13,6 +13,7 @@ import PucharseListDiio from "../components/Diio/PucharseListDiio";
 import PurchaseListDiioTab from "../routes/DIIOMenuTabs/PurchaseListDiioTab";
 import InventoryDiioTab from "../routes/DIIOMenuTabs/InventoryDiioTab";
 import ListDroppedDiioTab from "../routes/DIIOMenuTabs/ListDroppedDiioTab";
+import "./listadoBajaDIIO.css";
 
 const ListadoBajaDIIO = () => {
   const api = useContext(APIContext);
@@ -23,10 +24,10 @@ const ListadoBajaDIIO = () => {
     return data;
   }
   return (
-    <div>
-      <h1>Listado Baja de DIIO</h1>
+    <div className="body">
+      <h2>Listado Baja de DIIOs</h2>
       <div>
-        <h2>Buscar Baja de DIIO</h2>
+        <h4>Buscar Baja de DIIO</h4>
         <Formik
           initialValues={{ desde: "", hasta: "", specie: "" }}
           onSubmit={(values, { setSubmitting }) => {
@@ -49,39 +50,42 @@ const ListadoBajaDIIO = () => {
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
-              <Selector
-                fieldName="specie"
-                fieldValue={values.specie}
-                labelName="Especie"
-                onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.label);
-                }}
-                onBlur={setFieldTouched}
-                touched={touched.selectedSpecie}
-                // data={getSpecies}
-                data={getSpeciesAPI}
-              />
-              <p></p>
-              <h3>Rango DIIO</h3>
-              <p></p>
-              <Datepicker
-                selected={values.desde}
-                dateFormat="MMMM d, yyyy"
-                className="form-control"
-                name="desde"
-                label="Desde"
-              />
-              <Datepicker
-                selected={values.hasta}
-                dateFormat="MMMM d, yyyy"
-                className="form-control"
-                name="hasta"
-                label="Hasta"
-              />
-
+              <div className="selector">
+                <Selector
+                  fieldName="specie"
+                  fieldValue={values.specie}
+                  labelName="Especie"
+                  onChange={(field, fieldValue) => {
+                    setFieldValue(field, fieldValue.label);
+                  }}
+                  onBlur={setFieldTouched}
+                  touched={touched.selectedSpecie}
+                  // data={getSpecies}
+                  data={getSpeciesAPI}
+                />
+              </div>
+              <br />
+              Rango DIIO
+              <div className="fecha">
+                <Datepicker
+                  selected={values.desde}
+                  dateFormat="MMMM d, yyyy"
+                  className="form-control"
+                  name="desde"
+                  placeholder="Desde"
+                />
+                <Datepicker
+                  selected={values.hasta}
+                  dateFormat="MMMM d, yyyy"
+                  className="form-control"
+                  name="hasta"
+                  placeholder="Hasta"
+                />
+              </div>
+              <br />
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-outline-primary"
                 disabled={isSubmitting}
               >
                 Filtrar
