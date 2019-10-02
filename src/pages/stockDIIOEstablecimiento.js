@@ -10,6 +10,7 @@ import { getSpecies, getBrands, getModels } from "../lib/APIDiio";
 import APIContext from "../components/APIProvider";
 
 import InventoryDiioTab from "../routes/DIIOMenuTabs/InventoryDiioTab";
+import "./stockDIIOEstablecimiento.css";
 
 const StockDIIOEstablecimiento = () => {
   const api = useContext(APIContext);
@@ -33,10 +34,10 @@ const StockDIIOEstablecimiento = () => {
   }
 
   return (
-    <div>
-      <h1>Consulta Stock DIIO Establecimiento</h1>
+    <div className="body">
+      <h2>Consulta Stock DIIO Establecimiento</h2>
       <div>
-        <h2>Buscar Folio Productor</h2>
+        <h4>Buscar Folio Productor</h4>
         <Formik
           initialValues={{
             comprador: "",
@@ -68,101 +69,103 @@ const StockDIIOEstablecimiento = () => {
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
-              <p></p>
-              <h4>Comprador</h4>
+              <p className="label">Comprador</p>
               <input
+                className="field"
                 type="text"
                 name="comprador"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.comprador}
               />
-              <p></p>
-              <h4>Vendedor</h4>
+              <br />
+              <p className="label">Vendedor</p>
               <input
+                className="field"
                 type="text"
                 name="vendedor"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.vendedor}
               />
-              <p></p>
-              <h4>Establecimiento</h4>
+              <p className="label">Establecimiento</p>
               <input
+                className="field"
                 type="text"
                 name="establecimiento"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.establecimiento}
               />
-
-              <h4>RUP</h4>
+              <p className="label">RUP</p>
               <input
+                className="field"
                 type="text"
                 name="rup"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.rup}
               />
-              <p></p>
-              <Selector
-                fieldName="brand"
-                fieldValue={values.specie}
-                labelName="Marca"
-                onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.label);
-                }}
-                onBlur={setFieldTouched}
-                touched={touched.selectedSpecie}
-                data={getBrandsAPI}
-              />
-              <p></p>
-              <Selector
-                fieldName="tipo"
-                fieldValue={values.specie}
-                labelName="Tipo"
-                onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.label);
-                }}
-                onBlur={setFieldTouched}
-                touched={touched.selectedSpecie}
-                data={getModelsAPI}
-              />
-
-              <p></p>
-              <Selector
-                fieldName="specie"
-                fieldValue={values.specie}
-                labelName="Especie"
-                onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.label);
-                }}
-                onBlur={setFieldTouched}
-                touched={touched.selectedSpecie}
-                // data={getSpecies}
-                data={getSpeciesAPI}
-              />
-              <p></p>
-              <h3>Fecha</h3>
-
-              <Datepicker
-                selected={values.desde}
-                dateFormat="MMMM d, yyyy"
-                className="form-control"
-                name="desde"
-                label="Desde"
-              />
-              <Datepicker
-                selected={values.hasta}
-                dateFormat="MMMM d, yyyy"
-                className="form-control"
-                name="hasta"
-                label="Hasta"
-              />
-
+              <div className="selectors">
+                <Selector
+                  fieldName="brand"
+                  fieldValue={values.specie}
+                  labelName="Marca"
+                  onChange={(field, fieldValue) => {
+                    setFieldValue(field, fieldValue.label);
+                  }}
+                  onBlur={setFieldTouched}
+                  touched={touched.selectedSpecie}
+                  data={getBrandsAPI}
+                />
+                <Selector
+                  fieldName="tipo"
+                  fieldValue={values.specie}
+                  labelName="Tipo"
+                  onChange={(field, fieldValue) => {
+                    setFieldValue(field, fieldValue.label);
+                  }}
+                  onBlur={setFieldTouched}
+                  touched={touched.selectedSpecie}
+                  data={getModelsAPI}
+                />
+                <Selector
+                  fieldName="specie"
+                  fieldValue={values.specie}
+                  labelName="Especie"
+                  onChange={(field, fieldValue) => {
+                    setFieldValue(field, fieldValue.label);
+                  }}
+                  onBlur={setFieldTouched}
+                  touched={touched.selectedSpecie}
+                  // data={getSpecies}
+                  data={getSpeciesAPI}
+                />
+              </div>
+              <p className="label">Fecha</p>
+              <div className="fecha">
+                <Datepicker
+                  placeholder="Desde"
+                  selected={values.desde}
+                  dateFormat="MMMM d, yyyy"
+                  className="form-control"
+                  name="desde"
+                />
+                <Datepicker
+                  selected={values.hasta}
+                  dateFormat="MMMM d, yyyy"
+                  className="form-control"
+                  name="hasta"
+                  placeholder="Hasta"
+                />
+              </div>
               {/* {errors.password && touched.password && errors.password} */}
-
-              <button type="submit" disabled={isSubmitting}>
+              <br />
+              <button
+                className="btn btn-outline-primary"
+                type="submit"
+                disabled={isSubmitting}
+              >
                 Filtrar
               </button>
             </form>
