@@ -30,6 +30,7 @@ export const dropDiioRanges = (
 
 export const getSpecies = async apiInstance =>{
   const result = await apiInstance.get("/species");
+  console.log(result)
   return result.data.map(({id, name}) => ({
     value:id, 
     label: name

@@ -3,7 +3,7 @@ import { Formik, Field } from "formik";
 import APIContext from "../APIProvider"
 import Selector from "./Utilities/FormikSelector";
 import * as Yup from "yup";
-import {dropDiioRanges} from "../../lib/APIDiio"
+import {dropDiioRanges ,getSpecies} from "../../lib/APIDiio"
 
 const NotAppliedDroppedDiio = () => {
   const api = useContext(APIContext);  
@@ -14,11 +14,12 @@ const NotAppliedDroppedDiio = () => {
   const getOwnerName = () => {
     return "Ignacio Figueroa";
   };
-  async function getSpecies() {
-    return [{ value: 1, label: "Vaca" }, { value: 2, label: "Chancho" }];
+  async function getSpeciesData() {
+    const data = await getSpecies(api);
+    return data
   }
   async function getDropReasons() {
-    return [{ value: 1, label: "Nose" }, { value: 2, label: "Pq Si" }];
+    return [{ value: 1, label: "Motivo 1" }, { value: 2, label: "Motivo 2" }];
   }
   const [species, setspecies] = useState();
   const [diio_ranges, setdiio_ranges] = useState([]);
@@ -73,7 +74,7 @@ const NotAppliedDroppedDiio = () => {
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.selectedSpecie}
-                data={getSpecies}
+                data={getSpeciesData}
               />
               <Selector
                 fieldName="dropReason"
