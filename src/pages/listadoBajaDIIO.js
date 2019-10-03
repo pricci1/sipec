@@ -1,6 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Formik, Field } from "formik";
+import React, { useContext } from "react";
+import { Formik } from "formik";
 import { Datepicker } from "react-formik-ui";
+import * as Yup from "yup";
 import Selector from "../components/Diio/Utilities/FormikSelector";
 // import DatePicker from "react-datepicker";
 
@@ -9,9 +10,6 @@ import Selector from "../components/Diio/Utilities/FormikSelector";
 import { getSpecies } from "../lib/APIDiio";
 import APIContext from "../components/APIProvider";
 
-import PucharseListDiio from "../components/Diio/PucharseListDiio";
-import PurchaseListDiioTab from "../routes/DIIOMenuTabs/PurchaseListDiioTab";
-import InventoryDiioTab from "../routes/DIIOMenuTabs/InventoryDiioTab";
 import ListDroppedDiioTab from "../routes/DIIOMenuTabs/ListDroppedDiioTab";
 import "./listadoBajaDIIO.css";
 
@@ -20,7 +18,6 @@ const ListadoBajaDIIO = () => {
 
   async function getSpeciesAPI() {
     const data = await getSpecies(api);
-    console.log(data);
     return data;
   }
   return (
@@ -36,10 +33,21 @@ const ListadoBajaDIIO = () => {
               setSubmitting(false);
             }, 400);
           }}
+          validationSchema={Yup.object().shape({
+            desde: Yup.string()
+              .nullable()
+              .required("Requerido"),
+            hasta: Yup.string()
+              .nullable()
+              .required("Requerido"),
+            specie: Yup.string()
+              .nullable()
+              .required("Requerido")
+          })}
         >
           {({
             values,
-            //   errors,
+            errors,
             touched,
             //   handleChange,
             //   handleBlur,
@@ -59,9 +67,11 @@ const ListadoBajaDIIO = () => {
                     setFieldValue(field, fieldValue.label);
                   }}
                   onBlur={setFieldTouched}
-                  touched={touched.selectedSpecie}
+                  touched={touched.specie}
                   // data={getSpecies}
                   data={getSpeciesAPI}
+                  required={true}
+                  errors={errors.specie}
                 />
               </div>
               <br />
@@ -73,6 +83,8 @@ const ListadoBajaDIIO = () => {
                   className="form-control"
                   name="desde"
                   placeholder="Desde"
+                  errors={errors.desde}
+                  required={true}
                 />
                 <Datepicker
                   selected={values.hasta}
@@ -80,6 +92,8 @@ const ListadoBajaDIIO = () => {
                   className="form-control"
                   name="hasta"
                   placeholder="Hasta"
+                  errors={errors.hasta}
+                  required={true}
                 />
               </div>
               <br />
