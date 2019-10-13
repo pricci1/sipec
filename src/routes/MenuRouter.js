@@ -3,13 +3,16 @@ import { Router } from "@reach/router";
 import DiioMenu from "./DIIOMenu";
 import Sidebar from "../components/Sidebar/Sidebar";
 import AnimalMovementMenu from "./AnimalMovementMenu";
-import PurchaseListDiioTab from "./DIIOMenuTabs/PurchaseListDiioTab"
+import PurchaseListDiioTab from "./DIIOMenuTabs/PurchaseListDiioTab";
 import NotAppliedDroppedDiio from "../components/Diio/NotAppliedDroppedDiio";
 import NewPurchaseDiio from "../components/Diio/NewPucharseDiio";
 import StockDIIOEstablecimiento from "../pages/stockDIIOEstablecimiento";
 import ListadoBajaDIIO from "../pages/listadoBajaDIIO";
-import CreateAnimalMoves from "../components/AnimalMoves/CreateAnimalMoves"
+import CreateAnimalMoves from "../components/AnimalMoves/CreateAnimalMoves";
 import AnimalMoves from "../pages/AnimalMoves";
+import AdminAnimalsDiioMenu from "./AdminAnimalsDiioMenu";
+import AnimalDeathRegistrationTab from "./AnimalAdministrationMenuTabs/AnimalDeathRegistrationTab";
+
 const MenuRouter = () => {
   return (
     <>
@@ -19,15 +22,18 @@ const MenuRouter = () => {
       <main className="col-10">
         <Router>
           <DiioMenu path="/diio">
-            <PurchaseListDiioTab path="lista-compra"/>
-            <NewPurchaseDiio path="compra"/>
+            <PurchaseListDiioTab path="lista-compra" />
+            <NewPurchaseDiio path="compra" />
             <StockDIIOEstablecimiento path="inventario" />
             <NotAppliedDroppedDiio path="baja-diios" />
             <ListadoBajaDIIO path="lista-baja-diios" />
           </DiioMenu>
+          <AdminAnimalsDiioMenu path="/animal-diio">
+            <AnimalDeathRegistrationTab path="animal_death_registration" />
+          </AdminAnimalsDiioMenu>
           <AnimalMovementMenu path="/movimientos">
-            <CreateAnimalMoves path='create_animal_moves' />
-            <AnimalMoves path='animal_moves' />
+            <CreateAnimalMoves path="create_animal_moves" />
+            <AnimalMoves path="animal_moves" />
           </AnimalMovementMenu>
         </Router>
       </main>
