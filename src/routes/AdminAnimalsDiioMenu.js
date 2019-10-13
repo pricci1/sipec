@@ -5,6 +5,9 @@ import { ButtonGroup } from "react-bootstrap";
 const menuLinks = [
   { text: "Muerte Animal", linkTo: "animal_death_registration" }
 ];
+// const menuLinks2=[
+//     { text: "Nueva muerte lml", linkTo: "new_diio_unsuscribe"}
+// ];
 
 const DiioMenu = ({ children }) => (
   <div>
