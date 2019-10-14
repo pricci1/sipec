@@ -40,16 +40,17 @@ const InventoryDiioTab = () => {
     getDiioPurchases();
   }, []);
   return (
-    <PucharseListDiio
-      headers={["Registro", "Comprador", "Fecha", "Nombre"]}
-      data={data.map(purchase => [
-        purchase.Nregister,
-        purchase.vendor_name,
-        purchase.buyer_name,
-        purchase.date,
-        purchase.rup
-      ])}
-    />
+    <text>lalala</text>
+    // <PucharseListDiio
+    //   headers={["Registro", "Comprador", "Fecha", "Nombre"]}
+    //   data={data.map(purchase => [
+    //     purchase.Nregister,
+    //     purchase.vendor_name,
+    //     purchase.buyer_name,
+    //     purchase.date,
+    //     purchase.rup
+    //   ])}
+    // />
   );
 };
 export default InventoryDiioTab;
