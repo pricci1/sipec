@@ -12,6 +12,7 @@ import CreateAnimalMoves from "../components/AnimalMoves/CreateAnimalMoves";
 import AnimalMoves from "../pages/AnimalMoves";
 import AdminAnimalsDiioMenu from "./AdminAnimalsDiioMenu";
 import AnimalDeathRegistrationTab from "./AnimalAdministrationMenuTabs/AnimalDeathRegistrationTab";
+import CreateNewAnimalDeath from "../components/AnimalAdministration/CreateNewAnimalDeath";
 
 const MenuRouter = () => {
   return (
@@ -28,8 +29,9 @@ const MenuRouter = () => {
             <NotAppliedDroppedDiio path="baja-diios" />
             <ListadoBajaDIIO path="lista-baja-diios" />
           </DiioMenu>
-          <AdminAnimalsDiioMenu path="/animal-diio">
-            <AnimalDeathRegistrationTab path="animal_death_registration" />
+          <AdminAnimalsDiioMenu path="/admin-animales-diio">
+            <AnimalDeathRegistrationTab path="registro_muerte_animal" />
+            <CreateNewAnimalDeath path="registro_muerte_animal/nueva" />
           </AdminAnimalsDiioMenu>
           <AnimalMovementMenu path="/movimientos">
             <CreateAnimalMoves path="create_animal_moves" />
