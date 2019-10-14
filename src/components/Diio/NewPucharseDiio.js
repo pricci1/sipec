@@ -219,8 +219,19 @@ const NewPurchaseDiio = () => {
               <br />
               <hr />
 
-              <button className="btn btn-primary" type="submit">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={!dirty || isSubmitting}
+              >
                 Realizar compra
+              </button>
+              <button
+                onClick={handleReset}
+                className="btn btn-secondary"
+                type="button"
+              >
+                Limpiar
               </button>
             </form>
           );
