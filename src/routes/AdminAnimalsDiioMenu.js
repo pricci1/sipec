@@ -2,14 +2,12 @@ import React from "react";
 import { Link, Location } from "@reach/router";
 import { ButtonGroup } from "react-bootstrap";
 
-const menuLinks = [
-  { text: "Muerte Animal", linkTo: "animal_death_registration" }
-];
+const menuLinks = [{ text: "Muerte Animal", linkTo: "registro_muerte_animal" }];
 // const menuLinks2=[
 //     { text: "Nueva muerte lml", linkTo: "new_diio_unsuscribe"}
 // ];
 
-const DiioMenu = ({ children }) => (
+const AdminAnimalsDiioMenu = ({ children }) => (
   <div>
     <div className="row">
       <div className=" d-flex flex-column">
@@ -43,4 +41,4 @@ const DiioMenu = ({ children }) => (
     {children}
   </div>
 );
-export default DiioMenu;
+export default AdminAnimalsDiioMenu;

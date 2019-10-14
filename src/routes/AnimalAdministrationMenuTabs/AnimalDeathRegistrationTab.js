@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import PucharseListDiio from "../../components/Diio/PucharseListDiio";
 import axios from "axios";
+import { Container } from "react-bootstrap";
+import { Link } from "@reach/router";
 
 const InventoryDiioTab = () => {
   const [data, setData] = useState([]);
@@ -40,16 +42,21 @@ const InventoryDiioTab = () => {
     getDiioPurchases();
   }, []);
   return (
-    <PucharseListDiio
-      headers={["Registro", "Comprador", "Fecha", "Nombre"]}
-      data={data.map(purchase => [
-        purchase.Nregister,
-        purchase.vendor_name,
-        purchase.buyer_name,
-        purchase.date,
-        purchase.rup
-      ])}
-    />
+    <Container>
+      <Link to="nueva" className="btn btn-primary">
+        Nuevo
+      </Link>
+      <PucharseListDiio
+        headers={["Registro", "Comprador", "Fecha", "Nombre"]}
+        data={data.map(purchase => [
+          purchase.Nregister,
+          purchase.vendor_name,
+          purchase.buyer_name,
+          purchase.date,
+          purchase.rup
+        ])}
+      />
+    </Container>
   );
 };
 export default InventoryDiioTab;

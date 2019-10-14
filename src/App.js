@@ -6,7 +6,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { APIProvider } from "./components/APIProvider";
 
-
 // import SIPECTable from "./components/AnimalMoves/SIPECtable";
 
 import Sipec from "./routes/Sipec";
