@@ -4,7 +4,11 @@ import Login from "../components/User/Login";
 import Navbar from "../components/Navbar/Navbar";
 import MenuRouter from "./MenuRouter";
 const Sipec = () => {
-  const [logged, setLogged] = useState(false);
+  var disableLogin = false;
+  if (process.env.NO_LOGIN) {
+    disableLogin = true;
+  }
+  const [logged, setLogged] = useState(disableLogin);
   return (
     <div>
       <header className="bg-dark">
