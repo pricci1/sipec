@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ReactDOM from "react-dom";
-import axios from "axios";
+import APIContext from "../../components/APIProvider";
+import { getDiioPurchaseDetails } from "../../lib/APIDiio";
 
 const PucharseDetailsDiioModal = props => {
-  const backendUrl = "http://sipec-backend.herokuapp.com";
+  const api = useContext(APIContext);
 
   const [details, setDetails] = useState([]);
 
-  async function getPurchaseDiioDetails() {
-    const detail = await axios.get(
-      `${backendUrl}/diio_purchases/${props.purchase_diio_id}`
-    );
+  async function getDiioPurchaseDetailsApi() {
+    const data = await getDiioPurchaseDetails(api, props.purchase_diio_id);
     var {
       diio_purchase: { confirmed, brand, created_at: date },
       establishment: {
@@ -18,8 +17,9 @@ const PucharseDetailsDiioModal = props => {
         name: purchaser_name,
         establishment_type: purchaser_type
       },
-      diio_provider: { rut: provider_rut, person_type: provider_type }
-    } = detail.data;
+      diio_provider: { rut: provider_rut, person_type: provider_type },
+      diio_range //: { min: range_min, max: range_max }
+    } = data;
     setDetails({
       confirmed,
       brand,
@@ -28,12 +28,15 @@ const PucharseDetailsDiioModal = props => {
       purchaser_rut,
       purchaser_type,
       provider_rut,
-      provider_type
+      provider_type,
+      //range_min,
+      //range_max
+      diio_range
     });
   }
 
   useEffect(() => {
-    getPurchaseDiioDetails();
+    getDiioPurchaseDetailsApi();
   }, []);
 
   function getStringState(state) {
@@ -82,6 +85,16 @@ const PucharseDetailsDiioModal = props => {
         </p>
         <p>
           <b>Fecha:</b> {details.date}
+        </p>
+        <p>
+          <b>Rango:</b>{" "}
+          {details.diio_range != null ? (
+            <p>
+              {details.diio_range.min} - {details.diio_range.max}
+            </p>
+          ) : (
+            "no aplica"
+          )}
         </p>
         <h4>Datos del Vendedor</h4>
         <p>

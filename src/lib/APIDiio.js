@@ -17,29 +17,26 @@ export const getProviders = async apiInstance => {
   }));
 };
 
-export const dropDiioRanges = (
-  apiInstance,
-  range
-) => {
-  
-  let data = {range}
-  apiInstance.post('/diio_drops', data)
-}
+export const dropDiioRanges = (apiInstance, range) => {
+  let data = { range };
+  apiInstance.post("/diio_drops", data);
+};
 
 export const getSpecies = async apiInstance => {
   const result = await apiInstance.get("/species");
-  
-  return result.data.map(({id, name}) => ({
-    value:id, 
+
+  return result.data.map(({ id, name }) => ({
+    value: id,
     label: name
-  }))
-}
+  }));
+};
 
-export const getDiioPurchases = async (apiInstance, id) => {
-  const diios = await apiInstance.get(`/diio_purchases/establishment/${id}`);
-  return diios.data
-}
-
+export const getDiioPurchases = async (apiInstance, establishmentId) => {
+  const diios = await apiInstance.get(
+    `/diio_purchases/establishment/${establishmentId}`
+  );
+  return diios.data;
+};
 
 export const getBrands = async apiInstance => {
   const result = await apiInstance.get("/diio_purchases");
@@ -55,6 +52,18 @@ export const getModels = async apiInstance => {
     value: id,
     label: model
   }));
+};
+
+export const getDiioPurchaseDetails = async (apiInstance, purchaseId) => {
+  const details = await apiInstance.get(`/diio_purchases/${purchaseId}`);
+  return details.data;
+};
+
+export const getUserEstablishments = async (apiInstance, userId) => {
+  const establishments = await apiInstance.get(
+    `/diio_purchases/user_establishment/${userId}`
+  );
+  return establishments.data;
 };
 
 // export const getDataStockDIIOEstablecimiento = async apiInstance => {
