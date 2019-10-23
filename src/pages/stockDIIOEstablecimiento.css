@@ -1,0 +1,26 @@
+.body {
+  margin-top: 10px;
+  padding: 0px;
+  margin-left: 0px;
+}
+
+.fecha {
+  display: flex;
+}
+
+.field {
+  border-radius: 3px;
+  border-style: solid;
+  border-color: darkgray;
+  border-width: 1px;
+}
+
+.label {
+  margin: 0px;
+  margin-top: 10px;
+}
+
+.selectors {
+  max-width: 400px;
+  margin-top: 10px;
+}

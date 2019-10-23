@@ -2,6 +2,11 @@ import React from "react";
 import AsyncSelect from "react-select/async";
 
 const EstablishmentDestinationSelect = props => {
+  console.log(props)
+  if(props.establishmentDestination.lenght == 0){
+    return(<div></div>)
+  }
+  console.log(props)
     return (
       <>
         <label htmlFor="establishmentDestination">
@@ -19,7 +24,7 @@ const EstablishmentDestinationSelect = props => {
             props.onBlur("establishmentDestination", value);
           }}
           value={props.value}
-          isDisabled={props.establishmentDestination === 0}
+          isDisabled={props.establishmentDestination.lenght === 0}
         />
         
       </>

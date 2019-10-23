@@ -18,7 +18,7 @@ const AnimalMovesTable = props => {
 
   function getColumnItem(index, item) {
     if(index == 8){
-      return <ModalAnimalMoves />
+      return <ModalAnimalMoves nformulario = {item[0]} fechaformulario = {item[1]} ruporigen = {item[2]} establecimientoorigen= {item[3]} rupdestino = {item[4]} establecimientodestino = {item[5]} salida = {item[6]} llega = {item[7]} />
     } else {
       return item[index]
     }

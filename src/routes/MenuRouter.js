@@ -8,7 +8,8 @@ import NotAppliedDroppedDiio from "../components/Diio/NotAppliedDroppedDiio";
 import NewPurchaseDiio from "../components/Diio/NewPucharseDiio";
 import StockDIIOEstablecimiento from "../pages/stockDIIOEstablecimiento";
 import ListadoBajaDIIO from "../pages/listadoBajaDIIO";
-
+import CreateAnimalMoves from "../components/AnimalMoves/CreateAnimalMoves"
+import AnimalMoves from "../pages/AnimalMoves";
 const MenuRouter = () => {
   return (
     <>
@@ -24,7 +25,10 @@ const MenuRouter = () => {
             <NotAppliedDroppedDiio path="baja-diios" />
             <ListadoBajaDIIO path="lista-baja-diios" />
           </DiioMenu>
-          <AnimalMovementMenu path="/movimiento-animal"></AnimalMovementMenu>
+          <AnimalMovementMenu path="/movimientos">
+            <CreateAnimalMoves path='create_animal_moves' />
+            <AnimalMoves path='animal_moves' />
+          </AnimalMovementMenu>
         </Router>
       </main>
     </>

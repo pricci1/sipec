@@ -2,6 +2,9 @@ import React from "react";
 import AsyncSelect from "react-select/async";
 
 const EstablishmentOriginSelect = props => {
+  if(props.value == ""){
+    return(<div></div>)
+  }
   return (
     <>
       <label htmlFor="establishmentOrigin">

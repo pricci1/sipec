@@ -41,7 +41,7 @@ const InventoryDiioTab = () => {
   }, []);
   return (
     <PucharseListDiio
-      headers={["NDIIO", "Motivo", "Especie", "Fecha"]}
+      headers={["DIIO", "Motivo", "Especie", "Fecha"]}
       data={data.map(purchase => [
         purchase.Nregister,
         purchase.vendor_name,

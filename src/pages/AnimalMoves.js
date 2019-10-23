@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import DatePickerField from "../components/AnimalMoves/DatePickerField";
 import Dropdown from "../components/AnimalMoves/Dropdown";
 import RangeInput from "../components/AnimalMoves/RangeInput";
 import EstablishmentOriginSelect from "../components/AnimalMoves/EstablishmentOriginSelect";
-
 import EstablishmentDestinationSelect from "../components/AnimalMoves/EstablishmentDestinationSelect";
 import AnimalMovesTable from "../components/AnimalMoves/AnimalMovesTable";
 import RadioButton from "../components/AnimalMoves/RadioButton";
 import RadioButtonGroup from "../components/AnimalMoves/RadioButtonGroup";
+import APIContext from "../components/APIProvider"
 
 const AnimalMoves = () => {
+  const apiInstance = useContext(APIContext)
   /*
     // FORM
   // Inputs:    Desde
@@ -29,23 +29,30 @@ const AnimalMoves = () => {
   // RETURN
   // nºde formulario,fecha de formulario, RUP origen, Establecimineto orgien, RUP destino, Establecimento Destino, salida, llegada, estado
   */
-  const apiUrl = "http://sipec-backend.herokuapp.com";
   const [data, setData] = useState([]);
-
-  async function getEstablishment() {
-    const Establecimento = await axios.get(`${apiUrl}/establishments`);
-    console.log(Establecimento.data);
-    return Establecimento.data.map(({ id, name, rup }) => ({
-      value: id,
+  const [establishment, setestablishment] = useState([]);
+  const [moves, setmoves] = useState([]);
+  const [loading, setloading] = useState(true);
+  async function getEstablishment () {
+    const Establecimento = await apiInstance.get("/establishments");
+    setestablishment(Establecimento.data.map(({ name, rup }) => ({
+      value: rup,
       label: rup + "/" + name
-    }));
-    //RUP como id
+      }))
+    );
+    setloading(false)
   }
-
+  useEffect(() => getEstablishment(), []);
+  useEffect(()=> {getEstablishment()}, []);
+  async function getAnimalMovements() {
+    const moves = await apiInstance.get("/animal_movement_table")
+    setmoves(moves)
+  }
+  useEffect(()=> {getAnimalMovements()}, []);
   async function getAnimalMoves(
     establishmentOrigin,
     establishmentDestination,
-    dateDepartue,
+    dateDeparture,
     dateArrival,
     nForm,
     state,
@@ -53,44 +60,19 @@ const AnimalMoves = () => {
   ) {
     //no terminada falta agregar a la tabla los datos que se sacan de get estableciminetos y combinarlos con moves
 
-    var moves = await axios.get(`${apiUrl}/animal_movement_table`);
-    console.log(moves.data);
-    /*if (establishmentOrigin != false) {
-      moves = moves.data.filter(
-        d => (d.origin_establishment.id = establishmentOrigin)
-      );
-    }
-    if (RUPOrigen != null) {
-      moves = moves.data.filter(d => (d.rupO = RUPOrigen));
-    }
-    if (establecimientoOrigen != null) {
-      moves = moves.data.filter(d => (d.estaO = establecimientoOrigen));
-    }
-    if (establecimientoDestino != null) {
-      moves = moves.data.filter(d => (d.estaD = establecimientoDestino));
-    }
-    if (desde != null) {
-      moves = moves.data.filter(d => (d.desde = desde));
-    }
-    if (hasta != null) {
-      moves = moves.data.filter(d => (d.rup = hasta));
-    }
-    if (nFormulario != null) {
-      moves = moves.data.filter(d => (d.rup = nFormulario));
-    }
-    if (estadoFormulario != null) {
-      moves = moves.data.filter(d => (d.rup = estadoFormulario));
-    }*/
-    console.log(moves);
+    /*var dataMap = moves.data.map(obj => ({
+      diio: obj.diios.map(o => ({ diio_data: o[0].diio_type_id }))
+    }));*/
 
-    return moves.data.map(
+    var movesMap = moves.data.map(
       ({
         animal_move: { arrival, departure, created_at, id },
         destination_establishment: {
           rup: rup_destination,
           name: name_destination
         },
-        origin_establishment: { rup: rup_origin, name: name_origin }
+        origin_establishment: { rup: rup_origin, name: name_origin },
+        diios
       }) => ({
         arrival,
         departure,
@@ -99,9 +81,61 @@ const AnimalMoves = () => {
         name_destination,
         rup_origin,
         name_origin,
-        id
+        id,
+        diio: diios.map(o => ({ diio_data: o[0].diio_type_id }))
       })
     );
+    //console.log({ map: dataMap });
+    if (establishmentOrigin != null) {
+      movesMap = movesMap.filter(d => d.rup_origin == establishmentOrigin);
+    }
+
+    if (establishmentDestination != null) {
+      movesMap = movesMap.filter(
+        d => d.rup_destination == establishmentDestination
+      );
+    }
+
+    if (dateDeparture != "") {
+      var dtd = new Date(dateDeparture);
+      movesMap = movesMap.filter(d => new Date(d.departure).getTime() >= dtd);
+    }
+    if (dateArrival != "") {
+      var dta = new Date(dateArrival);
+      movesMap = movesMap.filter(d => new Date(d.arrival).getTime() <= dta);
+    }
+    if (nForm != "") {
+      movesMap = movesMap.filter(d => d.id == nForm);
+    }
+
+    if (state != null) {
+      if (state == "Aceptado"){
+        movesMap = movesMap.filter(d => {d.diio == 1;console.log(d.diio);});
+      }
+      if (state == "Con problemas"){
+        movesMap = movesMap.filter(d => {d.diio == 2;console.log(d.diio);});
+      }
+      if (state == "En transito"){
+        movesMap = movesMap.filter(d => {d.diio == 3;console.log(d.diio);});
+      }
+        
+      
+    }
+    if (radioGroup != null) {
+      if (radioGroup == "lote") {
+        movesMap = movesMap.filter(d => d.diio == []);
+      }
+      if (radioGroup == "diio") {
+        movesMap = movesMap.filter(d => d.diio != []);
+        console.log(movesMap);
+      }
+    }
+    
+
+    return movesMap;
+  }
+  if(loading){
+    return(<div></div>)
   }
 
   return (
@@ -112,7 +146,7 @@ const AnimalMoves = () => {
           establishmentOrigin: "",
           establishmentDestination: "",
           dateArrival: "",
-          dateDepartue: "",
+          dateDeparture: "",
           nForm: "",
           state: "",
           radioGroup: ""
@@ -121,10 +155,10 @@ const AnimalMoves = () => {
           getAnimalMoves(
             values.establishmentOrigin.value,
             values.establishmentDestination.value,
-            values.dateDepartue.value,
-            values.dateArrival.value,
-            values.nForm.value,
-            values.state.value,
+            values.dateDeparture,
+            values.dateArrival,
+            values.nForm,
+            values.state,
             values.radioGroup.value
           ).then(response => {
             setData(response);
@@ -136,7 +170,7 @@ const AnimalMoves = () => {
         validationSchema={Yup.object().shape({
           establishmentOrigin: Yup.object().nullable(),
           establishmentDestination: Yup.object().nullable(),
-          dateDepartue: Yup.object().nullable(),
+          dateDeparture: Yup.object().nullable(),
           dateArrival: Yup.object().nullable(),
           nForm: Yup.object().nullable(),
           state: Yup.object().nullable(),
@@ -160,9 +194,9 @@ const AnimalMoves = () => {
           } = props;
           return (
             <form onSubmit={handleSubmit}>
-              <EstablishmentOriginSelect
+              {/* <EstablishmentOriginSelect
                 value={values.establishmentOrigin}
-                establishmentOrigin={getEstablishment}
+                establishmentOrigin={establishment}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 error={errors.establishmentOrigin}
@@ -170,12 +204,12 @@ const AnimalMoves = () => {
               />
               <EstablishmentDestinationSelect
                 value={values.establishmentDestination}
-                establishmentDestination={getEstablishment}
+                establishmentDestination={establishment}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 error={errors.establishmentDestination}
                 touched={touched.establishmentDestination}
-              />
+              /> */}
 
               <div>
                 <label htmlFor="dateDeparture">Desde</label>
@@ -183,6 +217,8 @@ const AnimalMoves = () => {
                   name="dateDeparture"
                   value={values.dateDeparture}
                   onChange={setFieldValue}
+                  className="form-control"
+                  dateFormat="YYYY-MM-DD"
                 />
               </div>
               <div>
@@ -191,6 +227,7 @@ const AnimalMoves = () => {
                   name="dateArrival"
                   value={values.dateArrival}
                   onChange={setFieldValue}
+                  className="form-control"
                 />
               </div>
 
@@ -245,9 +282,6 @@ const AnimalMoves = () => {
                 type="submit"
                 disabled={isSubmitting}
                 className="btn btn-primary ml-1"
-                onClick={() => {
-                  alert(JSON.stringify(data));
-                }}
               >
                 Submit
               </button>
@@ -268,7 +302,7 @@ const AnimalMoves = () => {
           "Llegada",
           "Ver Detalle"
         ]}
-        data={data.map( moves => [
+        data={data.map(moves => [
           moves.id,
           moves.created_at,
           moves.rup_origin,

@@ -1,6 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Formik, Field } from "formik";
+import React, { useContext } from "react";
+import { Formik } from "formik";
 import { Datepicker } from "react-formik-ui";
+import * as Yup from "yup";
 import Selector from "../components/Diio/Utilities/FormikSelector";
 // import DatePicker from "react-datepicker";
 
@@ -9,24 +10,21 @@ import Selector from "../components/Diio/Utilities/FormikSelector";
 import { getSpecies } from "../lib/APIDiio";
 import APIContext from "../components/APIProvider";
 
-import PucharseListDiio from "../components/Diio/PucharseListDiio";
-import PurchaseListDiioTab from "../routes/DIIOMenuTabs/PurchaseListDiioTab";
-import InventoryDiioTab from "../routes/DIIOMenuTabs/InventoryDiioTab";
 import ListDroppedDiioTab from "../routes/DIIOMenuTabs/ListDroppedDiioTab";
+import "./listadoBajaDIIO.css";
 
 const ListadoBajaDIIO = () => {
   const api = useContext(APIContext);
 
   async function getSpeciesAPI() {
     const data = await getSpecies(api);
-    console.log(data);
     return data;
   }
   return (
-    <div>
-      <h1>Listado Baja de DIIO</h1>
+    <div className="body">
+      <h2>Listado Baja de DIIOs</h2>
       <div>
-        <h2>Buscar Baja de DIIO</h2>
+        <h4>Buscar Baja de DIIO</h4>
         <Formik
           initialValues={{ desde: "", hasta: "", specie: "" }}
           onSubmit={(values, { setSubmitting }) => {
@@ -35,10 +33,21 @@ const ListadoBajaDIIO = () => {
               setSubmitting(false);
             }, 400);
           }}
+          validationSchema={Yup.object().shape({
+            desde: Yup.string()
+              .nullable()
+              .required("Requerido"),
+            hasta: Yup.string()
+              .nullable()
+              .required("Requerido"),
+            specie: Yup.string()
+              .nullable()
+              .required("Requerido")
+          })}
         >
           {({
             values,
-            //   errors,
+            errors,
             touched,
             //   handleChange,
             //   handleBlur,
@@ -49,39 +58,48 @@ const ListadoBajaDIIO = () => {
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
-              <Selector
-                fieldName="specie"
-                fieldValue={values.specie}
-                labelName="Especie"
-                onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.label);
-                }}
-                onBlur={setFieldTouched}
-                touched={touched.selectedSpecie}
-                // data={getSpecies}
-                data={getSpeciesAPI}
-              />
-              <p></p>
-              <h3>Rango DIIO</h3>
-              <p></p>
-              <Datepicker
-                selected={values.desde}
-                dateFormat="MMMM d, yyyy"
-                className="form-control"
-                name="desde"
-                label="Desde"
-              />
-              <Datepicker
-                selected={values.hasta}
-                dateFormat="MMMM d, yyyy"
-                className="form-control"
-                name="hasta"
-                label="Hasta"
-              />
-
+              <div className="selector">
+                <Selector
+                  fieldName="specie"
+                  fieldValue={values.specie}
+                  labelName="Especie"
+                  onChange={(field, fieldValue) => {
+                    setFieldValue(field, fieldValue.label);
+                  }}
+                  onBlur={setFieldTouched}
+                  touched={touched.specie}
+                  // data={getSpecies}
+                  data={getSpeciesAPI}
+                  required={true}
+                  errors={errors.specie}
+                />
+              </div>
+              <br />
+              Rango DIIO
+              <div className="fecha">
+                <Datepicker
+                  selected={values.desde}
+                  dateFormat="MMMM d, yyyy"
+                  className="form-control"
+                  name="desde"
+                  placeholder="Desde"
+                  errors={errors.desde}
+                  required={true}
+                />
+                <Datepicker
+                  selected={values.hasta}
+                  dateFormat="MMMM d, yyyy"
+                  className="form-control"
+                  name="hasta"
+                  placeholder="Hasta"
+                  errors={errors.hasta}
+                  required={true}
+                />
+              </div>
+              <br />
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-outline-primary"
                 disabled={isSubmitting}
               >
                 Filtrar
