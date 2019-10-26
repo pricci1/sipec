@@ -7,8 +7,8 @@ const menuLinks = [
   { text: "Animales", linkTo: "animales" },
   { text: "Cambio de DIIO", linkTo: "cambio-diio" },
   { text: "Muerte Animal", linkTo: "muerte-animal" },
-  { text: "Consultar datos DIIO", linkTo: "consulta-un-diio" },
-  { text: "Consultar datos grupo DIIO", linkTo: "consulta-grupo-diio" }
+  { text: "Consultar datos por DIIO", linkTo: "consulta-un-diio" },
+  { text: "Consultar datos por grupo de DIIOs", linkTo: "consulta-grupo-diio" }
 ];
 
 const AnimalAdministrationDIIOMenu = ({ children }) => (
