@@ -9,6 +9,7 @@ import { Selector } from "./Utils/FormikSelectors";
 // import {  } from "../../lib/APIAnimalExistence";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Link } from "@reach/router";
 
 const getComunas = () => [];
 const getRegions = () => [];
@@ -20,7 +21,10 @@ const DeclarationsList = () => {
 
   return (
     <div className="body">
-      <h1>Lista de Declaración de Existencia</h1>
+      <h1 className="d-md-inline pr-3">Lista de Declaración de Existencia</h1>
+      <Link to="new" className="d-md-inline btn btn-primary">
+        &#10010; Nueva
+      </Link>
       <h2>Filtrar Declaraciones</h2>
       <Formik
         initialValues={{
