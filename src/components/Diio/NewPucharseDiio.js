@@ -26,7 +26,6 @@ const buyDiioSchema = Yup.object().shape({
     Yup.object()
       .shape({
         desde: Yup.number()
-
           .min(0, "Desde debe ser >= 0")
           .required("Requerido"),
         hasta: Yup.number()
