@@ -39,7 +39,7 @@ const changeDiioSchema = Yup.object().shape({
   )
 });
 
-const ChangeDiio = () => {
+const NewChangeDiio = () => {
   const api = useContext(ApiContext);
   async function getSpecies() {
     const data = await getSpeciesApi(api);
@@ -75,7 +75,7 @@ const ChangeDiio = () => {
         }}
         validationSchema={changeDiioSchema}
         onSubmit={(values, {setSubmitting}) => {
-
+          console.log(values)
         }}
       >
         {props => {
@@ -104,6 +104,7 @@ const ChangeDiio = () => {
                 data={getSpecies}
                 errors={errors.specie}
               />
+              <br/>
               <Selector
                 fieldName="establishment"
                 fieldValue={values.establishment}
@@ -114,6 +115,8 @@ const ChangeDiio = () => {
                 data={getEstablishments}
                 errors={errors.establishment}
               />
+              <br/>
+
               <Selector
                 fieldName="owner"
                 fieldValue={values.establishment}
@@ -124,6 +127,8 @@ const ChangeDiio = () => {
                 data={getOwners}
                 errors={errors.owner}
               />
+              <br/>
+
               <Selector
                 fieldName="mva"
                 fieldValue={values.establishment}
@@ -134,6 +139,8 @@ const ChangeDiio = () => {
                 data={getMvas}
                 errors={errors.mva}
               />
+              <br/>
+
               <label htmlFor="verification_date">Fecha verificación cambio Diio</label>
               <DatePicker
 								className={"form-control"}
@@ -207,4 +214,4 @@ const ChangeDiio = () => {
   );
 };
 
-export default ChangeDiio;
+export default NewChangeDiio;

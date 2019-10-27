@@ -37,6 +37,10 @@ export const getEstablishmentsApi = async apiInstance => {
     }))
 }
 
-export const getChangeDiioDataApi = (){
+export const getChangeDiioDataApi = (api, titular_id) => {
+  return []
+}
 
+export const getChangeRegistryDataApi = (api, registry_id) => {
+  return []
 }
