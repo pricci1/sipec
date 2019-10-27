@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Formik, Field, FieldArray } from "formik";
+import { Datepicker } from "react-formik-ui";
 import Selector from "../Diio/Utilities/FormikSelector";
 import * as Yup from "yup";
 import { postDiioPurchase, getProviders } from "../../lib/APIDiio";
@@ -159,8 +160,9 @@ const NewDeathRegistration = () => {
                 <br />
                 <div className="upload_death_register row">
                   <div className="col-md-1"></div>
+
                   <div className="jumbotron col-md-4">
-                    <h4>Carga individual</h4>
+                    <h5>Carga individual</h5>
                     <Selector
                       fieldName="type_id"
                       fieldValue={values.provider_id}
@@ -186,6 +188,20 @@ const NewDeathRegistration = () => {
                       touched={touched.provider_id}
                       data={getProvidersApi}
                       errors={errors.provider_id}
+                    />
+                    Fecha de Baja*
+                    <Datepicker
+                      selected={values.hasta}
+                      dateFormat="MMMM d, yyyy"
+                      className="form-control"
+                      name="fecha_baja"
+                      placeholder="dd/mm/aaaa"
+                    />
+                    Número de DIIO*
+                    <Field
+                      type="number"
+                      className="form-control"
+                      name="diio_de_baja"
                     />
                     <br />
                     <button className="btn btn-outline-secondary" type="submit">
