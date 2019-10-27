@@ -110,7 +110,7 @@ export const DeclarationsTable = ({ setModalDeclarationId, toggleModal }) => {
         entriesLabel={["Entradas por página"]}
         infoLabel={["Mostrando de", "a", "entradas, de"]}
         paginationLabel={["Anterior", "Siguiente"]}
-        searchLabel={["Buscar"]}
+        searchLabel={["Filtrar"]}
       />
     </>
   );
