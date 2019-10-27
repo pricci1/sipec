@@ -131,6 +131,21 @@ const DeclarationsList = () => {
                 locale="es-CL"
                 dateFormat="dd/MM/yy"
               />
+              <br />
+              <button
+                className="btn btn-primary mt-4"
+                type="submit"
+                disabled={!dirty || isSubmitting}
+              >
+                Buscar Declaraciones
+              </button>
+              <button
+                onClick={handleReset}
+                className="btn btn-secondary mt-4 ml-1"
+                type="button"
+              >
+                Limpiar
+              </button>
             </form>
           );
         }}
