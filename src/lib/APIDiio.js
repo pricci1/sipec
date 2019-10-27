@@ -30,7 +30,7 @@ export const getSpecies = async apiInstance => {
   const result = await apiInstance.get("/species");
   
   return result.data.map(({id, name}) => ({
-    value:id, 
+    value: id, 
     label: name
   }))
 }
