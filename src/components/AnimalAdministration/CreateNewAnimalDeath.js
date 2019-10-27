@@ -37,7 +37,7 @@ const buyDiioSchema = Yup.object().shape({
   )
 });
 
-const NewPurchaseDiio = () => {
+const NewDeathRegistration = () => {
   const api = useContext(APIContext);
 
   async function getSellerTypes() {
@@ -67,7 +67,7 @@ const NewPurchaseDiio = () => {
 
   return (
     <div className="body">
-      <h2>Nueva Compra</h2>
+      <h2>Nuevo Registro de Muerte Animal</h2>
       <Formik
         initialValues={{
           seller_type: "",
@@ -112,116 +112,105 @@ const NewPurchaseDiio = () => {
           } = props;
           return (
             <form onSubmit={handleSubmit}>
-              <div className="vendedor">
-                <h4>Datos de Vendedor</h4>
-                <Selector
-                  fieldName="seller_type"
-                  fieldValue={values.seller_type}
-                  labelName="Tipo"
-                  onChange={setFieldValue}
-                  onBlur={setFieldTouched}
-                  touched={touched.seller_type}
-                  data={getSellerTypes}
-                  errors={errors.seller_type}
-                />
-                <Selector
-                  fieldName="provider_id"
-                  fieldValue={values.provider_id}
-                  labelName="Nombre"
-                  onChange={(field, fieldValue) => {
-                    setFieldValue(field, fieldValue.value);
-                    setSelectedSellerRut(fieldValue.value);
-                  }}
-                  onBlur={setFieldTouched}
-                  touched={touched.provider_id}
-                  data={getProvidersApi}
-                  errors={errors.provider_id}
-                />
-                <label>Rut: {selectedSellerRut}</label>
+              <div style={{ alignContent: "center" }}>
+                <div className="row">
+                  <div className="col-md-2"></div>
+                  <div className="death_register col-md-6">
+                    <Selector
+                      fieldName="seller_type"
+                      fieldValue={values.seller_type}
+                      labelName="Especie*"
+                      onChange={setFieldValue}
+                      onBlur={setFieldTouched}
+                      touched={touched.seller_type}
+                      data={getSellerTypes}
+                      errors={errors.seller_type}
+                    />
+                    <Selector
+                      fieldName="titular_id"
+                      fieldValue={values.provider_id}
+                      labelName="Titular"
+                      onChange={(field, fieldValue) => {
+                        setFieldValue(field, fieldValue.value);
+                        setSelectedSellerRut(fieldValue.value);
+                      }}
+                      onBlur={setFieldTouched}
+                      touched={touched.provider_id}
+                      data={getProvidersApi}
+                      errors={errors.provider_id}
+                    />
+                    <Selector
+                      fieldName="mva_id"
+                      fieldValue={values.provider_id}
+                      labelName="MVA"
+                      onChange={(field, fieldValue) => {
+                        setFieldValue(field, fieldValue.value);
+                        setSelectedSellerRut(fieldValue.value);
+                      }}
+                      onBlur={setFieldTouched}
+                      touched={touched.provider_id}
+                      data={getProvidersApi}
+                      errors={errors.provider_id}
+                    />
+                  </div>
+                  <div className="col-md-4"></div>
+                </div>
+
+                <br />
+                <div className="upload_death_register row">
+                  <div className="col-md-1"></div>
+                  <div className="jumbotron col-md-4">
+                    <h4>Carga individual</h4>
+                    <Selector
+                      fieldName="type_id"
+                      fieldValue={values.provider_id}
+                      labelName="Tipo de Baja*"
+                      onChange={(field, fieldValue) => {
+                        setFieldValue(field, fieldValue.value);
+                        setSelectedSellerRut(fieldValue.value);
+                      }}
+                      onBlur={setFieldTouched}
+                      touched={touched.provider_id}
+                      data={getProvidersApi}
+                      errors={errors.provider_id}
+                    />
+                    <Selector
+                      fieldName="type_details_id"
+                      fieldValue={values.provider_id}
+                      labelName="Detalle del Tipo de Baja*"
+                      onChange={(field, fieldValue) => {
+                        setFieldValue(field, fieldValue.value);
+                        setSelectedSellerRut(fieldValue.value);
+                      }}
+                      onBlur={setFieldTouched}
+                      touched={touched.provider_id}
+                      data={getProvidersApi}
+                      errors={errors.provider_id}
+                    />
+                    <br />
+                    <button className="btn btn-outline-secondary" type="submit">
+                      Eliminar Cambio
+                    </button>
+                    <button className="btn btn-primary" type="submit">
+                      Agregar Cambio
+                    </button>
+                  </div>
+                  <div className="col-md-1"></div>
+                  <div className="jumbotron col-md-4"></div>
+                  <div className="col-md-2"></div>
+                </div>
               </div>
-              <div className="comprador">
-                <h4>Datos de Comprador</h4>
-                <Selector
-                  fieldName="buyer_type"
-                  fieldValue={values.seller_type}
-                  labelName="Tipo"
-                  onChange={setFieldValue}
-                  onBlur={setFieldTouched}
-                  touched={touched.buyer_type}
-                  data={getSellerTypes}
-                  errors={errors.buyer_type}
-                />
-                <p>Rut: {values.buyer_rut}</p>
-                <p>Nombre: {getBuyerName()}</p>
-                <Selector
-                  fieldName="establishment_id"
-                  fieldValue={values.establishment_id}
-                  labelName="Establecimiento"
-                  onChange={setFieldValue}
-                  onBlur={setFieldTouched}
-                  touched={touched.establishment_id}
-                  data={getBuyerEstablishments}
-                  errors={errors.establishment_id}
-                />
-              </div>
-              <div className="validacion">
-                <h4>Validación de Rangos</h4>
-                <p>Rango</p>
-                <FieldArray
-                  name="diio_ranges"
-                  render={arrayHelpers => (
-                    <div name="rango">
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={() =>
-                          arrayHelpers.push({ desde: 0, hasta: 0 })
-                        }
-                      >
-                        Añadir rango
-                      </button>
-                      {values.diio_ranges && values.diio_ranges.length > 0
-                        ? values.diio_ranges.map((_, index) => (
-                            <div key={index}>
-                              <div className="form-inline">
-                                <Field
-                                  type="number"
-                                  className="form-control mr-3"
-                                  name={`diio_ranges[${index}].desde`}
-                                />
-                                <Field
-                                  type="number"
-                                  className="form-control"
-                                  name={`diio_ranges[${index}].hasta`}
-                                />
-                                <button
-                                  type="button"
-                                  className="btn btn-danger m-3"
-                                  onClick={() => arrayHelpers.remove(index)}
-                                >
-                                  -
-                                </button>
-                                {errors.diio_ranges &&
-                                  errors.diio_ranges[index] && (
-                                    <div className="text-danger">
-                                      {errors.diio_ranges[index].desde || ""}
-                                      {errors.diio_ranges[index].hasta || ""}
-                                    </div>
-                                  )}
-                              </div>
-                            </div>
-                          ))
-                        : null}
-                    </div>
-                  )}
-                />
-              </div>
+
               <br />
               <hr />
-
-              <button className="btn btn-primary" type="submit">
-                Realizar compra
-              </button>
+              <div style={{ textAlign: "right" }}>
+                <button className="btn btn-outline-secondary" type="submit">
+                  Volver
+                </button>
+                <button className="btn btn-primary" type="submit">
+                  Guardar Cambios
+                </button>
+              </div>
             </form>
           );
         }}
@@ -230,4 +219,4 @@ const NewPurchaseDiio = () => {
   );
 };
 
-export default NewPurchaseDiio;
+export default NewDeathRegistration;
