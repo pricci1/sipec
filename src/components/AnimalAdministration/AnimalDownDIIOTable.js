@@ -19,6 +19,12 @@ export const AnimalEstablishmentRegistryTable = ({
         width: 40
       },
       {
+        label: "Fecha de Registro",
+        field: "date",
+        sort: "asc",
+        width: 150
+      },
+      {
         label: "RUP",
         field: "rup",
         sort: "asc",
@@ -31,14 +37,14 @@ export const AnimalEstablishmentRegistryTable = ({
         width: 270
       },
       {
-        label: "Titular",
-        field: "titular",
+        label: "RUT",
+        field: "rut",
         sort: "asc",
         width: 150
       },
       {
-        label: "Fecha de Registro",
-        field: "date",
+        label: "MVA",
+        field: "mva",
         sort: "asc",
         width: 150
       },
@@ -60,11 +66,12 @@ export const AnimalEstablishmentRegistryTable = ({
             &#10010;
           </button>
         ),
+        date: "12/12/13",
         rup: "1.1.1.1",
         establishment: "Lo Beltran",
-        titular: "Richard Feynman",
-        date: "12/12/13",
-        quantity: "13"
+        rut: "",
+        mva: "",
+        quantity: "57"
       },
       {
         show: (
@@ -76,11 +83,12 @@ export const AnimalEstablishmentRegistryTable = ({
             &#10010;
           </button>
         ),
+        date: "12/12/13",
         rup: "1.1.1.1",
         establishment: "Estancia La Fe",
-        titular: "John Doe",
-        date: "12/11/13",
-        quantity: "99"
+        rut: "",
+        mva: "",
+        quantity: "1"
       }
     ]
   };
