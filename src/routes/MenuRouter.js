@@ -11,7 +11,7 @@ import ListadoBajaDIIO from "../pages/listadoBajaDIIO";
 import CreateAnimalMoves from "../components/AnimalMoves/CreateAnimalMoves";
 import AnimalMoves from "../pages/AnimalMoves";
 import AnimalAdministrationDIIOMenu from "./AnimalAdministrationDIIOMenu";
-import ConsultDataSingleDiio from "../components/AnimalAdmin/ConsultDataSingleDiio";
+import ConsultDataSingleDiio from "../components/AnimalAdministration/ConsultDataSingleDiio";
 import AnimalDeathRegistrationTab from "./AnimalAdministrationMenuTabs/AnimalDeathRegistrationTab";
 import CreateNewAnimalDeath from "../components/AnimalAdministration/CreateNewAnimalDeath";
 import AnimalEstablishmentRegistry from "../components/AnimalAdministration/AnimalEstablishmentRegistry";

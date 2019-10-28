@@ -36,3 +36,7 @@ export const getEstablishmentsApi = async apiInstance => {
         label: rup + " - " + name
     }))
 }
+
+export const getChangeDiioDataApi = (){
+
+}
