@@ -25,7 +25,10 @@ export const Modal = ({ children, toggle, open }) => {
           className="modal d-table"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.95)" }}
         >
-          <div className="modal-dialog modal-dialog-scrollable" role="document">
+          <div
+            className="modal-dialog modal-lg modal-dialog-scrollable"
+            role="document"
+          >
             <div className="modal-content">
               <div className="modal-body">{children}</div>
               <div className="modal-footer">
