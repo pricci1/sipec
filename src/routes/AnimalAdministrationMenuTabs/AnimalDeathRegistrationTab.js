@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import SearchAnimalDownDIIO from "../../components/AnimalAdministration/AnimalDownDIIO";
+import AnimalDownDIIO from "../../components/AnimalAdministration/AnimalDownDIIO";
 import axios from "axios";
 import { Container } from "react-bootstrap";
-import { Link } from "@reach/router";
 
 const AnimalDeathRegistrationTab = () => {
   const [data, setData] = useState([]);
@@ -65,7 +64,7 @@ const AnimalDeathRegistrationTab = () => {
   }, []);
   return (
     <Container>
-      <SearchAnimalDownDIIO
+      <AnimalDownDIIO
         headers={[
           "Fecha Registro",
           "RUP",
@@ -82,10 +81,6 @@ const AnimalDeathRegistrationTab = () => {
         //   purchase.rup
         // ])}
       />
-
-      <Link to="nueva" className="btn btn-primary">
-        Nueva Muerte
-      </Link>
     </Container>
   );
 };
