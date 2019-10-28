@@ -6,8 +6,8 @@ import useModal from "../Modal";
 import APIContext from "../APIProvider";
 import Selector from "../Diio/Utilities/FormikSelector";
 import { AnimalEstablishmentRegistryTable } from "./AnimalDownDIIOTable";
-import AnimalEstablishmentRecordDetails from "./AnimalEstablishmentRecordDetails";
 import { Link } from "@reach/router";
+import AnimalEstablishmentRecordDetails from "./AnimalDownDIIODetails";
 
 const SearchAnimalDownDIIO = () => {
   const api = useContext(APIContext);
@@ -22,8 +22,8 @@ const SearchAnimalDownDIIO = () => {
 
   async function getEstablishments() {
     return [
-      { value: 1, label: "El Salto de Pilmaiquen" },
-      { value: 2, label: "La Mosqueta" }
+      { value: 1, label: "96.865.754-k - El Salto de Pilmaiquen" },
+      { value: 2, label: "12.345.123-2 - La Mosqueta" }
     ];
   }
 
