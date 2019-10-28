@@ -71,7 +71,7 @@ export const AnimalEstablishmentRegistryTable = ({
         establishment: "Lo Beltran",
         rut: "",
         mva: "",
-        quantity: "57"
+        quantity: "3"
       },
       {
         show: (
@@ -88,7 +88,7 @@ export const AnimalEstablishmentRegistryTable = ({
         establishment: "Estancia La Fe",
         rut: "",
         mva: "",
-        quantity: "1"
+        quantity: "3"
       }
     ]
   };

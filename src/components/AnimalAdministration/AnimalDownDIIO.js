@@ -9,7 +9,7 @@ import APIContext from "../APIProvider";
 
 import Selector from "../Diio/Utilities/FormikSelector";
 import { AnimalEstablishmentRegistryTable } from "./AnimalDownDIIOTable";
-import AnimalEstablishmentRecordDetails from "./AnimalEstablishmentRecordDetails";
+import AnimalEstablishmentRecordDetails from "./AnimalDownDIIODetails";
 
 const SearchAnimalDownDIIO = () => {
   const api = useContext(APIContext);
