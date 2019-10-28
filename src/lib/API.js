@@ -7,6 +7,7 @@ class API {
     this.client = localStorage.client || null;
     this.uid = localStorage.uid || null;
     this.apiUrl = "https://sipec-backend.herokuapp.com";
+    this.titular = localStorage.titular || null;
     // this.apiUrl = "http://192.168.0.30:3000";
     //this.apiUrl = "http://192.168.0.26:3000";
   }
@@ -39,6 +40,13 @@ class API {
     localStorage.client = this.client;
     localStorage.uid = this.uid;
     localStorage.currentUserId = this.currentUserId;
+
+    await this.get("/auth/validate_token").then(resp => {
+      if (resp.success) {
+        this.titular = resp.data.data["personal"] || null;
+      }
+    });
+    localStorage.titular = JSON.stringify(this.titular);
 
     return response;
   };
