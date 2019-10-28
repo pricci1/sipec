@@ -1,13 +1,17 @@
 import React from "react";
 import { Link, Location } from "@reach/router";
 import { ButtonGroup } from "react-bootstrap";
+import "./DIIOMenu.css";
 
-const menuLinks = [{ text: "Muerte Animal", linkTo: "registro_muerte_animal" }];
-// const menuLinks2=[
-//     { text: "Nueva muerte lml", linkTo: "new_diio_unsuscribe"}
-// ];
+const menuLinks = [
+  { text: "Animales", linkTo: "animales" },
+  { text: "Cambio de DIIO", linkTo: "cambio-diio" },
+  { text: "Muerte Animal", linkTo: "registro-muerte-animal" },
+  { text: "Consultar datos DIIO", linkTo: "consulta-un-diio" },
+  { text: "Consultar datos grupo DIIO", linkTo: "consulta-grupo-diio" }
+];
 
-const AdminAnimalsDiioMenu = ({ children }) => (
+const AnimalAdministrationDIIOMenu = ({ children }) => (
   <div>
     <div className="row">
       <div className=" d-flex flex-column">
@@ -41,4 +45,5 @@ const AdminAnimalsDiioMenu = ({ children }) => (
     {children}
   </div>
 );
-export default AdminAnimalsDiioMenu;
+
+export default AnimalAdministrationDIIOMenu;
