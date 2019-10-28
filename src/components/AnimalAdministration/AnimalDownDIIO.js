@@ -9,7 +9,7 @@ import APIContext from "../APIProvider";
 
 import Selector from "../Diio/Utilities/FormikSelector";
 import AnimalDeathRegistrationTab from "../../routes/AnimalAdministrationMenuTabs/AnimalDeathRegistrationTab";
-import { AnimalEstablishmentRegistryTable } from "./AnimalEstablishmentRegistryTable";
+import { AnimalEstablishmentRegistryTable } from "./AnimalDownDIIOTable";
 import AnimalEstablishmentRecordDetails from "./AnimalEstablishmentRecordDetails";
 
 const SearchAnimalDownDIIO = () => {

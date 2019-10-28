@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SearchAnimalDownDIIO from "../../components/AnimalAdministration/SearchAnimalDownDIIO";
+import SearchAnimalDownDIIO from "../../components/AnimalAdministration/AnimalDownDIIO";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import { Link } from "@reach/router";
