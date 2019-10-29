@@ -83,28 +83,21 @@ export const getMva = async apiInstance => {
 
 export const postAnimalDeathRegistration = async (
   apiInstance,
-  titular_id,
-  mva_id,
+  owner,
+  mva,
+  down,
+  down_details,
   death_date,
   diio_array
 ) => {
   let data = {
-    titular_id,
-    mva_id,
+    owner,
+    mva,
+    down,
+    down_details,
     death_date,
     diio_array
   };
-  let result = [];
-
-  for (let i = 0; i < diio_array.size(); i++) {
-    const response = await apiInstance.post("/report_death", {
-      titular: titular_id,
-      mva: mva_id,
-      death_date: data.death_date,
-      serial_diio: diio_array[i]
-    });
-    result.push(response);
-  }
-
-  return result[0];
+  const result = await apiInstance.post("/report_death", data);
+  return result;
 };
