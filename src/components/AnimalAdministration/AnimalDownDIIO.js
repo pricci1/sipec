@@ -8,7 +8,7 @@ import { AnimalEstablishmentRegistryTable } from "./AnimalDownDIIOTable";
 import { Link } from "@reach/router";
 import AnimalEstablishmentRecordDetails from "./AnimalDownDIIODetails";
 import { getEstablishmentsApi } from "../../lib/ApiAnimalAdministration";
-import { getUserEstablishments } from "../../lib/APIDiio";
+// import { getUserEstablishments } from "../../lib/APIDiio";
 import * as Yup from "yup";
 
 const searchAnimalDownSchema = Yup.object().shape({
@@ -63,46 +63,42 @@ const SearchAnimalDownDIIO = () => {
             setFieldTouched
           }) => (
             <form onSubmit={handleSubmit}>
-              <div className="row">
-                <div className="col-md-5">
-                  <Selector
-                    fieldName="establishment"
-                    fieldValue={values.establishment}
-                    labelName="RUP - Establecimiento"
-                    onChange={setFieldValue}
-                    onBlur={setFieldTouched}
-                    touched={touched.establishment}
-                    data={getEstablishments}
-                    errors={errors.establishment}
-                  />
-                  <p className="label">Fecha</p>
-                  <div className="fecha">
-                    <Datepicker
-                      placeholder="Desde"
-                      selected={values.desde}
-                      dateFormat="MMMM d, yyyy"
-                      className="form-control"
-                      name="desde"
-                    />
-                    <Datepicker
-                      selected={values.hasta}
-                      dateFormat="MMMM d, yyyy"
-                      className="form-control"
-                      name="hasta"
-                      placeholder="Hasta"
-                    />
-                  </div>
-                  {/* {errors.password && touched.password && errors.password} */}
-                  <br />
-                  <button
-                    className="btn btn-outline-primary"
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    Buscar
-                  </button>
-                </div>
+              <Selector
+                fieldName="establishment"
+                fieldValue={values.establishment}
+                labelName="RUP - Establecimiento"
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                touched={touched.establishment}
+                data={getEstablishments}
+                errors={errors.establishment}
+              />
+              <p className="label">Fecha</p>
+              <div className="fecha">
+                <Datepicker
+                  placeholder="Desde"
+                  selected={values.desde}
+                  dateFormat="MMMM d, yyyy"
+                  className="form-control"
+                  name="desde"
+                />
+                <Datepicker
+                  selected={values.hasta}
+                  dateFormat="MMMM d, yyyy"
+                  className="form-control"
+                  name="hasta"
+                  placeholder="Hasta"
+                />
               </div>
+              {/* {errors.password && touched.password && errors.password} */}
+              <br />
+              <button
+                className="btn btn-outline-primary"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                Buscar
+              </button>
             </form>
           )}
         </Formik>
