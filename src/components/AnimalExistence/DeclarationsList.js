@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 // import { Formik, Field, FieldArray } from "formik";
 // import * as Yup from "yup";
 import APIContext from "../APIProvider";
@@ -10,14 +10,25 @@ import { Selector } from "./Utils/FormikSelectors";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "@reach/router";
-
-const getComunas = () => [];
-const getRegions = () => [];
+import { getRegions, getNeighborhoods } from "../../lib/APICommon";
 
 const DeclarationsList = () => {
   const api = useContext(APIContext);
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
   const [modalDeclarationId, setModalDeclarationId] = useState();
+  const [fetchedData, setFetchedData] = useState({});
+
+  useEffect(() => {
+    const tasks = [
+      getRegions(api).then(resp =>
+        setFetchedData(oldState => ({ ...oldState, regions: resp }))
+      ),
+      getNeighborhoods(api).then(resp =>
+        setFetchedData(oldState => ({ ...oldState, comunas: resp }))
+      )
+    ];
+    Promise.all(tasks);
+  }, []);
 
   return (
     <div className="body">
@@ -25,7 +36,7 @@ const DeclarationsList = () => {
       <Link to="new" className="d-md-inline btn btn-primary">
         &#10010; Nueva
       </Link>
-      <h2>Filtrar Declaraciones</h2>
+      <h3>Filtrar Declaraciones</h3>
       <Formik
         initialValues={{
           rup: "",
@@ -34,6 +45,24 @@ const DeclarationsList = () => {
           comuna: "",
           registrationDate: { from: "", to: "" },
           declarationDate: { from: "", to: "" }
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          const {
+            rup,
+            region: { value: region },
+            comuna: { value: neighborhood },
+            registrationDate,
+            declarationDate
+          } = values;
+          const req = {
+            rup,
+            region,
+            neighborhood,
+            registrationDate,
+            declarationDate
+          };
+          alert(JSON.stringify(req));
+          setSubmitting(false);
         }}
       >
         {props => {
@@ -53,22 +82,20 @@ const DeclarationsList = () => {
 
           return (
             <form onSubmit={handleSubmit}>
-              <h3>rup</h3>
+              <h6>RUP</h6>
               <Field name="rup" className="form-control" />
-              <h3>nombre</h3>
+              <h6>Nombre del Establecimiento</h6>
               <Field name="name" className="form-control" />
-              <h3>Region</h3>
               <Selector
                 fieldName="region"
                 fieldValue={values.region}
-                label="Region"
+                label="Región"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.region}
-                options={getRegions()}
+                options={fetchedData.regions}
                 errors={errors.region}
               />
-              <h3>Comuna</h3>
               <Selector
                 fieldName="comuna"
                 fieldValue={values.comuna}
@@ -76,10 +103,10 @@ const DeclarationsList = () => {
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.comuna}
-                options={getComunas()}
+                options={fetchedData.comunas}
                 errors={errors.comuna}
               />
-              <h3>fecha</h3>
+              <h6>Fecha de Registro</h6>
               <DatePicker
                 onBlur={handleBlur}
                 className="form-control"
@@ -89,7 +116,6 @@ const DeclarationsList = () => {
                 }}
                 onSelect={handleChange}
                 name="registrationDate.from"
-                locale="es-CL"
                 dateFormat="dd/MM/yy"
               />
               <DatePicker
@@ -102,10 +128,9 @@ const DeclarationsList = () => {
                 minDate={values.registrationDate.from}
                 onSelect={handleChange}
                 name="registrationDate.to"
-                locale="es-CL"
                 dateFormat="dd/MM/yy"
               />
-              <h3>fecha</h3>
+              <h6>Fecha de Declaración</h6>
               <DatePicker
                 onBlur={handleBlur}
                 className="form-control"
@@ -115,7 +140,6 @@ const DeclarationsList = () => {
                 }}
                 onSelect={handleChange}
                 name="declarationDate.from"
-                locale="es-CL"
                 dateFormat="dd/MM/yy"
               />
               <DatePicker
@@ -128,7 +152,6 @@ const DeclarationsList = () => {
                 minDate={values.declarationDate.from}
                 onSelect={handleChange}
                 name="declarationDate.to"
-                locale="es-CL"
                 dateFormat="dd/MM/yy"
               />
               <br />
@@ -155,9 +178,6 @@ const DeclarationsList = () => {
         toggleModal={toggleModal}
         setModalDeclarationId={setModalDeclarationId}
       />
-      <button type="button" onClick={toggleModal}>
-        Open modal
-      </button>
       {modalIsOpened && (
         <Modal>
           <table className="table">
