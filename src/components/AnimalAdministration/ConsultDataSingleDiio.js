@@ -304,6 +304,12 @@ const ConsultDataSingleDiio = () => {
                     </tr>
                     <tr>
                       <td>
+                        <b>Marca</b>
+                      </td>
+                      <td>ALLFLEX</td>
+                    </tr>
+                    <tr>
+                      <td>
                         <b>Tipo</b>
                       </td>
                       <td>{data.diio_type}</td>
