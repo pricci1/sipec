@@ -1,25 +1,17 @@
-import React, { useContext, useReducer, useState } from "react";
+import React, { useContext, useReducer, useState, useEffect } from "react";
 import { Formik, FieldArray, Field } from "formik";
 // import * as Yup from "yup";
 import APIContext from "../APIProvider";
 // import {  } from "../../lib/APIAnimalExistence";
+import { getSpecies, getTitularEstablishments } from "../../lib/APICommon";
 import { Selector } from "./Utils/FormikSelectors";
 import Select from "react-select";
 
-const getEstablishments = () => {
-  return [
-    { value: 1, label: "El Salto de Pilmaiquen" },
-    { value: 2, label: "La Mosqueta" }
-  ];
-};
-
-const getSpecies = () => {
-  return [
-    { value: "burro", label: "Burro" },
-    { value: "cabra", label: "Cabra" },
-    { value: "vaca", label: "Vaca" }
-  ];
-};
+const formatEstablishments = establishments =>
+  establishments.map(({ id, rup, name }) => ({
+    value: id,
+    label: `${rup} - ${name}`
+  }));
 
 const getPendingDeclarationsYears = establishment => {
   return [
@@ -35,6 +27,8 @@ const speciesReducer = (state, action) => {
       return state.filter(el => el.value !== action.data.value);
     case "add":
       return [...state, action.data];
+    case "set":
+      return action.data;
     default:
       throw new Error();
   }
@@ -43,12 +37,57 @@ const speciesReducer = (state, action) => {
 const NewDeclaration = () => {
   const api = useContext(APIContext);
   const [selectedSpecie, setSelectedSpecie] = useState();
-  const [species, updateSpecies] = useReducer(speciesReducer, getSpecies());
+  const [species, updateSpecies] = useReducer(speciesReducer, []);
+  const [fetchedData, setFetchedData] = useState({});
+
+  useEffect(() => {
+    const tasks = [
+      getSpecies(api).then(res =>
+        updateSpecies({
+          type: "set",
+          data: res
+        })
+      ),
+      getTitularEstablishments(api).then(res =>
+        setFetchedData(oldState => ({
+          ...oldState,
+          establishments: formatEstablishments(res)
+        }))
+      )
+    ];
+    Promise.all(tasks);
+  }, []);
   return (
     <div className="body">
       <h1>Nueva de Declaración de Existencia</h1>
       <Formik
-        initialValues={{ establishment: "", species_groups: [], year: "" }}
+        initialValues={{
+          establishment: "",
+          species_groups: [],
+          year: "",
+          titularId: 1
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          const {
+            establishment: { value: establishmentId },
+            year: { value: declarationYear },
+            titularId,
+            species_groups: species_groupsOld
+          } = values;
+
+          const species_groups = species_groupsOld.map(
+            ({ specie: specieId, quantity }) => ({ specieId, quantity })
+          );
+
+          const req = {
+            establishmentId,
+            species_groups,
+            declarationYear,
+            titularId
+          };
+          alert(JSON.stringify(req));
+          setSubmitting(false);
+        }}
       >
         {props => {
           const {
@@ -66,18 +105,17 @@ const NewDeclaration = () => {
           } = props;
           return (
             <form onSubmit={handleSubmit}>
-              <h2>Año Declaración</h2>
               <Selector
                 fieldName="year"
                 fieldValue={values.year}
-                label="Año"
+                label="Año declaración"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.year}
                 options={getPendingDeclarationsYears()}
                 errors={errors.year}
               />
-              <h2>Datos del Establecimiento</h2>
+              <br />
               <Selector
                 fieldName="establishment"
                 fieldValue={values.establishment}
@@ -85,15 +123,15 @@ const NewDeclaration = () => {
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.establishment}
-                options={getEstablishments()}
+                options={fetchedData.establishments}
                 errors={errors.establishment}
               />
               <br />
-              <h2>Datos del Titular</h2>
-              <p>RUT: xx.xxx.xxx-x</p>
-              <p>Nombre: Juan Pérez</p>
+              <h6>Datos del Titular</h6>
+              <p>RUT: {api.titular.run}</p>
+              <p>Nombre: {`${api.titular.name} ${api.titular.last_name}`}</p>
               <br />
-              <h3>Grupos de Especies</h3>
+              <h6>Grupos de Especies</h6>
               <Select
                 options={species}
                 onChange={value => setSelectedSpecie(value)}
