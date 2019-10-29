@@ -21,7 +21,9 @@ const Sidebar = () => {
                 <li key={index} className="nav-item">
                   <Link
                     className={`nav-link ${
-                      pathname === linkTo ? "active" : ""
+                      pathname.split("/")[1] === linkTo.split("/")[1]
+                        ? "active"
+                        : ""
                     }`}
                     to={linkTo}
                   >
