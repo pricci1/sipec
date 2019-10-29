@@ -28,14 +28,23 @@ export const getSpeciesApi = async apiInstance => {
   }));
 };
 
+export const getMvasApi = async (apiInstance, establishment_id) => {
+  const result = await apiInstance.get(`/establishments/${establishment_id}/personals?role_id=1`)
+
+  return result.data.map(({id, name, run}) => ({
+    value: id,
+    label: run + " - " + name
+  }))
+}
+
 export const getEstablishmentsApi = async apiInstance => {
   const result = await apiInstance.get("/establishments");
 
-    return result.data.map(({id, name, rup}) => ({
-        value: id,
-        label: rup + " - " + name
-    }))
-}
+  return result.data.map(({ id, name, rup }) => ({
+    value: id,
+    label: rup + " - " + name
+  }));
+};
 
 export const getWorkerApi = async apiInstance => {
   const result = await apiInstance.get("/personal_establishment");
@@ -64,12 +73,22 @@ export const getAnimalTableApi = async apiInstance => {
   }));
 }
 export const getChangeDiioDataApi = (api, titular_id) => {
-  return []
-}
+  return [];
+};
 
 export const getChangeRegistryDataApi = (api, registry_id) => {
-  return []
-}
+  return [];
+};
+
+export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
+  const result = await apiInstance.get(
+    `/diio_purchases/user_establishment/${user_id}`
+  );
+  return result.data.map(({ id, name, rup }) => ({
+    value: id,
+    label: rup + " - " + name
+  }));
+};
 
 export const getInfoSingleDiioConsult = async (apiInstance, diio) => {
   const info = await apiInstance.get(`/diios/${diio}`);

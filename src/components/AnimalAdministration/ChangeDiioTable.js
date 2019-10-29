@@ -76,7 +76,6 @@ export const ChangeDiioTable = ({ setModalChangeId, toggleModal }) => {
     <>
       <MDBDataTable
         className="data-table"
-        stripped
         scrollY
         hover
         bordered
