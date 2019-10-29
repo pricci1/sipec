@@ -16,6 +16,7 @@ import AnimalDeathRegistrationTab from "./AnimalAdministrationMenuTabs/AnimalDea
 import CreateNewAnimalDeath from "../components/AnimalAdministration/CreateNewAnimalDeath";
 import AnimalEstablishmentRegistry from "../components/AnimalAdministration/AnimalEstablishmentRegistry";
 import ChangeDiio from "../components/AnimalAdministration/ChangeDiio";
+import CreateNewAnimalRegister from "../components/AnimalAdministration/CreateNewAnimalResgister";
 const MenuRouter = () => {
   return (
     <>
@@ -33,6 +34,7 @@ const MenuRouter = () => {
           </DiioMenu>
           <AnimalAdministrationDIIOMenu path="/animal-diio">
             <AnimalEstablishmentRegistry path="animales" />
+            <CreateNewAnimalRegister path="animales/new"/>
             <ConsultDataSingleDiio path="consulta-un-diio" />
             <AnimalDeathRegistrationTab path="registro-muerte-animal" />
             <CreateNewAnimalDeath path="registro-muerte-animal/nueva" />

@@ -41,3 +41,7 @@ export const getEstablishmentsApi = async apiInstance => {
 //   const result = await apiInstance.get("/animals_death");
 
 // }
+export const getInfoSingleDiioConsult = async (apiInstance, diio) => {
+  const info = await apiInstance.get(`/diios/${diio}`);
+  return info.data[0];
+};
