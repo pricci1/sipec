@@ -11,12 +11,40 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "@reach/router";
 import { getRegions, getNeighborhoods } from "../../lib/APICommon";
+import AnimalExistanceDetails from "./AnimalExistanceDetails";
 
-const DeclarationsList = () => {
+const filterDeclarations = (declarations, criteria) => {
+  function notNullAndIncludes(item, thing) {
+    if (criteria[thing] && criteria[thing] !== "") {
+      console.log(criteria[thing]);
+
+      return (
+        item[thing] &&
+        item[thing].toLowerCase().includes(criteria[thing].toLowerCase())
+      );
+    }
+    return true;
+  }
+  return declarations.filter(item => {
+    if (
+      notNullAndIncludes(item, "rup") &&
+      notNullAndIncludes(item, "name") &&
+      notNullAndIncludes(item, "region") &&
+      notNullAndIncludes(item, "neighborhood") &&
+      notNullAndIncludes(item, "rup")
+    ) {
+      return true;
+    }
+    return false;
+  });
+};
+
+const DeclarationsList = ({ declarations }) => {
   const api = useContext(APIContext);
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
   const [modalDeclarationId, setModalDeclarationId] = useState();
   const [fetchedData, setFetchedData] = useState({});
+  const [declarationList, setDeclarationList] = useState([]);
 
   useEffect(() => {
     const tasks = [
@@ -49,6 +77,7 @@ const DeclarationsList = () => {
         onSubmit={(values, { setSubmitting }) => {
           const {
             rup,
+            name,
             region: { value: region },
             comuna: { value: neighborhood },
             registrationDate,
@@ -56,11 +85,13 @@ const DeclarationsList = () => {
           } = values;
           const req = {
             rup,
+            name,
             region,
             neighborhood,
             registrationDate,
             declarationDate
           };
+          setDeclarationList(filterDeclarations(declarations, req));
           alert(JSON.stringify(req));
           setSubmitting(false);
         }}
@@ -175,43 +206,13 @@ const DeclarationsList = () => {
       </Formik>
       <hr />
       <DeclarationsTable
+        tableData={declarationList || []}
         toggleModal={toggleModal}
         setModalDeclarationId={setModalDeclarationId}
       />
       {modalIsOpened && (
         <Modal>
-          <table className="table">
-            <tbody>
-              <tr>
-                <th className="text-nowrap">RUP</th>
-                <td>1.1.1.1</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Nombre</th>
-                <td>
-                  Agricola Las Palmas Y Otrsas Cosas Que Hacen El Nombre Muy
-                  Largo
-                </td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Comuna</th>
-                <td>Puyehue</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Fecha Declaración</th>
-                <td>1/1/1</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Fecha Registro</th>
-                <td>2/2/2</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Año</th>
-                <td>2002</td>
-              </tr>
-            </tbody>
-          </table>
-          <h2>{modalDeclarationId}</h2>
+          <AnimalExistanceDetails declarationId={modalDeclarationId} />
         </Modal>
       )}
     </div>

@@ -1,7 +1,11 @@
 import React from "react";
 import { MDBDataTable } from "mdbreact";
 
-export const DeclarationsTable = ({ setModalDeclarationId, toggleModal }) => {
+export const DeclarationsTable = ({
+  setModalDeclarationId,
+  toggleModal,
+  tableData
+}) => {
   const handleEntryClick = declarationId => {
     setModalDeclarationId(declarationId);
     toggleModal();
@@ -28,7 +32,7 @@ export const DeclarationsTable = ({ setModalDeclarationId, toggleModal }) => {
       },
       {
         label: "Comuna",
-        field: "comuna",
+        field: "neighborhood",
         sort: "asc",
         width: 150
       },
@@ -57,44 +61,18 @@ export const DeclarationsTable = ({ setModalDeclarationId, toggleModal }) => {
         width: 150
       }
     ],
-    rows: [
-      {
-        show: (
-          <button
-            type="button"
-            className="btn btn-info btn-sm p-0"
-            onClick={() => handleEntryClick(1)}
-          >
-            &#10010;
-          </button>
-        ),
-        rup: "1.1.1.1",
-        name: "Tiger Nixon",
-        comuna: "Santiago",
-        declarationDate: "12/12/12",
-        registrationDate: "12/12/12",
-        type: "Anual",
-        year: "2012"
-      },
-      {
-        show: (
-          <button
-            type="button"
-            className="btn btn-info btn-sm p-0"
-            onClick={() => handleEntryClick(2)}
-          >
-            &#10010;
-          </button>
-        ),
-        rup: "1.1.1.2",
-        name: "Tiger Woods",
-        comuna: "Las Condes",
-        declarationDate: "12/12/13",
-        registrationDate: "12/12/13",
-        type: "Anual",
-        year: "2013"
-      }
-    ]
+    rows: tableData.map(data => ({
+      show: (
+        <button
+          type="button"
+          className="btn btn-info btn-sm p-0"
+          onClick={() => handleEntryClick(data.id)}
+        >
+          &#10010;
+        </button>
+      ),
+      ...data
+    }))
   };
   return (
     <>
