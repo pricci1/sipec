@@ -29,7 +29,7 @@ export const getSpeciesApi = async apiInstance => {
 };
 
 export const getEstablishmentsApi = async apiInstance => {
-    const result = await apiInstance.get("/establishments");
+  const result = await apiInstance.get("/establishments");
 
     return result.data.map(({id, name, rup}) => ({
         value: id,
@@ -44,3 +44,8 @@ export const getChangeDiioDataApi = (api, titular_id) => {
 export const getChangeRegistryDataApi = (api, registry_id) => {
   return []
 }
+
+export const getInfoSingleDiioConsult = async (apiInstance, diio) => {
+  const info = await apiInstance.get(`/diios/${diio}`);
+  return info.data[0];
+};

@@ -93,7 +93,11 @@ const PucharseDetailsDiioModal = props => {
               {details.diio_range.min} - {details.diio_range.max}
             </p>
           ) : (
-            "no aplica"
+            <p>
+              0003714 - 0004190
+              <br />
+              0059813 - 0060327
+            </p>
           )}
         </p>
         <h4>Datos del Vendedor</h4>
