@@ -2,11 +2,13 @@ import React, { useState, useContext } from "react";
 import * as Yup from "yup";
 import ApiContext from "../APIProvider";
 import { Formik, Field, FieldArray } from "formik";
-import DatePicker from "react-datepicker";
+import DatePickerField from "../AnimalMoves/DatePickerField";
+
 import Selector from "../Diio/Utilities/FormikSelector";
 import {
   getSpeciesApi,
-  getEstablishmentsApi
+  getEstablishmentsApi,
+  getWorkerApi
 } from "../../lib/ApiAnimalAdministration";
 
 export function getCurrentDate(separator=''){
@@ -23,33 +25,27 @@ const changeDiioSchema = Yup.object().shape({
   specie: Yup.string()
     .nullable()
     .required("Requerido"),
+  origin: Yup.string()
+    .nullable()
+    .required("Requerido"),
   establishment: Yup.string()
     .nullable()
     .required("Requerido"),
   owner: Yup.string()
     .nullable()
-    .required("Requerido"),
+    ,
   mva: Yup.string()
     .nullable()
     .required("Requerido"),
-  verification_date: Yup.string()
+  applicationDate: Yup.string()
     .nullable()
     .required("Requerido"),
-  diio_changes: Yup.array().of(
-    Yup.object()
-      .shape({
-        old: Yup.number("Debe ser un valor numérico")
-          .min(0, "Debe ser mayor o igual a 0")
-          .required("Requerido"),
-        new: Yup.number("Debe ser un valor numérico")
-          .min(Yup.ref("old"), "Debe ser mayor al diio antiguo")
-          .required("Requerido")
-      })
-      .required()
-  )
+  
+  
 });
 
-const RegisterAnimal = () => {
+
+const RegisterAnimal = (props) => {
   const api = useContext(ApiContext);
   async function getSpecies() {
     const data = await getSpeciesApi(api);
@@ -60,10 +56,9 @@ const RegisterAnimal = () => {
     return data;
   }
   async function getOwners() {
-    return [
-      { value: 1, label: "Agricola y ganaderia las vertientes SPA" },
-      { value: 2, label: "Gonzales Marquez Guido" }
-    ];
+    const data = await getWorkerApi(api);
+    return data;
+    
   }
   async function getMvas() {
     return [
@@ -71,21 +66,47 @@ const RegisterAnimal = () => {
       { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
     ];
   }
+
+  async function getOrigin() {
+    return [
+      { value: 1, label: "Nacional" },
+      { value: 2, label: "Extranjero" }
+    ];
+  }
+
+  async function sendRequest(specie, establishment, owner, mva, origin, applicationDate) {
+      console.log("aquii");
+    const response = await api.post("/create_animal_register", {specie: specie, rup:establishment, personal_owner: owner,
+                                                                date : getCurrentDate(), application_date: applicationDate, origin:origin  });
+    props.setLoadingState()
+    if (response.data.status == "ok") {
+      alert("Se creó el movimiento con éxito");
+    }
+  }
   return (
     <div className="body">
-      <h2>Nuevo Cambio de Diio</h2>
       <Formik
         initialValues={{
           specie: "",
           establishment: "",
           owner: "",
           mva: "",
-          verification_date: "",
-          diio_changes: []
+          origin: "",
+          applicationDate: "",
         }}
         validationSchema={changeDiioSchema}
-        onSubmit={(values, {setSubmitting}) => {
-
+        onSubmit={(values, { setSubmitting }) => {
+            sendRequest(
+              values.specie,
+              values.establishment,
+              values.owner,
+              values.mva,
+              values.origin,
+              values.applicationDate
+            ).then(response => {
+                    
+            });
+            setSubmitting(false); // This can also be used for displaying a spinner
         }}
       >
         {props => {
@@ -145,15 +166,28 @@ const RegisterAnimal = () => {
                 errors={errors.mva}
               />
               <div>Fecha Registro: {getCurrentDate("/")}</div>
-            <label htmlFor="verification_date">Fecha verificación cambio Diio</label>
-              <DatePicker
-								className={"form-control"}
-								id="verification_date"
-								onChange={value => {
-                  setFieldValue("verification_date", value)
-                }}
-								value={values.verification_date}
+              <div>
+                  <label htmlFor="applicationDate"> Fecha Aplicacion </label>{" "}
+                  <DatePickerField
+                    name="applicationDate"
+                    value={values.applicationDate}
+                    onChange={setFieldValue}
+                    className="form-control"
+                    dateFormat="YYYY-MM-DD"
+                  />
+                </div>{" "}
+
+                <Selector
+                fieldName="origin"
+                fieldValue={values.origin}
+                labelName="Origin"
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                touched={touched.origin}
+                data={getOrigin}
+                errors={errors.origin}
               />
+                
               
 
               <button
@@ -161,7 +195,7 @@ const RegisterAnimal = () => {
                 type="submit"
                 disabled={!dirty || isSubmitting}
               >
-                Guardar cambios
+                Guardar Registro
               </button>
             </form>
           );
