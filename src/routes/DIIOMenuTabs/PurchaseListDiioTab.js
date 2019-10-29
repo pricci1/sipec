@@ -38,7 +38,7 @@ const PurchaseListDiioTab = () => {
   }
 
   async function getUserEstablishmentsApi() {
-    const data = await getUserEstablishments(api, 1 /*current user id*/);
+    const data = await getUserEstablishments(api);
     return data.map(({ id, name }) => ({ value: id, label: name }));
   }
 
@@ -82,7 +82,7 @@ const PurchaseListDiioTab = () => {
             <form onSubmit={handleSubmit}>
               <Selector
                 fieldName="establishment"
-                labelName="Seleccione un establecimiento:"
+                labelName=":Establecimiento"
                 fieldValue={values.establishment}
                 onChange={(field, fieldValue) => {
                   setFieldValue(field, fieldValue);
