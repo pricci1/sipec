@@ -1,18 +1,16 @@
 import React from "react";
-
 import AsyncSelect from "react-select/async";
-import { MDBFormInline } from "mdbreact";
 
 const Selector = props => {
   //props: {fieldName: "", data:..., fieldValue:"", labelName:""}
 
   return (
-    <div >
-      <div className="row" style={{textAlign: "justify"}}>
-        <div className="col-md-2" style={{direction: "rtl"}}>
+    <div>
+      <div className="row" style={{ textAlign: "justify" }}>
+        <div className="col-md-2" style={{ direction: "rtl" }}>
           <label htmlFor={props.fieldName}>{props.labelName}</label>
         </div>
-        <div className="col-md-4"> 
+        <div className="col-md-4">
           <AsyncSelect
             id={props.fieldName}
             cacheOptions
