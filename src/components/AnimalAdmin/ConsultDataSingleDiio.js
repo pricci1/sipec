@@ -116,16 +116,9 @@ const ConsultDataSingleDiio = () => {
         {props => {
           const {
             values,
-            touched,
-            errors,
-            dirty,
-            isSubmitting,
-            handleChange, // No se usa en el ejemplo porque los 2 inputs son dropdown
-            handleBlur, // No se usa en el ejemplo porque los 2 inputs son dropdown
             handleSubmit,
             setFieldValue,
-            setFieldTouched,
-            handleReset
+            setFieldTouched
           } = props;
           return (
             <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
