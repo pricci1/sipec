@@ -29,13 +29,15 @@ export const getSpeciesApi = async apiInstance => {
 };
 
 export const getMvasApi = async (apiInstance, establishment_id) => {
-  const result = await apiInstance.get(`/establishments/${establishment_id}/personals?role_id=1`)
+  const result = await apiInstance.get(
+    `/establishments/${establishment_id}/personals?role_id=1`
+  );
 
-  return result.data.map(({id, name, run}) => ({
+  return result.data.map(({ id, name, run }) => ({
     value: id,
     label: run + " - " + name
-  }))
-}
+  }));
+};
 
 export const getEstablishmentsApi = async apiInstance => {
   const result = await apiInstance.get("/establishments");
@@ -49,7 +51,6 @@ export const getEstablishmentsApi = async apiInstance => {
 export const getWorkerApi = async apiInstance => {
   const result = await apiInstance.get("/personal_establishment");
   console.log(result, "AAAAA");
-  
 
   return result.data.map(({ id, name }) => ({
     value: id,
@@ -60,18 +61,19 @@ export const getWorkerApi = async apiInstance => {
 export const getAnimalTableApi = async apiInstance => {
   const result = await apiInstance.get("/animals_by_personal");
   console.log(result);
-  
 
-  return result.data.map(({ diio, specie, rutbuyer, bread, sex, date, category }) => ({
-    diio: diio,
-    specie: specie,
-    rutbuyer: rutbuyer,
-    bread: bread,
-    sex: sex,
-    date: date,
-    category: category
-  }));
-}
+  return result.data.map(
+    ({ diio, specie, rutbuyer, bread, sex, date, category }) => ({
+      diio: diio,
+      specie: specie,
+      rutbuyer: rutbuyer,
+      bread: bread,
+      sex: sex,
+      date: date,
+      category: category
+    })
+  );
+};
 export const getChangeDiioDataApi = (api, titular_id) => {
   return [];
 };
@@ -79,7 +81,6 @@ export const getChangeDiioDataApi = (api, titular_id) => {
 export const getChangeRegistryDataApi = (api, registry_id) => {
   return [];
 };
-
 export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
   const result = await apiInstance.get(
     `/diio_purchases/user_establishment/${user_id}`
@@ -93,4 +94,31 @@ export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
 export const getInfoSingleDiioConsult = async (apiInstance, diio) => {
   const info = await apiInstance.get(`/diios/${diio}`);
   return info.data[0];
-}
+};
+
+export const getMva = async apiInstance => {
+  /* cambiar */
+  const info = await apiInstance.get("/mva");
+  return info.data[0];
+};
+
+export const postAnimalDeathRegistration = async (
+  apiInstance,
+  owner,
+  mva,
+  down,
+  down_details,
+  death_date,
+  diio_array
+) => {
+  let data = {
+    owner,
+    mva,
+    down,
+    down_details,
+    death_date,
+    diio_array
+  };
+  const result = await apiInstance.post("/report_death", data);
+  return result;
+};
