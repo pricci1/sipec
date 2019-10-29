@@ -71,6 +71,13 @@ export const getInfoSingleDiioConsult = async (apiInstance, diio) => {
   return info.data[0];
 };
 
+export const getInfoDiioRange = async (apiInstance, diioStart, diioEnd) => {
+  const info = await apiInstance.get(
+    `/diio?/range?desde=${diioStart}&hasta=${diioEnd}`
+  );
+  return info.data[0];
+};
+
 // export const getDataStockDIIOEstablecimiento = async apiInstance => {
 //   const result = await apiInstance.get("/diio_stock_table");
 //   return result.data.map(({data,index}) => ({
