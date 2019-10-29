@@ -1,11 +1,21 @@
-import React from "react";
+import React,{ useState, useContext } from "react";
 import { MDBDataTable } from "mdbreact";
+import ApiContext from "../APIProvider";
+import getAnimalTableApi from "../../lib/ApiAnimalAdministration";
 
-export const AnimalEstablishmentRegistryTable = ({
+export const RegisterAnimalTable = ({
   data,
   setModalRegistryId,
-  toggleModal
+  toggleModal,
+  setLoadingState,
+  getLoadingState
 }) => {
+  const api = useContext(ApiContext);
+  async function getAnimal() {
+    const data = await getAnimalTableApi(api);
+    return data;
+  }
+
   const handleEntryClick = registryId => {
     setModalRegistryId(registryId);
     toggleModal();

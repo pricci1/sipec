@@ -7,32 +7,42 @@ import { Link } from "@reach/router";
 import useModal from "../Modal";
 import DatePicker from "react-datepicker";
 import { Selector } from "./Utils/FormikSelectors";
-import { AnimalEstablishmentRegistryTable } from "./AnimalEstablishmentRegistryTable";
+import { RegisterAnimalTable } from "./RegisterAnimalTable";
 import AnimalEstablishmentRecordDetails from "./AnimalEstablishmentRecordDetails";
 import RegisterAnimal from "./RegisterAnimal";
+import { set } from "date-fns";
 
-const getEstablishments = () => {
-  return [
-    { value: 1, label: "96.865.754-k - El Salto de Pilmaiquen" },
-    { value: 2, label: "12.345.123-2 - La Mosqueta" }
-  ];
-};
+
+
 
 const CreateNewAnimalRegister = () => {
   const api = useContext(APIContext);
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
   const [modalRegistryId, setModalRegistryId] = useState();
   const [data, setData] = useState([]);
+  const [loadingTable, setLoadingTable] = useState(false);
+
+
+
+  function getLoadingState(){
+    return loadingTable
+  }
+  function setLoadingState(){
+    setLoadingTable(!loadingTable)
+  }
 
   return (
     <div className="body">
-      <h1 className="d-md-inline pr-3">Buscar Registro Animal</h1>
-      <RegisterAnimal></RegisterAnimal>
-      <AnimalEstablishmentRegistryTable
+      <h1 className="d-md-inline pr-3">Nuevo Registro Animal</h1>
+      <RegisterAnimal setLoadingState={setLoadingState}></RegisterAnimal>
+      <RegisterAnimalTable
+        setLoadingState={setLoadingState}
+        getLoadingState={loadingTable}
         data={data}
         toggleModal={toggleModal}
         setModalRegistryId={setModalRegistryId}
       />
+       <h2 className="d-md-inline pr-3">Seleccionar DIIOs disponibles</h2>
       {modalIsOpened && (
         <Modal>
           <AnimalEstablishmentRecordDetails registryId={modalRegistryId} />
