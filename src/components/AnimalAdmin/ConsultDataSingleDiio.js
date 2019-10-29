@@ -19,6 +19,24 @@ const ConsultDataSingleDiio = () => {
     }
   }
 
+  function getStringMovementStatus(status) {
+    if (status == "complete") {
+      return "Completado";
+    } else if (status == "not complete") {
+      return "No completado";
+    }
+  }
+
+  function getStringDiioNumber(id) {
+    if (id != null) {
+      let idString = id.toString();
+      let zeros = 8 - idString.length;
+      return "0".repeat(zeros) + idString;
+    } else {
+      return "00000000";
+    }
+  }
+
   async function getInfoSingleDiioConsultApi(diioId) {
     const info = await getInfoSingleDiioConsult(api, diioId);
     console.log(info);
@@ -28,6 +46,7 @@ const ConsultDataSingleDiio = () => {
           arrival: arrival_date,
           departure: departure_date,
           transporter: movement_transporter,
+          status: movement_status,
           destination: {
             0: destination_name,
             1: destination_rup,
@@ -36,16 +55,19 @@ const ConsultDataSingleDiio = () => {
             4: destination_region
           },
           origin: {
-            0: origin_name,
-            1: origin_rup,
-            2: origin_commune,
-            3: origin_province,
-            4: origin_region
+            0: {
+              name: origin_name,
+              rup: origin_rup,
+              neighborhood: origin_commune,
+              province: origin_province,
+              region: origin_region
+            }
           }
         }) => ({
           arrival_date,
           departure_date,
           movement_transporter,
+          movement_status,
           destination_name,
           destination_rup,
           destination_commune,
@@ -78,12 +100,15 @@ const ConsultDataSingleDiio = () => {
           traceability: animal_traceability_type,
           sag_registar_date: animal_sag_register_date,
           birth_date: animal_birth_date,
-          death_date: animal_death_date
+          death_date: animal_death_date,
+          death_movotive: animal_death_motive,
+          origin_address: animal_origin_address
         }
       }
     } = info;
     setData(prevState => ({
       ...prevState,
+      diio_id: diioId,
       diio_model_number,
       diio_type,
       diio_enable_date,
@@ -98,7 +123,9 @@ const ConsultDataSingleDiio = () => {
       animal_alive_dead,
       animal_sag_register_date,
       animal_birth_date,
-      animal_death_date
+      animal_death_date,
+      animal_death_motive,
+      animal_origin_address
     }));
     setState({ infoAvailable: true });
   }
@@ -158,7 +185,7 @@ const ConsultDataSingleDiio = () => {
                       <td>
                         <b>Número de DIIO</b>
                       </td>
-                      <td>{data.diio_model_number}</td>
+                      <td>{getStringDiioNumber(data.diio_id)}</td>
                     </tr>
                     <tr>
                       <td>
@@ -198,6 +225,46 @@ const ConsultDataSingleDiio = () => {
                     </tr>
                     <tr>
                       <td>
+                        <b>Motivo muerte</b>
+                      </td>
+                      <td>{data.animal_death_motive}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>Establecimiento origen</b>
+                      </td>
+                      <td>{data.movements[0].origin_name}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>RUP origen</b>
+                      </td>
+                      <td>{data.movements[0].origin_rup}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>Establecimiento actual</b>
+                      </td>
+                      <td>
+                        {
+                          data.movements[data.movements.length - 1]
+                            .destination_name
+                        }
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>RUP actual</b>
+                      </td>
+                      <td>
+                        {
+                          data.movements[data.movements.length - 1]
+                            .destination_rup
+                        }
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
                         <b>Tipo de identificación</b>
                       </td>
                       <td>{data.animal_id_type}</td>
@@ -233,7 +300,7 @@ const ConsultDataSingleDiio = () => {
                       <td>
                         <b>Número de DIIO</b>
                       </td>
-                      <td>{data.diio_model_number}</td>
+                      <td>{getStringDiioNumber(data.diio_id)}</td>
                     </tr>
                     <tr>
                       <td>
@@ -269,13 +336,50 @@ const ConsultDataSingleDiio = () => {
           <Card>
             <Accordion.Toggle as={Card.Header} eventKey="2">
               <h5>
-                <b>Información origen</b>
+                <b>Información establecimiento origen</b>
               </h5>
             </Accordion.Toggle>
             <Accordion.Collapse eventKey="2">
               <Card.Body>
                 <table className="table table-striped table-sm">
-                  <tbody></tbody>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <b>Nombre</b>
+                      </td>
+                      <td>{data.movements[0].origin_name}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>RUP</b>
+                      </td>
+                      <td>{data.movements[0].origin_rup}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>Región</b>
+                      </td>
+                      <td>{data.movements[0].origin_region}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>Provincia</b>
+                      </td>
+                      <td>{data.movements[0].origin_province}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>Comuna</b>
+                      </td>
+                      <td>{data.movements[0].origin_commune}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>Dirección</b>
+                      </td>
+                      <td>{data.animal_origin_address}</td>
+                    </tr>
+                  </tbody>
                 </table>
               </Card.Body>
             </Accordion.Collapse>
@@ -288,11 +392,12 @@ const ConsultDataSingleDiio = () => {
             </Accordion.Toggle>
             <Accordion.Collapse eventKey="3">
               <Card.Body>
-                <table className="table table-striped table-sm table-bordered">
+                <table className="table table-striped table-sm table-bordered table-responsive">
                   <thead>
                     <th colSpan={2}>
                       <b>Fechas</b>
                     </th>
+                    <th></th>
                     <th colSpan={5}>
                       <b>Establecimiento origen</b>
                     </th>
@@ -306,6 +411,9 @@ const ConsultDataSingleDiio = () => {
                     </th>
                     <th>
                       <b>Término</b>
+                    </th>
+                    <th>
+                      <b>Estado</b>
                     </th>
                     <th>
                       <b>Nombre</b>
@@ -343,6 +451,7 @@ const ConsultDataSingleDiio = () => {
                       <tr key={index}>
                         <td>{item.arrival_date.split("T")[0]}</td>
                         <td>{item.departure_date.split("T")[0]}</td>
+                        <td>{getStringMovementStatus(item.movement_status)}</td>
                         <td>{item.origin_name}</td>
                         <td>{item.origin_rup}</td>
                         <td>{item.origin_region}</td>
