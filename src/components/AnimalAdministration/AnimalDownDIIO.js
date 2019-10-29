@@ -8,6 +8,8 @@ import Selector from "../Diio/Utilities/FormikSelector";
 import { AnimalEstablishmentRegistryTable } from "./AnimalDownDIIOTable";
 import { Link } from "@reach/router";
 import AnimalEstablishmentRecordDetails from "./AnimalDownDIIODetails";
+// import { getEstablishmentsApi } from "../../lib/ApiAnimalAdministration";
+import { getUserEstablishments } from "../../lib/APIDiio";
 
 const SearchAnimalDownDIIO = () => {
   const api = useContext(APIContext);
@@ -15,16 +17,9 @@ const SearchAnimalDownDIIO = () => {
   const [modalRegistryId, setModalRegistryId] = useState();
   const [data, setData] = useState([]);
 
-  // async function getSpeciesAPI() {
-  //   const data = await getSpecies(api);
-  //   console.log(data);
-  //   return data;
-
-  async function getEstablishments() {
-    return [
-      { value: 1, label: "96.865.754-k - El Salto de Pilmaiquen" },
-      { value: 2, label: "12.345.123-2 - La Mosqueta" }
-    ];
+  async function getEstablishmentsApi() {
+    const data = await getUserEstablishments(api, 1 /*current user id*/);
+    return data.map(({ id, name }) => ({ value: id, label: name }));
   }
 
   return (
@@ -42,7 +37,7 @@ const SearchAnimalDownDIIO = () => {
               alert(JSON.stringify(values, null, 2));
               setSubmitting(false);
             }, 400);
-            //console.log(values);
+            console.log(values);
           }}
         >
           {({
@@ -64,7 +59,7 @@ const SearchAnimalDownDIIO = () => {
                     onChange={setFieldValue}
                     onBlur={setFieldTouched}
                     touched={touched.establishment_id}
-                    data={getEstablishments}
+                    data={getEstablishmentsApi}
                     errors={errors.establishment_id}
                   />
                   <p className="label">Fecha</p>
