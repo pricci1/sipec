@@ -4,14 +4,14 @@ import { ButtonGroup } from "react-bootstrap";
 import "./DIIOMenu.css";
 
 const menuLinks = [
-  { text: "Lista Compra", linkTo: "lista-compra" },
-  { text: "Compra", linkTo: "compra" },
-  { text: "Inventario", linkTo: "inventario" },
-  { text: "DIIOs de Baja", linkTo: "baja-diios" },
-  { text: "Lista Baja de DIIOs", linkTo: "lista-baja-diios" }
+  { text: "Animales", linkTo: "animales" },
+  { text: "Cambio de DIIO", linkTo: "cambio-diio" },
+  { text: "Muerte Animal", linkTo: "muerte-animal" },
+  { text: "Consultar datos DIIO", linkTo: "consulta-un-diio" },
+  { text: "Consultar datos grupo DIIO", linkTo: "consulta-grupo-diio" }
 ];
 
-const DiioMenu = ({ children }) => (
+const AnimalAdministrationDIIOMenu = ({ children }) => (
   <div>
     <div className="row">
       <div className=" d-flex flex-column">
@@ -45,4 +45,5 @@ const DiioMenu = ({ children }) => (
     {children}
   </div>
 );
-export default DiioMenu;
+
+export default AnimalAdministrationDIIOMenu;

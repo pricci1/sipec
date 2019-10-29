@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { Formik, Field } from "formik";
+import React, { useContext } from "react";
+import { Formik, Field, FieldArray } from "formik";
 import APIContext from "../APIProvider";
 import Selector from "./Utilities/FormikSelector";
 import * as Yup from "yup";
@@ -22,8 +22,6 @@ const NotAppliedDroppedDiio = () => {
   async function getDropReasons() {
     return [{ value: 1, label: "Motivo 1" }, { value: 2, label: "Motivo 2" }];
   }
-  const [species, setspecies] = useState();
-  const [diio_ranges, setdiio_ranges] = useState([]);
 
   return (
     <div>
@@ -36,13 +34,43 @@ const NotAppliedDroppedDiio = () => {
           startDiio: null,
           endDiio: null,
           dropReason: null,
-          ranges: []
+          diio_ranges: []
         }}
         onSubmit={(values, { setSubmitting }) => {
-          values.ranges = diio_ranges;
-          dropDiioRanges(api, JSON.stringify(diio_ranges));
+          dropDiioRanges(
+            api,
+            JSON.stringify(
+              values.diio_ranges.map(range => [range.desde, range.hasta])
+            )
+          );
           setSubmitting(false);
         }}
+        validationSchema={Yup.object().shape({
+          ownerRut: Yup.string()
+            .nullable()
+            .required("Requerido"),
+          specie: Yup.string()
+            .nullable()
+            .required("Requerido"),
+          dropReason: Yup.string()
+            .nullable()
+            .required("Requerido"),
+          diio_ranges: Yup.array().of(
+            Yup.object()
+              .shape({
+                desde: Yup.number()
+                  .min(0, "Desde debe ser >= 0")
+                  .required("Requerido"),
+                hasta: Yup.number()
+                  .min(
+                    Yup.ref("desde"),
+                    `"Hasta" debe ser igual o mayor a "Desde"`
+                  )
+                  .required("Requerido")
+              })
+              .required()
+          )
+        })}
       >
         {props => {
           const {
@@ -87,39 +115,53 @@ const NotAppliedDroppedDiio = () => {
                   data={getDropReasons}
                 />
               </div>
-              <br/>
+              <br />
               <h4>Rangos de DIIO</h4>
-              <div className="rangos">
-                <Field
-                  className="field"
-                  type="text"
-                  name="startDiio"
-                  placeholder="Desde"
-                />
-                <Field
-                  className="field"
-                  type="text"
-                  name="endDiio"
-                  placeholder="Hasta"
-                />
-                <button
-                  className="btn btn-outline-primary"
-                  type="button"
-                  onClick={() => {
-                    setdiio_ranges([
-                      ...diio_ranges,
-                      [
-                        values.startDiio,
-                        values.endDiio,
-                        values.specie,
-                        values.dropReason
-                      ]
-                    ]);
-                  }}
-                >
-                  Agregar Rango
-                </button>
-              </div>
+              <FieldArray
+                name="diio_ranges"
+                render={arrayHelpers => (
+                  <div name="rango">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => arrayHelpers.push({ desde: 0, hasta: 0 })}
+                    >
+                      Añadir rango
+                    </button>
+                    {values.diio_ranges && values.diio_ranges.length > 0
+                      ? values.diio_ranges.map((_, index) => (
+                          <div key={index}>
+                            <div className="form-inline">
+                              <Field
+                                type="number"
+                                className="form-control mr-3"
+                                name={`diio_ranges[${index}].desde`}
+                              />
+                              <Field
+                                type="number"
+                                className="form-control"
+                                name={`diio_ranges[${index}].hasta`}
+                              />
+                              <button
+                                type="button"
+                                className="btn btn-danger m-3"
+                                onClick={() => arrayHelpers.remove(index)}
+                              >
+                                -
+                              </button>
+                              {errors.diio_ranges && errors.diio_ranges[index] && (
+                                <div className="text-danger">
+                                  {errors.diio_ranges[index].desde || ""}
+                                  {errors.diio_ranges[index].hasta || ""}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      : null}
+                  </div>
+                )}
+              />
 
               <br />
               <hr />

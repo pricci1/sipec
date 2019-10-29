@@ -9,10 +9,17 @@ import EstablishmentDestinationSelect from "../components/AnimalMoves/Establishm
 import AnimalMovesTable from "../components/AnimalMoves/AnimalMovesTable";
 import RadioButton from "../components/AnimalMoves/RadioButton";
 import RadioButtonGroup from "../components/AnimalMoves/RadioButtonGroup";
+<<<<<<< HEAD
 import APIContext from "../components/APIProvider";
 
 const AnimalMoves = () => {
   const apiInstance = useContext(APIContext);
+=======
+import APIContext from "../components/APIProvider"
+
+const AnimalMoves = () => {
+  const apiInstance = useContext(APIContext)
+>>>>>>> 8500ea2367ec47924aa82cd8cf24fa2192a3ad16
   /*
       // FORM
     // Inputs:    Desde
@@ -33,6 +40,7 @@ const AnimalMoves = () => {
   const [establishment, setestablishment] = useState([]);
   const [moves, setmoves] = useState([]);
   const [loading, setloading] = useState(true);
+<<<<<<< HEAD
   async function getEstablishment() {
     const Establecimento = await apiInstance.get("/establishments");
     setestablishment(
@@ -54,6 +62,24 @@ const AnimalMoves = () => {
   useEffect(() => {
     getAnimalMovements();
   }, []);
+=======
+  async function getEstablishment () {
+    const Establecimento = await apiInstance.get("/establishments");
+    setestablishment(Establecimento.data.map(({ name, rup }) => ({
+      value: rup,
+      label: rup + "/" + name
+      }))
+    );
+    setloading(false)
+  }
+  useEffect(() => getEstablishment(), []);
+  useEffect(()=> {getEstablishment()}, []);
+  async function getAnimalMovements() {
+    const moves = await apiInstance.get("/animal_movement_table")
+    setmoves(moves)
+  }
+  useEffect(()=> {getAnimalMovements()}, []);
+>>>>>>> 8500ea2367ec47924aa82cd8cf24fa2192a3ad16
   async function getAnimalMoves(
     establishmentOrigin,
     establishmentDestination,
@@ -147,8 +173,13 @@ const AnimalMoves = () => {
 
     return movesMap;
   }
+<<<<<<< HEAD
   if (loading) {
     return <div> </div>;
+=======
+  if(loading){
+    return(<div></div>)
+>>>>>>> 8500ea2367ec47924aa82cd8cf24fa2192a3ad16
   }
 
   return (
@@ -224,6 +255,7 @@ const AnimalMoves = () => {
                                 error={errors.establishmentDestination}
                                 touched={touched.establishmentDestination}
                               /> */}
+
               <div>
                 <label htmlFor="dateDeparture"> Desde </label>{" "}
                 <DatePickerField
