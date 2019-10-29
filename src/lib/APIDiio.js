@@ -66,6 +66,11 @@ export const getUserEstablishments = async (apiInstance, userId) => {
   return establishments.data;
 };
 
+export const getInfoSingleDiioConsult = async (apiInstance, diio) => {
+  const info = await apiInstance.get(`/diios/${diio}`);
+  return info.data[0];
+};
+
 // export const getDataStockDIIOEstablecimiento = async apiInstance => {
 //   const result = await apiInstance.get("/diio_stock_table");
 //   return result.data.map(({data,index}) => ({
