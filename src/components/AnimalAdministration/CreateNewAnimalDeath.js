@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
-import { Formik, Field, FieldArray } from "formik";
+import { Formik, Field } from "formik";
 import { Datepicker } from "react-formik-ui";
 import Selector from "../Diio/Utilities/FormikSelector";
 import * as Yup from "yup";
 import { postDiioPurchase, getProviders } from "../../lib/APIDiio";
 import APIContext from "../APIProvider";
 import "../Diio/newPucharseDiio.css";
+import { Link } from "@reach/router";
 
 const buyDiioSchema = Yup.object().shape({
   seller_type: Yup.string()
@@ -50,16 +51,6 @@ const NewDeathRegistration = () => {
   const getBuyerRut = () => {
     return "123456789";
   };
-  const getBuyerName = () => {
-    return "Agrosuper";
-  };
-
-  async function getBuyerEstablishments() {
-    return [
-      { value: 1, label: "El Salto de Pilmaiquen" },
-      { value: 2, label: "La Mosqueta" }
-    ];
-  }
 
   async function getProvidersApi() {
     const data = await getProviders(api);
@@ -102,21 +93,15 @@ const NewDeathRegistration = () => {
             values,
             touched,
             errors,
-            dirty,
-            isSubmitting,
-            handleChange,
-            handleBlur,
             handleSubmit,
             setFieldValue,
-            setFieldTouched,
-            handleReset
+            setFieldTouched
           } = props;
           return (
             <form onSubmit={handleSubmit}>
               <div style={{ alignContent: "center" }}>
                 <div className="row">
-                  <div className="col-md-2"></div>
-                  <div className="death_register col-md-6">
+                  <div className="death_register col-md-4">
                     <Selector
                       fieldName="seller_type"
                       fieldValue={values.seller_type}
@@ -153,76 +138,71 @@ const NewDeathRegistration = () => {
                       data={getProvidersApi}
                       errors={errors.provider_id}
                     />
-                  </div>
-                  <div className="col-md-4"></div>
-                </div>
-
-                <br />
-                <div className="upload_death_register row">
-                  <div className="col-md-1"></div>
-
-                  <div className="jumbotron col-md-4">
-                    <h5>Carga individual</h5>
-                    <Selector
-                      fieldName="type_id"
-                      fieldValue={values.provider_id}
-                      labelName="Tipo de Baja*"
-                      onChange={(field, fieldValue) => {
-                        setFieldValue(field, fieldValue.value);
-                        setSelectedSellerRut(fieldValue.value);
-                      }}
-                      onBlur={setFieldTouched}
-                      touched={touched.provider_id}
-                      data={getProvidersApi}
-                      errors={errors.provider_id}
-                    />
-                    <Selector
-                      fieldName="type_details_id"
-                      fieldValue={values.provider_id}
-                      labelName="Detalle del Tipo de Baja*"
-                      onChange={(field, fieldValue) => {
-                        setFieldValue(field, fieldValue.value);
-                        setSelectedSellerRut(fieldValue.value);
-                      }}
-                      onBlur={setFieldTouched}
-                      touched={touched.provider_id}
-                      data={getProvidersApi}
-                      errors={errors.provider_id}
-                    />
-                    Fecha de Baja*
-                    <Datepicker
-                      selected={values.hasta}
-                      dateFormat="MMMM d, yyyy"
-                      className="form-control"
-                      name="fecha_baja"
-                      placeholder="dd/mm/aaaa"
-                    />
-                    Número de DIIO*
-                    <Field
-                      type="number"
-                      className="form-control"
-                      name="diio_de_baja"
-                    />
                     <br />
-                    <button className="btn btn-outline-secondary" type="submit">
-                      Eliminar Cambio
-                    </button>
-                    <button className="btn btn-primary" type="submit">
-                      Agregar Cambio
-                    </button>
+                    <hr />
+                    <div className="upload_death_register">
+                      <h5>Carga individual</h5>
+                      <Selector
+                        fieldName="type_id"
+                        fieldValue={values.provider_id}
+                        labelName="Tipo de Baja*"
+                        onChange={(field, fieldValue) => {
+                          setFieldValue(field, fieldValue.value);
+                          setSelectedSellerRut(fieldValue.value);
+                        }}
+                        onBlur={setFieldTouched}
+                        touched={touched.provider_id}
+                        data={getProvidersApi}
+                        errors={errors.provider_id}
+                      />
+                      <Selector
+                        fieldName="type_details_id"
+                        fieldValue={values.provider_id}
+                        labelName="Detalle del Tipo de Baja*"
+                        onChange={(field, fieldValue) => {
+                          setFieldValue(field, fieldValue.value);
+                          setSelectedSellerRut(fieldValue.value);
+                        }}
+                        onBlur={setFieldTouched}
+                        touched={touched.provider_id}
+                        data={getProvidersApi}
+                        errors={errors.provider_id}
+                      />
+                      Fecha de Baja*
+                      <Datepicker
+                        selected={values.hasta}
+                        dateFormat="MMMM d, yyyy"
+                        className="form-control"
+                        name="fecha_baja"
+                        placeholder="dd/mm/aaaa"
+                      />
+                      Número de DIIO*
+                      <Field
+                        type="number"
+                        className="form-control"
+                        name="diio_de_baja"
+                      />
+                      <br />
+                      <button
+                        className="btn btn-outline-secondary"
+                        type="submit"
+                      >
+                        Eliminar Cambio
+                      </button>
+                      <button className="btn btn-primary" type="submit">
+                        Agregar Cambio
+                      </button>
+                    </div>
                   </div>
-                  <div className="col-md-1"></div>
-                  <div className="jumbotron col-md-4"></div>
-                  <div className="col-md-2"></div>
                 </div>
               </div>
 
               <br />
               <hr />
               <div style={{ textAlign: "right" }}>
-                <button className="btn btn-outline-secondary" type="submit">
+                <Link to="../" className="btn btn-outline-secondary">
                   Volver
-                </button>
+                </Link>
                 <button className="btn btn-primary" type="submit">
                   Guardar Cambios
                 </button>

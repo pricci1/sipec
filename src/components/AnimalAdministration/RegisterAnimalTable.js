@@ -1,13 +1,21 @@
-import React from "react";
+import React,{ useState, useContext } from "react";
 import { MDBDataTable } from "mdbreact";
-import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from "@material-ui/core/styles";
+import ApiContext from "../APIProvider";
+import getAnimalTableApi from "../../lib/ApiAnimalAdministration";
 
-export const AnimalEstablishmentRegistryTable = ({
+export const RegisterAnimalTable = ({
   data,
   setModalRegistryId,
-  toggleModal
+  toggleModal,
+  setLoadingState,
+  getLoadingState
 }) => {
+  const api = useContext(ApiContext);
+  async function getAnimal() {
+    const data = await getAnimalTableApi(api);
+    return data;
+  }
+
   const handleEntryClick = registryId => {
     setModalRegistryId(registryId);
     toggleModal();
@@ -30,7 +38,7 @@ export const AnimalEstablishmentRegistryTable = ({
         label: "Establecimiento",
         field: "establishment",
         sort: "asc",
-        width: 270  
+        width: 270
       },
       {
         label: "Titular",
@@ -56,12 +64,10 @@ export const AnimalEstablishmentRegistryTable = ({
         show: (
           <button
             type="button"
-            className="btn btn-info btn-sm p-0 center"
+            className="btn btn-info btn-sm p-0"
             onClick={() => handleEntryClick(1)}
           >
-            <span role="img" aria-label="magGlass">
-              &#128269;
-            </span>
+            &#10010;
           </button>
         ),
         rup: "1.1.1.1",
@@ -73,14 +79,11 @@ export const AnimalEstablishmentRegistryTable = ({
       {
         show: (
           <button
-            color="primary"
             type="button"
             className="btn btn-info btn-sm p-0"
             onClick={() => handleEntryClick(2)}
           >
-            <span role="img" aria-label="magGlass">
-              &#128269;
-            </span>
+            &#10010;
           </button>
         ),
         rup: "1.1.1.1",

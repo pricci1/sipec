@@ -2,21 +2,17 @@ import React, { useState, useEffect, useContext } from "react";
 import PucharseListDiio from "../../components/Diio/PucharseListDiio";
 import APIContext from "../../components/APIProvider";
 import { getDiioPurchases, getUserEstablishments } from "../../lib/APIDiio";
-import { Formik, Field } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import Selector from "../../components/Diio/Utilities/FormikSelector";
 
 const PurchaseListDiioTab = () => {
   const api = useContext(APIContext);
   const [data, setData] = useState([]);
-  // const [selectedEstablishment, setSelectedEstablishment] = useState();
+  const [state, setState] = useState({ infoAvailable: false });
 
-  useEffect(() => {
-    // Inside useEffect with [] as deps to run only once
-    // If it's not, there will be infinite request to the backend
-    // getDiioPurchasesApi(1);
-    // getUserEstablishmentsApi(1);
-  }, []);
+  useEffect(() => {}, []);
+
   async function getDiioPurchasesApi(establishmentId) {
     const data = await getDiioPurchases(api, establishmentId);
 
@@ -38,10 +34,11 @@ const PurchaseListDiioTab = () => {
         })
       )
     );
+    setState({ infoAvailable: true });
   }
 
   async function getUserEstablishmentsApi() {
-    const data = await getUserEstablishments(api, 1 /*current user id*/);
+    const data = await getUserEstablishments(api);
     return data.map(({ id, name }) => ({ value: id, label: name }));
   }
 
@@ -77,22 +74,15 @@ const PurchaseListDiioTab = () => {
         {props => {
           const {
             values,
-            touched,
-            errors,
-            dirty,
-            isSubmitting,
-            handleChange, // No se usa en el ejemplo porque los 2 inputs son dropdown
-            handleBlur, // No se usa en el ejemplo porque los 2 inputs son dropdown
             handleSubmit,
             setFieldValue,
-            setFieldTouched,
-            handleReset
+            setFieldTouched
           } = props;
           return (
             <form onSubmit={handleSubmit}>
               <Selector
                 fieldName="establishment"
-                labelName="Seleccione un establecimiento:"
+                labelName=":Establecimiento"
                 fieldValue={values.establishment}
                 onChange={(field, fieldValue) => {
                   setFieldValue(field, fieldValue);
@@ -107,25 +97,29 @@ const PurchaseListDiioTab = () => {
           );
         }}
       </Formik>
-      <PucharseListDiio
-        headers={[
-          "Registro",
-          "Vendedor",
-          "Establecimiento comprador",
-          "Fecha",
-          "Estado",
-          "RUT Comprador"
-        ]}
-        data={data.map(purchase => [
-          getStringRegister(purchase.id),
-          purchase.provider_name,
-          purchase.purchaser_name,
-          purchase.date,
-          getStringState(purchase.confirmed),
-          purchase.purchaser_rut
-        ])}
-        //title="Lista de Compras DIIO"
-      />
+      {state.infoAvailable ? (
+        <PucharseListDiio
+          headers={[
+            "Registro",
+            "Vendedor",
+            "Establecimiento comprador",
+            "Fecha",
+            "Estado",
+            "RUT Comprador"
+          ]}
+          data={data.map(purchase => [
+            getStringRegister(purchase.id),
+            purchase.provider_name,
+            purchase.purchaser_name,
+            purchase.date,
+            getStringState(purchase.confirmed),
+            purchase.purchaser_rut
+          ])}
+          //title="Lista de Compras DIIO"
+        />
+      ) : (
+        <p></p>
+      )}
     </>
   );
 };
