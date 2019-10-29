@@ -12,6 +12,8 @@ import CreateAnimalMoves from "../components/AnimalMoves/CreateAnimalMoves";
 import AnimalMoves from "../pages/AnimalMoves";
 import AnimalAdministrationDIIOMenu from "./AnimalAdministrationDIIOMenu";
 import ConsultDataSingleDiio from "../components/AnimalAdmin/ConsultDataSingleDiio";
+import ConsultDataDiioRange from "../components/AnimalAdmin/ConsultDataDiioRange";
+
 const MenuRouter = () => {
   return (
     <>
@@ -29,6 +31,7 @@ const MenuRouter = () => {
           </DiioMenu>
           <AnimalAdministrationDIIOMenu path="/animal-diio">
             <ConsultDataSingleDiio path="consulta-un-diio" />
+            <ConsultDataDiioRange path="consulta-grupo-diio" />
           </AnimalAdministrationDIIOMenu>
           <AnimalMovementMenu path="/movimientos">
             <CreateAnimalMoves path="create_animal_moves" />
