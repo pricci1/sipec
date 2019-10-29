@@ -22,7 +22,7 @@ const MenuRouter = () => {
         <Sidebar />
       </div>
       <main className="col-10">
-        <Router>
+        <Router className="m-2">
           <DiioMenu path="/diio">
             <PurchaseListDiioTab path="lista-compra" />
             <NewPurchaseDiio path="compra" />
