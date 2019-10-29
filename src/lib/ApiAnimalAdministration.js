@@ -29,10 +29,15 @@ export const getSpeciesApi = async apiInstance => {
 };
 
 export const getEstablishmentsApi = async apiInstance => {
-    const result = await apiInstance.get("/establishments");
+  const result = await apiInstance.get("/establishments");
 
-    return result.data.map(({id, name, rup}) => ({
-        value: id,
-        label: rup + " - " + name
-    }))
-}
+  return result.data.map(({ id, name, rup }) => ({
+    value: id,
+    label: rup + " - " + name
+  }));
+};
+
+// export const getAnimaldeathsApi = async apiInstance => {
+//   const result = await apiInstance.get("/animals_death");
+
+// }

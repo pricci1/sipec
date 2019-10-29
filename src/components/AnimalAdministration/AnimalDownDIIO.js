@@ -2,14 +2,26 @@ import React, { useContext, useState } from "react";
 import { Formik } from "formik";
 import { Datepicker } from "react-formik-ui";
 import useModal from "../Modal";
-// import { getSpecies, getBrands, getModels } from "../lib/APIDiio";
 import APIContext from "../APIProvider";
-import Selector from "../Diio/Utilities/FormikSelector";
+import Selector from "../../components/Diio/Utilities/FormikSelector";
 import { AnimalEstablishmentRegistryTable } from "./AnimalDownDIIOTable";
 import { Link } from "@reach/router";
 import AnimalEstablishmentRecordDetails from "./AnimalDownDIIODetails";
 // import { getEstablishmentsApi } from "../../lib/ApiAnimalAdministration";
 import { getUserEstablishments } from "../../lib/APIDiio";
+import * as Yup from "yup";
+
+const searchAnimalDownSchema = Yup.object().shape({
+  establishment_id: Yup.string()
+    .nullable()
+    .required("Requerido"),
+  desde: Yup.string()
+    .nullable()
+    .required("Requerido"),
+  hasta: Yup.string()
+    .nullable()
+    .required("Requerido")
+});
 
 const SearchAnimalDownDIIO = () => {
   const api = useContext(APIContext);
@@ -17,7 +29,12 @@ const SearchAnimalDownDIIO = () => {
   const [modalRegistryId, setModalRegistryId] = useState();
   const [data, setData] = useState([]);
 
-  async function getEstablishmentsApi() {
+  // async function getEstablishmentsApi2() {
+  //   const data = await getEstablishmentsApi(api);
+  //   return data.map(({ id, name }) => ({ value: id, label: name }));
+  // }
+
+  async function getUserEstablishmentsApi() {
     const data = await getUserEstablishments(api, 1 /*current user id*/);
     return data.map(({ id, name }) => ({ value: id, label: name }));
   }
@@ -32,6 +49,7 @@ const SearchAnimalDownDIIO = () => {
             desde: "",
             hasta: ""
           }}
+          validationSchema={searchAnimalDownSchema}
           onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
               alert(JSON.stringify(values, null, 2));
@@ -59,7 +77,7 @@ const SearchAnimalDownDIIO = () => {
                     onChange={setFieldValue}
                     onBlur={setFieldTouched}
                     touched={touched.establishment_id}
-                    data={getEstablishmentsApi}
+                    data={getUserEstablishmentsApi}
                     errors={errors.establishment_id}
                   />
                   <p className="label">Fecha</p>
