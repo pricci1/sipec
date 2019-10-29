@@ -1,5 +1,7 @@
 import React from "react";
 import { MDBDataTable } from "mdbreact";
+import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
 
 export const AnimalEstablishmentRegistryTable = ({
   data,
@@ -54,10 +56,12 @@ export const AnimalEstablishmentRegistryTable = ({
         show: (
           <button
             type="button"
-            className="btn btn-info btn-sm p-0"
+            className="btn btn-info btn-sm p-0 center"
             onClick={() => handleEntryClick(1)}
           >
-            &#10010;
+            <span role="img" aria-label="magGlass">
+              &#128269;
+            </span>
           </button>
         ),
         rup: "1.1.1.1",
@@ -69,11 +73,14 @@ export const AnimalEstablishmentRegistryTable = ({
       {
         show: (
           <button
+            color="primary"
             type="button"
             className="btn btn-info btn-sm p-0"
             onClick={() => handleEntryClick(2)}
           >
-            &#10010;
+            <span role="img" aria-label="magGlass">
+              &#128269;
+            </span>
           </button>
         ),
         rup: "1.1.1.1",

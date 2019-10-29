@@ -29,6 +29,7 @@ const AnimalEstablishmentRegistry = () => {
       <Link to="new" className="d-md-inline btn btn-primary">
         &#10010; Nuevo
       </Link>
+      <br></br>
       <Formik
         initialValues={{
           establishment: "",
@@ -80,6 +81,9 @@ const AnimalEstablishmentRegistry = () => {
                 name="date.from"
                 dateFormat="dd/MM/yy"
               />
+              <span> </span>
+              <span> </span>
+              <span> </span>
               <DatePicker
                 onBlur={handleBlur}
                 className="form-control"
