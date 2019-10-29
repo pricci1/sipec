@@ -3,8 +3,10 @@ import { Formik, Field } from "formik";
 import { Datepicker } from "react-formik-ui";
 import Selector from "../Diio/Utilities/FormikSelector";
 import * as Yup from "yup";
-import { getProviders } from "../../lib/APIDiio";
-import { postAnimalDeathRegistration } from "../../lib/ApiAnimalAdministration";
+import {
+  postAnimalDeathRegistration,
+  getMva
+} from "../../lib/ApiAnimalAdministration";
 import APIContext from "../APIProvider";
 import "../Diio/newPucharseDiio.css";
 import { Link } from "@reach/router";
@@ -39,12 +41,8 @@ const NewDeathRegistration = () => {
 
   const [selectedSellerRut, setSelectedSellerRut] = useState();
 
-  const getBuyerRut = () => {
-    return "123456789";
-  };
-
-  async function getProvidersApi() {
-    const data = await getProviders(api);
+  async function getMvaApi() {
+    const data = await getMva(api, api.titular.id);
     return data;
   }
 
@@ -64,11 +62,9 @@ const NewDeathRegistration = () => {
         onSubmit={(values, { setSubmitting }) => {
           postAnimalDeathRegistration(
             api,
-            values.establishment_id.value,
             values.owner_id.value,
             values.mva_id.value,
             values.death_date.value,
-            JSON.stringify(values.specie_array),
             JSON.stringify(values.diio_array)
           ).then(resp => {
             resp.success ? alert("Baja realizada") : alert("Error en la baja");
@@ -105,16 +101,16 @@ const NewDeathRegistration = () => {
                     />
                     <Selector
                       fieldName="mva_id"
-                      fieldValue={values.provider_id}
+                      fieldValue={values.mva_id}
                       labelName="MVA"
                       onChange={(field, fieldValue) => {
                         setFieldValue(field, fieldValue.value);
                         setSelectedSellerRut(fieldValue.value);
                       }}
                       onBlur={setFieldTouched}
-                      touched={touched.provider_id}
-                      data={getProvidersApi}
-                      errors={errors.provider_id}
+                      touched={touched.mva_id}
+                      data={getMvaApi}
+                      errors={errors.mva_id}
                     />
                     Fecha: {currentDate}
                     <br />
@@ -141,7 +137,7 @@ const NewDeathRegistration = () => {
                         }}
                         onBlur={setFieldTouched}
                         touched={touched.provider_id}
-                        data={getProvidersApi}
+                        data={getMvaApi}
                         errors={errors.provider_id}
                       />
                       <Selector
@@ -159,11 +155,11 @@ const NewDeathRegistration = () => {
                       />
                       Fecha de Baja*
                       <Datepicker
-                        selected={values.hasta}
-                        dateFormat="MMMM d, yyyy"
+                        selected={values.death_date}
+                        dateFormat="yyyy-dd-mm"
                         className="form-control"
                         name="fecha_baja"
-                        placeholder="dd/mm/aaaa"
+                        placeholder="aaaa/dd/mm"
                       />
                       Número de DIIO*
                       <Field

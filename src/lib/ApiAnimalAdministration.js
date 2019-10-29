@@ -76,23 +76,35 @@ export const getInfoSingleDiioConsult = async (apiInstance, diio) => {
   return info.data[0];
 };
 
+export const getMva = async apiInstance => {
+  const info = await apiInstance.get("/mva");
+  return info.data[0];
+};
+
 export const postAnimalDeathRegistration = async (
   apiInstance,
-  establishment,
-  owner,
-  mva,
+  titular_id,
+  mva_id,
   death_date,
-  spacie_array,
   diio_array
 ) => {
   let data = {
-    establishment,
-    owner,
-    mva,
+    titular_id,
+    mva_id,
     death_date,
-    spacie_array,
     diio_array
   };
-  const result = await apiInstance.post("/animal_down_register", data);
-  return result;
+  let result = [];
+
+  for (let i = 0; i < diio_array.size(); i++) {
+    const response = await apiInstance.post("/report_death", {
+      titular: titular_id,
+      mva: mva_id,
+      death_date: data.death_date,
+      serial_diio: diio_array[i]
+    });
+    result.push(response);
+  }
+
+  return result[0];
 };
