@@ -3,40 +3,31 @@ import { Formik, Field } from "formik";
 import { Datepicker } from "react-formik-ui";
 import Selector from "../Diio/Utilities/FormikSelector";
 import * as Yup from "yup";
-import { postDiioPurchase, getProviders } from "../../lib/APIDiio";
+import { getProviders } from "../../lib/APIDiio";
+import { postAnimalDeathRegistration } from "../../lib/ApiAnimalAdministration";
 import APIContext from "../APIProvider";
 import "../Diio/newPucharseDiio.css";
 import { Link } from "@reach/router";
 
-const buyDiioSchema = Yup.object().shape({
-  seller_type: Yup.string()
-    .nullable()
-    .required("Requerido"),
-  provider_id: Yup.string()
-    .nullable()
-    .required("Requerido"),
-  buyer_type: Yup.string()
-    .nullable()
-    .required("Requerido"),
-  buyer_rut: Yup.string()
-    .nullable()
-    .required("Requerido"),
-  establishment_id: Yup.string()
-    .nullable()
-    .required("Requerido"),
-  diio_ranges: Yup.array().of(
-    Yup.object()
-      .shape({
-        desde: Yup.number()
+let currentDate = new Date().toLocaleDateString();
 
-          .min(0, "Desde debe ser >= 0")
-          .required("Requerido"),
-        hasta: Yup.number()
-          .min(Yup.ref("desde"), `"Hasta" debe ser igual o mayor a "Desde"`)
-          .required("Requerido")
-      })
-      .required()
-  )
+const newAnimalDownRegistration = Yup.object().shape({
+  establishment: Yup.string()
+    .nullable()
+    .required("Requerido"),
+  owner: Yup.string()
+    .nullable()
+    .required("Requerido"),
+  mva: Yup.string()
+    .nullable()
+    .required("Requerido"),
+  verification_date: Yup.string()
+    .nullable()
+    .required("Requerido"),
+  specie_array: Yup.array()
+    .nullable()
+    .required("Requerido"),
+  diio_array: Yup.array().required("Requerido")
 });
 
 const NewDeathRegistration = () => {
@@ -62,28 +53,25 @@ const NewDeathRegistration = () => {
       <h2>Nuevo Registro de Muerte Animal</h2>
       <Formik
         initialValues={{
-          seller_type: "",
-          provider_id: "", //id
-          buyer_type: "",
-          buyer_rut: getBuyerRut(), //id
-          establishment_id: "", //id
-          startDiio: "",
-          endDiio: "",
-          diio_ranges: []
+          establishment_id: "",
+          owner_id: "",
+          mva_id: "",
+          verification_date: "",
+          specie_array: [],
+          diio_array: []
         }}
-        validationSchema={buyDiioSchema}
+        validationSchema={newAnimalDownRegistration}
         onSubmit={(values, { setSubmitting }) => {
-          postDiioPurchase(
+          postAnimalDeathRegistration(
             api,
-            values.provider_id,
             values.establishment_id.value,
-            JSON.stringify(
-              values.diio_ranges.map(range => [range.desde, range.hasta])
-            )
+            values.owner_id.value,
+            values.mva_id.value,
+            values.verification_date.value,
+            JSON.stringify(values.specie_array),
+            JSON.stringify(values.diio_array)
           ).then(resp => {
-            resp.success
-              ? alert("Compra realizada")
-              : alert("Error en la compra");
+            resp.success ? alert("Baja realizada") : alert("Error en la baja");
           });
           setSubmitting(false);
         }}
@@ -102,16 +90,6 @@ const NewDeathRegistration = () => {
               <div style={{ alignContent: "center" }}>
                 <div className="row">
                   <div className="death_register col-md-4">
-                    <Selector
-                      fieldName="seller_type"
-                      fieldValue={values.seller_type}
-                      labelName="Especie*"
-                      onChange={setFieldValue}
-                      onBlur={setFieldTouched}
-                      touched={touched.seller_type}
-                      data={getSellerTypes}
-                      errors={errors.seller_type}
-                    />
                     <Selector
                       fieldName="titular_id"
                       fieldValue={values.provider_id}
@@ -138,10 +116,21 @@ const NewDeathRegistration = () => {
                       data={getProvidersApi}
                       errors={errors.provider_id}
                     />
+                    Fecha: {currentDate}
                     <br />
                     <hr />
                     <div className="upload_death_register">
                       <h5>Carga individual</h5>
+                      <Selector
+                        fieldName="specie"
+                        fieldValue={values.seller_type}
+                        labelName="Especie*"
+                        onChange={setFieldValue}
+                        onBlur={setFieldTouched}
+                        touched={touched.seller_type}
+                        data={getSellerTypes}
+                        errors={errors.seller_type}
+                      />
                       <Selector
                         fieldName="type_id"
                         fieldValue={values.provider_id}
@@ -189,7 +178,7 @@ const NewDeathRegistration = () => {
                       >
                         Eliminar Cambio
                       </button>
-                      <button className="btn btn-primary" type="submit">
+                      <button className="btn btn-primary" onClick={() => {}}>
                         Agregar Cambio
                       </button>
                     </div>

@@ -41,3 +41,24 @@ export const getInfoSingleDiioConsult = async (apiInstance, diio) => {
   const info = await apiInstance.get(`/diios/${diio}`);
   return info.data[0];
 };
+
+export const postAnimalDeathRegistration = async (
+  apiInstance,
+  establishment,
+  owner,
+  mva,
+  verification_date,
+  spacie_array,
+  diio_array
+) => {
+  let data = {
+    establishment,
+    owner,
+    mva,
+    verification_date,
+    spacie_array,
+    diio_array
+  };
+  const result = await apiInstance.post("/animal_down_register", data);
+  return result;
+};
