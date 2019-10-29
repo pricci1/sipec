@@ -21,7 +21,7 @@ const newAnimalDownRegistration = Yup.object().shape({
   mva: Yup.string()
     .nullable()
     .required("Requerido"),
-  verification_date: Yup.string()
+  death_date: Yup.string()
     .nullable()
     .required("Requerido"),
   specie_array: Yup.array()
@@ -56,7 +56,7 @@ const NewDeathRegistration = () => {
           establishment_id: "",
           owner_id: "",
           mva_id: "",
-          verification_date: "",
+          death_date: "",
           specie_array: [],
           diio_array: []
         }}
@@ -67,7 +67,7 @@ const NewDeathRegistration = () => {
             values.establishment_id.value,
             values.owner_id.value,
             values.mva_id.value,
-            values.verification_date.value,
+            values.death_date.value,
             JSON.stringify(values.specie_array),
             JSON.stringify(values.diio_array)
           ).then(resp => {

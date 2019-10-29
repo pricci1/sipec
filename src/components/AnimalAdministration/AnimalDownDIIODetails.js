@@ -36,7 +36,7 @@ const AnimalDownDIIODetails = ({ registryId }) => {
           <tr>
             <th className="text-nowrap">Especie</th>
             <td>
-              Agricola Las Palmas Y Otrsas Cosas Que Hacen El Nombre Muy Largo
+              Agricola Las Palmas Y Otras Cosas Que Hacen El Nombre Muy Largo
             </td>
           </tr>
           <tr>

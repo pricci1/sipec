@@ -28,7 +28,7 @@ export const AnimalEstablishmentRegistryTable = ({
         label: "Establecimiento",
         field: "establishment",
         sort: "asc",
-        width: 270
+        width: 270  
       },
       {
         label: "Titular",

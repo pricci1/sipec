@@ -37,6 +37,40 @@ export const getEstablishmentsApi = async apiInstance => {
   }));
 };
 
+export const getWorkerApi = async apiInstance => {
+  const result = await apiInstance.get("/personal_establishment");
+  console.log(result, "AAAAA");
+
+  return result.data.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
+};
+
+export const getAnimalTableApi = async apiInstance => {
+  const result = await apiInstance.get("/animals_by_personal");
+  console.log(result);
+
+  return result.data.map(
+    ({ diio, specie, rutbuyer, bread, sex, date, category }) => ({
+      diio: diio,
+      specie: specie,
+      rutbuyer: rutbuyer,
+      bread: bread,
+      sex: sex,
+      date: date,
+      category: category
+    })
+  );
+};
+export const getChangeDiioDataApi = (api, titular_id) => {
+  return [];
+};
+
+export const getChangeRegistryDataApi = (api, registry_id) => {
+  return [];
+};
+
 export const getInfoSingleDiioConsult = async (apiInstance, diio) => {
   const info = await apiInstance.get(`/diios/${diio}`);
   return info.data[0];
@@ -47,7 +81,7 @@ export const postAnimalDeathRegistration = async (
   establishment,
   owner,
   mva,
-  verification_date,
+  death_date,
   spacie_array,
   diio_array
 ) => {
@@ -55,7 +89,7 @@ export const postAnimalDeathRegistration = async (
     establishment,
     owner,
     mva,
-    verification_date,
+    death_date,
     spacie_array,
     diio_array
   };
