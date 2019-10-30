@@ -47,14 +47,16 @@ const SearchAnimalDownDIIO = () => {
             desde: "",
             hasta: ""
           }}
-          validationSchema={searchAnimalDownSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
-            var response = getAnimalDeathTableApi(api, values);
-            setData(response);
+          // validationSchema={searchAnimalDownSchema}
+          onSubmit={formData => {
+            // send formData to backend
+            // set 'data' using 'setData' with backend's response with thisstructure:
+            // [{rup, establishment, tiutlar, date, quantity},{rup, establishment, ttiutlar, date, quantity}]
+            console.log(formData);
+            getAnimalDeathTableApi(api).then(resp => {
+              console.log(resp);
+              setData(resp);
+            });
           }}
         >
           {({
@@ -62,6 +64,7 @@ const SearchAnimalDownDIIO = () => {
             touched,
             errors,
             handleSubmit,
+            handleReset,
             isSubmitting,
             setFieldValue,
             setFieldTouched
@@ -102,6 +105,13 @@ const SearchAnimalDownDIIO = () => {
                 disabled={isSubmitting}
               >
                 Buscar
+              </button>
+              <button
+                onClick={handleReset}
+                className="btn btn-secondary "
+                type="button"
+              >
+                Limpiar
               </button>
             </form>
           )}
