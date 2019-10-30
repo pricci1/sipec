@@ -1,3 +1,5 @@
+import { array } from "prop-types";
+
 export const postDiioChange = async (
   apiInstance,
   specie,
@@ -17,7 +19,7 @@ export const postDiioChange = async (
   };
   const result = await apiInstance.post("/diio_changes", data);
   console.log(data);
-  
+
   return result;
 };
 
@@ -63,10 +65,16 @@ export const getEstablishmentsApi = async apiInstance => {
 
 export const getBreedApi = async apiInstance => {
   const result = await apiInstance.get("/breeds");
-};
+  return result.data.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
+
+}
 
 export const getWorkerApi = async apiInstance => {
   const result = await apiInstance.get("/personal_by_company");
+  console.log("GET:/personal_by_company" ,result);
   return result.data.map(({ id, name }) => ({
     value: id,
     label: name
@@ -103,7 +111,6 @@ export const getChangeRegistryDataApi = (api, registry_id) => {
   return [];
 };
 
-
 export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
   const result = await apiInstance.get(
     `/diio_purchases/user_establishment/${user_id}`
@@ -127,22 +134,28 @@ export const getMva = async apiInstance => {
 
 export const postAnimalDeathRegistration = async (
   apiInstance,
-  owner,
   mva,
   down,
-  down_details,
   death_date,
   diio_array
 ) => {
-  let data = {
-    owner,
-    mva,
-    down,
-    down_details,
-    death_date,
-    diio_array
-  };
-  const result = await apiInstance.post("/report_death", data);
+  let result = { success: false, data: "OK" };
+
+  for (let i = 0; i < diio_array.length; i++) {
+    let data = {
+      veterinario: mva,
+      death_motive: down,
+      death_date: death_date,
+      serial_diio: diio_array[i].diio
+    };
+    console.log(data);
+    const response = await apiInstance.post("/report_death", data);
+    result.success = result.success || response.success;
+    if (response.success === false) {
+      result.data = response.data;
+    }
+  }
+
   return result;
 };
 
@@ -159,3 +172,20 @@ export const getAnimalDeathTableApi = async apiInstance => {
     })
   );
 };
+
+export const getMvaApi = async (apiInstance, establishment_id) => {
+  const result = await apiInstance.get("/veterinarios");
+  console.log();
+  
+  return result.data.map(({ id, name, run }) => ({
+    value: id,
+    label: run + " - " + name
+  }));
+};
+export const getAnimalsByRegisterApi =  async (apiInstance ) => {
+  const result = await apiInstance.get("/animals_by_personal")
+  return result
+};
+
+
+

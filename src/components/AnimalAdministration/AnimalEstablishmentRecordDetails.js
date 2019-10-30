@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import ApiContext from "../APIProvider";
+/*const getAnimalsByRegister = () => {
 
-const getAnimals = () => {
   return [
     { diio: "1123123", sex: "hembra", race: "Angus", birthday: "01-08-2010" },
     { diio: "234234", sex: "macho", race: "Hereford", birthday: "11-08-2010" },
@@ -12,9 +13,72 @@ const getAnimals = () => {
       birthday: "01-08-2010"
     }
   ];
-};
+};*/
 
 const AnimalEstablishmentRecordDetails = ({ registryId }) => {
+  const api = useContext(ApiContext);
+  const [data_, setData_] = useState();
+  async function getAnimalsByRegister() {
+    const data = await api.get("/animals_by_personal");
+    if (data.data == "") {
+      return [
+        {
+          diio: "1123123",
+          sex: "hembra",
+          race: "Angus",
+          birthday: "01-08-2010"
+        },
+        {
+          diio: "234234",
+          sex: "macho",
+          race: "Hereford",
+          birthday: "11-08-2010"
+        },
+        {
+          diio: "234235",
+          sex: "hembra",
+          race: "Angus",
+          birthday: "21-08-2010"
+        },
+        {
+          diio: "112343123",
+          sex: "hembra",
+          race: "Angus",
+          birthday: "01-08-2010"
+        }
+      ];
+    }
+
+    return data.data.map(
+      ({
+        diio,
+        specie,
+        rup,
+        owner,
+        mva,
+        origin,
+        applicationDate,
+        breed,
+        sex,
+        birthDate
+      }) => ({
+        diio,
+        specie: specie,
+        rup: rup,
+        personal_owner: owner,
+        mva: mva,
+        date: getCurrentDate(),
+        application_date: applicationDate,
+        origin: origin,
+        breed: breed,
+        sex: sex,
+        birthDate: birthDate,
+        category: category
+      })
+    );
+  }
+
+  const register = getAnimalsByRegister();
   return (
     <>
       <h1>{registryId}</h1>
@@ -22,29 +86,27 @@ const AnimalEstablishmentRecordDetails = ({ registryId }) => {
         <tbody>
           <tr>
             <th className="text-nowrap">MVA o tercer acreditado</th>
-            <td>1.1.1.1</td>
+            <td>{register.mva}</td>
           </tr>
           <tr>
             <th className="text-nowrap">Especie</th>
-            <td>
-              Agricola Las Palmas Y Otrsas Cosas Que Hacen El Nombre Muy Largo
-            </td>
+            <td>{register.specie}</td>
           </tr>
           <tr>
             <th className="text-nowrap">Fecha registro</th>
-            <td>Puyehue</td>
+            <td>{register.date}</td>
           </tr>
           <tr>
             <th className="text-nowrap">Fecha Aplicacion</th>
-            <td>1/1/1</td>
+            <td>{register.applicationDate}</td>
           </tr>
           <tr>
-            <th className="text-nowrap">Establecimetm </th>
-            <td>2/2/2</td>
+            <th className="text-nowrap">Establecimiento </th>
+            <td>{register.rup}</td>
           </tr>
           <tr>
             <th className="text-nowrap">Titular</th>
-            <td>2002</td>
+            <td>{register.owner}</td>
           </tr>
         </tbody>
       </table>
@@ -54,6 +116,72 @@ const AnimalEstablishmentRecordDetails = ({ registryId }) => {
 };
 
 const DetailsTable = () => {
+  const api = useContext(ApiContext);
+  const [data_, setData_] = useState([]);
+  const getAnimalsByRegister = async () => {
+    const data = await api.get("/animals_by_personal");
+    if (true) {
+      setData_([
+        {
+          diio: "1123123",
+          sex: "hembra",
+          race: "Angus",
+          birthday: "01-08-2010"
+        },
+        {
+          diio: "234234",
+          sex: "macho",
+          race: "Hereford",
+          birthday: "11-08-2010"
+        },
+        {
+          diio: "234235",
+          sex: "hembra",
+          race: "Angus",
+          birthday: "21-08-2010"
+        },
+        {
+          diio: "112343123",
+          sex: "hembra",
+          race: "Angus",
+          birthday: "01-08-2010"
+        }
+      ]);
+    }
+
+    let d = data.data.map(
+      (
+        diio,
+        specie,
+        rut,
+        owner,
+        mva,
+        origin,
+        applicationDate,
+        breed,
+        sex,
+        date,
+        category
+      ) => ({
+        diio,
+        specie: specie,
+        rup: rut,
+        personal_owner: owner,
+        mva: mva,
+        date: new Date(),
+        application_date: applicationDate,
+        origin: origin,
+        breed: breed.name,
+        sex: sex,
+        birthDate: date,
+        category: category
+      })
+    );
+    console.log(d);
+  };
+  useEffect(() => {
+    getAnimalsByRegister();
+  }, []);
   return (
     <table className="table table-hover">
       <thead>
@@ -65,12 +193,12 @@ const DetailsTable = () => {
         </tr>
       </thead>
       <tbody>
-        {getAnimals().map((animal, index) => (
+        {data_.map((animal, index) => (
           <tr key={index}>
             <td>{animal.diio}</td>
             <td>{animal.sex}</td>
-            <td>{animal.race}</td>
-            <td>{animal.birthday}</td>
+            <td>{animal.breed}</td>
+            <td>{animal.birthDate}</td>
           </tr>
         ))}
       </tbody>

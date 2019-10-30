@@ -10,7 +10,8 @@ import {
   getEstablishmentsApi,
   getWorkerApi,
   getBreedApi,
-  getCategoriesApi
+  getCategoriesApi,
+  getMvaApi
 } from "../../lib/ApiAnimalAdministration";
 
 export function getCurrentDate(separator = "") {
@@ -77,10 +78,12 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
     return data;
   }
   async function getMvas() {
-    return [
+    /*return [
       { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
       { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
-    ];
+    ];*/
+    const data = await getMvaApi(api);
+    return data;
   }
 
   async function getOrigin() {
@@ -102,7 +105,7 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
     birthDate,
     category
   ) {
-    const response = await api.post("/create_animal_register", {
+    const response = await api.post("/animals", {
       specie: specie,
       rup: establishment,
       personal_owner: owner,
