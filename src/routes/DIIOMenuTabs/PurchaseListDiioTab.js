@@ -39,7 +39,12 @@ const PurchaseListDiioTab = () => {
 
   async function getUserEstablishmentsApi() {
     const data = await getUserEstablishments(api);
-    return data.map(({ id, name }) => ({ value: id, label: name }));
+    return [
+      { value: 1, label: "Pajaro Bobo" },
+      { value: 2, label: "Cimera Brindacolobitos" },
+      { value: 3, label: "Bigotes" }
+    ];
+    //return data.map(({ id, name }) => ({ value: id, label: name }));
   }
 
   function getStringState(state) {

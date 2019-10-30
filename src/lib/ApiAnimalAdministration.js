@@ -186,3 +186,10 @@ export const getAnimalsByRegisterApi = async apiInstance => {
   const result = await apiInstance.get("/animals_by_personal");
   return result;
 };
+
+export const getInfoDiioRange = async (apiInstance, diioStart, diioEnd) => {
+  const info = await apiInstance.get(
+    `/diio/range?desde=${diioStart}&hasta=${diioEnd}`
+  );
+  return info.data;
+};
