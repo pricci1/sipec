@@ -54,15 +54,17 @@ const NewDeclaration = () => {
           type: "set",
           data: res
         })
-      ),
-      getTitularEstablishments(api).then(res =>
-        setFetchedData(oldState => ({
-          ...oldState,
-          establishments: formatEstablishments(res)
-        }))
       )
     ];
     Promise.all(tasks);
+    setFetchedData(oldState => ({
+      ...oldState,
+      establishments: [
+        { value: 1, label: "Pajaro Bobo" },
+        { value: 2, label: "Cimera Brindacolobitos" },
+        { value: 3, label: "Bigotes" }
+      ]
+    }));
   }, []);
   return (
     <div className="body">
