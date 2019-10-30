@@ -74,10 +74,10 @@ const NewChangeDiio = () => {
   }
   async function getMvas() {
     let data = await getMvasApi(api, establishment_id);
-    data = [
-      { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
-      { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
-    ];
+    // data = [
+    //   { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
+    //   { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
+    // ];
     setmvasData(data);
   }
   return (
@@ -103,10 +103,7 @@ const NewChangeDiio = () => {
             values.mva.value,
             values.verification_date.toUTCString(),
             JSON.stringify(
-              values.diio_changes.map(change => ({
-                previous_diio: change.old,
-                new_diio: change.new
-              }))
+              values.diio_changes.map(change => [change.old, change.new])
             )
           ).then(resp => {
             alert(resp.data);
