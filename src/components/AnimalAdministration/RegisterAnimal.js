@@ -8,18 +8,21 @@ import Selector from "../Diio/Utilities/FormikSelector";
 import {
   getSpeciesApi,
   getEstablishmentsApi,
-  getWorkerApi
+  getWorkerApi,
+  getBreedApi,
+  getCategoriesApi
 } from "../../lib/ApiAnimalAdministration";
 
-export function getCurrentDate(separator=''){
+export function getCurrentDate(separator = "") {
+  let newDate = new Date();
+  let date = newDate.getDate();
+  let month = newDate.getMonth() + 1;
+  let year = newDate.getFullYear();
 
-    let newDate = new Date()
-    let date = newDate.getDate();
-    let month = newDate.getMonth() + 1;
-    let year = newDate.getFullYear();
-    
-    return `${year}${separator}${month<10?`0${month}`:`${month}`}${separator}${date}`
-    }
+  return `${year}${separator}${
+    month < 10 ? `0${month}` : `${month}`
+  }${separator}${date}`;
+}
 
 const changeDiioSchema = Yup.object().shape({
   specie: Yup.string()
@@ -31,34 +34,47 @@ const changeDiioSchema = Yup.object().shape({
   establishment: Yup.string()
     .nullable()
     .required("Requerido"),
-  owner: Yup.string()
-    .nullable()
-    ,
+  owner: Yup.string().nullable(),
   mva: Yup.string()
     .nullable()
     .required("Requerido"),
-  applicationDate: Yup.string()
+  applicationDate: Yup.date()
+    .nullable()
+    .required("Requerido").min(new Date),
+  breed: Yup.string()
     .nullable()
     .required("Requerido"),
-  
-  
+  sex: Yup.string()
+    .nullable()
+    .required("Requerido"),
+  birthDate: Yup.date()
+    .nullable()
+    .required("Requerido")
 });
 
-
-const RegisterAnimal = (props) => {
+const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
   const api = useContext(ApiContext);
   async function getSpecies() {
     const data = await getSpeciesApi(api);
     return data;
   }
+
+  async function getBreeds() {
+    const data = await getBreedApi(api);
+    return data;
+  }
+
   async function getEstablishments() {
     const data = await getEstablishmentsApi(api);
+    return data;
+  }
+  async function getCategory() {
+    const data = await getCategoriesApi(api);
     return data;
   }
   async function getOwners() {
     const data = await getWorkerApi(api);
     return data;
-    
   }
   async function getMvas() {
     return [
@@ -68,17 +84,53 @@ const RegisterAnimal = (props) => {
   }
 
   async function getOrigin() {
-    return [
-      { value: 1, label: "Nacional" },
-      { value: 2, label: "Extranjero" }
-    ];
+    return [{ value: 1, label: "Nacional" }, { value: 2, label: "Extranjero" }];
+  }
+  async function getSex() {
+    return [{ value: 1, label: "Macho" }, { value: 2, label: "Hembra" }];
   }
 
-  async function sendRequest(specie, establishment, owner, mva, origin, applicationDate) {
-      console.log("aquii");
-    const response = await api.post("/create_animal_register", {specie: specie, rup:establishment, personal_owner: owner,
-                                                                date : getCurrentDate(), application_date: applicationDate, origin:origin  });
-    props.setLoadingState()
+  async function sendRequest(
+    specie,
+    establishment,
+    owner,
+    mva,
+    origin,
+    applicationDate,
+    breed,
+    sex,
+    birthDate,
+    category
+  ) {
+    const response = await api.post("/create_animal_register", {
+      specie: specie,
+      rup: establishment,
+      personal_owner: owner,
+      mva: mva,
+      date: getCurrentDate(),
+      application_date: applicationDate,
+      origin: origin,
+      breed: breed,
+      sex: sex,
+      birthDate: birthDate,
+      category: category
+    });
+
+    /*getItem({
+      specie: specie,
+      rup: establishment,
+      personal_owner: owner,
+      mva: mva,
+      date: new Date(),
+      application_date: applicationDate,
+      origin: origin,
+      breed: breed,
+      sex: sex,
+      birthDate: birthDate,
+      category: category
+    });
+    handleFormSubmit();*/
+    setReloadHandler();
     if (response.data.status == "ok") {
       alert("Se creó el movimiento con éxito");
     }
@@ -93,20 +145,26 @@ const RegisterAnimal = (props) => {
           mva: "",
           origin: "",
           applicationDate: "",
+          breed: "",
+          sex: "",
+          birthDate: "",
+          category: ""
         }}
         validationSchema={changeDiioSchema}
         onSubmit={(values, { setSubmitting }) => {
-            sendRequest(
-              values.specie,
-              values.establishment,
-              values.owner,
-              values.mva,
-              values.origin,
-              values.applicationDate
-            ).then(response => {
-                    
-            });
-            setSubmitting(false); // This can also be used for displaying a spinner
+          sendRequest(
+            values.specie,
+            values.establishment,
+            values.owner,
+            values.mva,
+            values.origin,
+            values.applicationDate,
+            values.breed,
+            values.sex,
+            values.birthDate,
+            values.category
+          ).then(response => {});
+          setSubmitting(false); // This can also be used for displaying a spinner
         }}
       >
         {props => {
@@ -167,17 +225,16 @@ const RegisterAnimal = (props) => {
               />
               <div>Fecha Registro: {getCurrentDate("/")}</div>
               <div>
-                  <label htmlFor="applicationDate"> Fecha Aplicacion </label>{" "}
-                  <DatePickerField
-                    name="applicationDate"
-                    value={values.applicationDate}
-                    onChange={setFieldValue}
-                    className="form-control"
-                    dateFormat="YYYY-MM-DD"
-                  />
-                </div>{" "}
-
-                <Selector
+                <label htmlFor="applicationDate"> Fecha Aplicacion </label>{" "}
+                <DatePickerField
+                  name="applicationDate"
+                  value={values.applicationDate}
+                  onChange={setFieldValue}
+                  className="form-control"
+                  dateFormat="YYYY-MM-DD"
+                />
+              </div>{" "}
+              <Selector
                 fieldName="origin"
                 fieldValue={values.origin}
                 labelName="Origin"
@@ -187,9 +244,46 @@ const RegisterAnimal = (props) => {
                 data={getOrigin}
                 errors={errors.origin}
               />
-                
-              
-
+              <Selector
+                fieldName="breed"
+                fieldValue={values.breed}
+                labelName="Raza"
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                touched={touched.breed}
+                data={getBreeds}
+                errors={errors.breed}
+              />
+              <Selector
+                fieldName="sex"
+                fieldValue={values.sex}
+                labelName="Sexo"
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                touched={touched.sex}
+                data={getSex}
+                errors={errors.sex}
+              />
+              <div>
+                <label htmlFor="birthDate"> Fecha de Nacimiento</label>{" "}
+                <DatePickerField
+                  name="birthDate"
+                  value={values.birthDate}
+                  onChange={setFieldValue}
+                  className="form-control"
+                  dateFormat="YYYY-MM-DD"
+                />
+              </div>{" "}
+              <Selector
+                fieldName="category"
+                fieldValue={values.category}
+                labelName="Categoria"
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                touched={touched.category}
+                data={getCategory}
+                errors={errors.category}
+              />
               <button
                 className="btn btn-primary"
                 type="submit"

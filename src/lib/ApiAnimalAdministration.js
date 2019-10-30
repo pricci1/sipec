@@ -39,6 +39,15 @@ export const getMvasApi = async (apiInstance, establishment_id) => {
   }));
 };
 
+export const getOwnersApi = async (apiInstance, establishment_id) => {
+  const result = await apiInstance.get(`/establishments/${establishment_id}/personals?role_id=5`)
+
+  return result.data.map(({id, name, run}) => ({
+    value: id,
+    label: run + " - " + name
+  }))
+}
+
 export const getEstablishmentsApi = async apiInstance => {
   const result = await apiInstance.get("/establishments");
 
@@ -48,10 +57,21 @@ export const getEstablishmentsApi = async apiInstance => {
   }));
 };
 
-export const getWorkerApi = async apiInstance => {
-  const result = await apiInstance.get("/personal_establishment");
-  console.log(result, "AAAAA");
 
+
+export const getBreedApi = async apiInstance => {
+  const result = await apiInstance.get("/breeds");
+}
+
+export const getWorkerApi = async apiInstance => {
+  const result = await apiInstance.get("/personal_by_company");
+  return result.data.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
+};
+export const getCategoriesApi = async apiInstance => {
+  const result = await apiInstance.get("/diio_models");
   return result.data.map(({ id, name }) => ({
     value: id,
     label: name
@@ -61,21 +81,20 @@ export const getWorkerApi = async apiInstance => {
 export const getAnimalTableApi = async apiInstance => {
   const result = await apiInstance.get("/animals_by_personal");
   console.log(result);
-
-  return result.data.map(
-    ({ diio, specie, rutbuyer, bread, sex, date, category }) => ({
-      diio: diio,
-      specie: specie,
-      rutbuyer: rutbuyer,
-      bread: bread,
-      sex: sex,
-      date: date,
-      category: category
-    })
-  );
-};
-export const getChangeDiioDataApi = (api, titular_id) => {
-  return [];
+  
+  return result.data.map(({ diio, specie, rut, breed, sex, date, model }) => ({
+    diio: diio,
+    specie: specie,
+    rut: rut,
+    breed: breed.name,
+    sex: sex,
+    date: date,
+    category: model
+  }));
+}
+export const getChangeDiioDataApi =  async (apiInstance, titular_id) => {
+  const result = await apiInstance.get("/diio_changes_details/1")
+  return result
 };
 
 export const getChangeRegistryDataApi = (api, registry_id) => {

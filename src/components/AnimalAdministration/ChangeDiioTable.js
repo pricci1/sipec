@@ -1,14 +1,40 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { MDBDataTable } from "mdbreact";
 import ApiContext from "../APIProvider";
-import { getChangeDiioDataApi } from "../../lib/ApiAnimalAdministration";
 
-export const ChangeDiioTable = ({ setModalChangeId, toggleModal }) => {
+export const ChangeDiioTable = ({
+  setModalChangeId,
+  toggleModal,
+  tableData
+}) => {
   const handleEntryClick = changeId => {
     setModalChangeId(changeId);
     toggleModal();
   };
-  const api = useContext(ApiContext);
+  let rows = [];
+
+  useEffect(() => {
+    tableData.map(d => {
+      rows.push({
+        show: (
+          <button
+            type="button"
+            className="btn btn-info btn-sm p-0"
+            onClick={() => handleEntryClick(d.id)}
+          >
+            &#10010;
+          </button>
+        ),
+        rup: d.rup,
+        date: d.date,
+        establishment: d.establishment,
+        rut: d.rut,
+        mva: d.mva
+      });
+    });
+  }, [tableData]);
+
+  
   var columns = [
     {
       label: "Ver",
@@ -47,31 +73,7 @@ export const ChangeDiioTable = ({ setModalChangeId, toggleModal }) => {
       width: 200
     }
   ];
-  async function getChangeDiioData() {
-    const data = await getChangeDiioDataApi(api, api.titular.id);
-    let rows = [];
 
-    data.map(d => {
-      rows.push({
-        show: (
-          <button
-            type="button"
-            className="btn btn-info btn-sm p-0"
-            onClick={() => handleEntryClick(d.id)}
-          >
-            &#10010;
-          </button>
-        ),
-        rup: d.rup,
-        date: d.date,
-        establishment: d.establishment,
-        rut: d.rut,
-        mva: d.mva
-      });
-    });
-
-    return rows;
-  }
   return (
     <>
       <MDBDataTable
@@ -81,7 +83,7 @@ export const ChangeDiioTable = ({ setModalChangeId, toggleModal }) => {
         bordered
         small
         maxHeight="370px"
-        data={{ columns: columns, rows: getChangeDiioData() }}
+        data={{ columns: columns, rows: rows }}
         entriesLabel={["Entradas por página"]}
         infoLabel={["Mostrando de", "a", "entradas, de"]}
         paginationLabel={["Anterior", "Siguiente"]}

@@ -1,23 +1,35 @@
-import React, { useContext, useState } from "react";
-
+import React, { useContext, useState, useEffect } from "react";
 import APIContext from "../APIProvider";
 import { Formik } from "formik";
-import { getUserEstablishmentsApi } from "../../lib/ApiAnimalAdministration";
+import {
+  getUserEstablishmentsApi,
+  getChangeDiioDataApi
+} from "../../lib/ApiAnimalAdministration";
 import DatePicker from "react-datepicker";
 import Selector from "../Diio/Utilities/FormikSelector";
 import { Link } from "@reach/router";
 import ChangeDiioTable from "./ChangeDiioTable";
 import ChangeDiioDetails from "./ChangeDiioDetails";
 import useModal from "../Modal";
+
 const ChangeDiioList = () => {
   const api = useContext(APIContext);
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
   const [modalChangeId, setModalChangeId] = useState();
-
+  const [tableData, settableData] = useState([]);
   async function getEstablishments() {
     let data = await getUserEstablishmentsApi(api, api.titular.id);
     return data;
   }
+
+  async function getTableData() {
+    const data = await getChangeDiioDataApi(api);
+    settableData(data);
+  }
+
+  useEffect(() => {
+    getTableData();
+  }, []);
 
   return (
     <>
@@ -27,9 +39,7 @@ const ChangeDiioList = () => {
           establishment: "",
           date: { from: "", to: "" }
         }}
-        onSubmit={formData => {
-          console.log(formData);
-        }}
+        onSubmit={formData => {}}
       >
         {props => {
           const {
@@ -120,10 +130,11 @@ const ChangeDiioList = () => {
       <Link to="new" className="d-md-inline btn btn-primary">
         &#10010; Nuevo
       </Link>
-      
+
       <ChangeDiioTable
         toggleModal={toggleModal}
         setModalChangeId={setModalChangeId}
+        tableData={tableData}
       />
       {modalIsOpened && (
         <Modal>

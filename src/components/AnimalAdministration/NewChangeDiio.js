@@ -7,9 +7,9 @@ import { Selector } from "../AnimalAdministration/Utils/FormikSelectors";
 import {
   getSpeciesApi,
   getUserEstablishmentsApi,
-  getMvasApi
+  getMvasApi,
+  getOwnersApi
 } from "../../lib/ApiAnimalAdministration";
-
 
 const changeDiioSchema = Yup.object().shape({
   specie: Yup.string()
@@ -47,7 +47,7 @@ const NewChangeDiio = () => {
   const [mvasData, setmvasData] = useState([]);
   const [speciesData, setspeciesData] = useState([]);
   const [establishmentsData, setestablishmentsData] = useState([]);
-
+  const [ownersData, setownersData] = useState([]);
   useEffect(() => {
     getSpecies();
     getEstablishments();
@@ -55,6 +55,7 @@ const NewChangeDiio = () => {
 
   useEffect(() => {
     getMvas();
+    getOwners();
   }, [establishment_id]);
 
   async function getSpecies() {
@@ -63,11 +64,12 @@ const NewChangeDiio = () => {
   }
   async function getEstablishments() {
     const data = await getUserEstablishmentsApi(api, api.titular.id);
-    setestablishmentsData(data)
+    setestablishmentsData(data);
   }
 
-  function getOwners() {
-    
+  async function getOwners() {
+    const data = await getOwnersApi(api, establishment_id);
+    setownersData(data);
   }
   async function getMvas() {
     const data = await getMvasApi(api, establishment_id);
