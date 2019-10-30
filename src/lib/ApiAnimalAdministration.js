@@ -1,3 +1,5 @@
+import { array } from "prop-types";
+
 export const postDiioChange = async (
   apiInstance,
   specie,
@@ -126,23 +128,28 @@ export const getMva = async apiInstance => {
 
 export const postAnimalDeathRegistration = async (
   apiInstance,
-  owner,
   mva,
   down,
-  down_details,
   death_date,
   diio_array
 ) => {
-  let data = {
-    owner,
-    mva,
-    down,
-    down_details,
-    death_date,
-    diio_array
-  };
-  console.log(data);
-  const result = await apiInstance.post("/report_death", data);
+  let result = { success: false, data: "OK" };
+
+  for (let i = 0; i < diio_array.length; i++) {
+    let data = {
+      veterinario: mva,
+      death_motive: down,
+      death_date: death_date,
+      serial_diio: diio_array[i].diio
+    };
+    console.log(data);
+    const response = await apiInstance.post("/report_death", data);
+    result.success = result.success || response.success;
+    if (response.success === false) {
+      result.data = response.data;
+    }
+  }
+
   return result;
 };
 
