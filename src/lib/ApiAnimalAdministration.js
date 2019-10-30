@@ -61,10 +61,16 @@ export const getEstablishmentsApi = async apiInstance => {
 
 export const getBreedApi = async apiInstance => {
   const result = await apiInstance.get("/breeds");
+  return result.data.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
+
 }
 
 export const getWorkerApi = async apiInstance => {
   const result = await apiInstance.get("/personal_by_company");
+  console.log("GET:/personal_by_company" ,result);
   return result.data.map(({ id, name }) => ({
     value: id,
     label: name
@@ -80,7 +86,7 @@ export const getCategoriesApi = async apiInstance => {
 
 export const getAnimalTableApi = async apiInstance => {
   const result = await apiInstance.get("/animals_by_personal");
-  console.log(result);
+  console.log("GET:/animals_by_personal" ,result);
   
   return result.data.map(({ diio, specie, rut, breed, sex, date, model }) => ({
     diio: diio,
@@ -157,3 +163,20 @@ export const getAnimalDeathTableApi = async apiInstance => {
     })
   );
 };
+
+export const getMvaApi = async (apiInstance, establishment_id) => {
+  const result = await apiInstance.get("/veterinarios");
+  console.log();
+  
+  return result.data.map(({ id, name, run }) => ({
+    value: id,
+    label: run + " - " + name
+  }));
+};
+export const getAnimalsByRegisterApi =  async (apiInstance ) => {
+  const result = await apiInstance.get("/animals_by_personal")
+  return result
+};
+
+
+
