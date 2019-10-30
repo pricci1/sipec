@@ -1,11 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Formik, Field, FieldArray } from "formik";
 import { Datepicker } from "react-formik-ui";
 import Selector from "../Diio/Utilities/FormikSelector";
 import * as Yup from "yup";
 import {
   postAnimalDeathRegistration,
-  getMva,
+  getOwnersApi,
+  getMvasApi,
   getSpeciesApi,
   getEstablishmentsApi
 } from "../../lib/ApiAnimalAdministration";
@@ -37,30 +38,42 @@ const newAnimalDownRegistration = Yup.object().shape({
 const NewDeathRegistration = () => {
   const api = useContext(APIContext);
 
-  const [selectedSellerRut, setSelectedSellerRut] = useState();
+  const [establishment_id, setestablishment_id] = useState("");
+  const [mvasData, setmvasData] = useState([]);
+  const [speciesData, setspeciesData] = useState([]);
+  const [establishmentsData, setestablishmentsData] = useState([]);
+  const [ownersData, setownersData] = useState([]);
+  useEffect(() => {
+    getSpecies();
+    getEstablishments();
+  }, []);
+  useEffect(() => {
+    getMvas();
+    getOwners();
+  }, [establishment_id]);
 
   async function getSpecies() {
     const data = await getSpeciesApi(api);
-    return data;
+    setspeciesData(data);
   }
 
   async function getEstablishments() {
     const data = await getEstablishmentsApi(api);
-    return data;
+    setestablishmentsData(data);
   }
 
   async function getOwners() {
-    return [
-      { value: 1, label: "Agricola y ganaderia las vertientes SPA" },
-      { value: 2, label: "Gonzales Marquez Guido" }
-    ];
+    const data = await getOwnersApi(api, establishment_id);
+    setownersData(data);
   }
 
   async function getMvas() {
-    return [
-      { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
-      { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
-    ];
+    let data = await getMvasApi(api, establishment_id);
+    // data = [
+    //   { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
+    //   { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
+    // ];
+    setmvasData(data);
   }
 
   async function getDown() {
@@ -86,7 +99,7 @@ const NewDeathRegistration = () => {
           owner: "",
           mva: "",
           death_date: "",
-          specie_array: "",
+          specie: "",
           down: "",
           down_details: "",
           diio_array: []
@@ -95,6 +108,7 @@ const NewDeathRegistration = () => {
         onSubmit={(values, { setSubmitting }) => {
           postAnimalDeathRegistration(
             api,
+            values.specie.value,
             values.mva.value,
             values.down,
             values.death_date,
@@ -112,20 +126,28 @@ const NewDeathRegistration = () => {
             values,
             touched,
             errors,
+            dirty,
+            isSubmitting,
+            handleChange,
+            handleBlur,
             handleSubmit,
             setFieldValue,
-            setFieldTouched
+            setFieldTouched,
+            handleReset
           } = props;
           return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} onReset={handleReset}>
               <Selector
                 fieldName="establishment"
                 fieldValue={values.establishment}
                 labelName="RUP - Establecimiento"
-                onChange={setFieldValue}
+                onChange={(field, fieldValue) => {
+                  setFieldValue(field, fieldValue);
+                  setestablishment_id(fieldValue.value);
+                }}
                 onBlur={setFieldTouched}
                 touched={touched.establishment}
-                data={getEstablishments}
+                options={establishmentsData}
                 errors={errors.establishment}
               />
               <br />
@@ -136,18 +158,18 @@ const NewDeathRegistration = () => {
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.owner}
-                data={getOwners}
+                options={ownersData}
                 errors={errors.owner}
               />
               <br />
               <Selector
                 fieldName="mva"
-                fieldValue={values.establishment}
+                fieldValue={values.mva}
                 labelName="MVA"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.mva}
-                data={getMvas}
+                options={mvasData}
                 errors={errors.mva}
               />
               <br />
@@ -161,11 +183,11 @@ const NewDeathRegistration = () => {
               <Selector
                 fieldName="specie"
                 fieldValue={values.specie}
-                labelName="Especie"
+                labelName="*Especie"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.specie}
-                data={getSpecies}
+                options={speciesData}
                 errors={errors.specie}
               />
               <br />
@@ -175,7 +197,6 @@ const NewDeathRegistration = () => {
                 labelName="*Tipo de Baja"
                 onChange={(field, fieldValue) => {
                   setFieldValue(field, fieldValue.label);
-                  setSelectedSellerRut(fieldValue.label);
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.down}
@@ -189,7 +210,6 @@ const NewDeathRegistration = () => {
                 labelName="*Detalle del Tipo de Baja"
                 onChange={(field, fieldValue) => {
                   setFieldValue(field, fieldValue.value);
-                  setSelectedSellerRut(fieldValue.value);
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.down_details}
@@ -210,11 +230,17 @@ const NewDeathRegistration = () => {
                 </div>
                 <div className="col-md-4">
                   <Datepicker
+                    className={"form-control"}
+                    onChange={value => {
+                      setFieldValue("verification_date", value);
+                    }}
+                    onBlur={handleBlur}
+                    onSelect={handleChange}
+                    name="death_date"
                     id="death_date"
                     selected={values.death_date}
+                    value={values.verification_date}
                     dateFormat="yyyy-dd-MM"
-                    className="form-control"
-                    name="death_date"
                     placeholder="aaaa/dd/mm"
                   />
                   <br />
@@ -224,7 +250,7 @@ const NewDeathRegistration = () => {
                       <div>
                         <button
                           type="button"
-                          className="btn btn-primary"
+                          className="btn btn-outline-primary"
                           onClick={() => arrayHelpers.push({ diio: 0 })}
                         >
                           Agregar DIIO
@@ -261,11 +287,11 @@ const NewDeathRegistration = () => {
                 </div>
               </div>
               <br />
-              <button className="btn btn-outline-secondary" type="reset">
-                Eliminar Cambio
-              </button>{" "}
-              <button className="btn btn-primary" onClick={() => {}}>
-                Agregar Cambio
+              <button
+                className="btn btn-outline-secondary"
+                onClick={handleReset}
+              >
+                Limpiar
               </button>
               <br />
               <hr />
@@ -273,7 +299,11 @@ const NewDeathRegistration = () => {
                 <Link to="../" className="btn btn-outline-secondary">
                   Volver
                 </Link>{" "}
-                <button className="btn btn-primary" type="submit">
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                  disabled={!dirty || isSubmitting}
+                >
                   Guardar Cambios
                 </button>
               </div>
