@@ -1,27 +1,30 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { MDBDataTable } from "mdbreact";
+import ApiContext from "../APIProvider";
+import { getAnimalDeathTableApi } from "../../lib/ApiAnimalAdministration";
 
 export const AnimalEstablishmentRegistryTable = ({
   data,
   setModalRegistryId,
   toggleModal
 }) => {
-  let columnsasd = [
+  const api = useContext(ApiContext);
+  var columns = [
     {
-      label: "Ver",
-      field: "show",
-      sort: "asc",
-      width: 40
-    },
-    {
-      label: "Fecha de Registro",
-      field: "date",
+      label: "DIIO baja",
+      field: "diio",
       sort: "asc",
       width: 150
     },
     {
-      label: "RUP",
-      field: "rup",
+      label: "Especie",
+      field: "specie",
+      sort: "asc",
+      width: 150
+    },
+    {
+      label: "Fecha de Registro",
+      field: "date",
       sort: "asc",
       width: 150
     },
@@ -31,93 +34,39 @@ export const AnimalEstablishmentRegistryTable = ({
       sort: "asc",
       width: 270
     },
+    // {
+    //   label: "MVA",
+    //   field: "veterinario",
+    //   sort: "asc",
+    //   width: 150
+    // },
     {
-      label: "RUT",
-      field: "rut",
+      label: "Tipo baja",
+      field: "down_type",
       sort: "asc",
       width: 150
     },
     {
-      label: "MVA",
-      field: "mva",
-      sort: "asc",
-      width: 150
-    },
-    {
-      label: "Cantidad",
-      field: "quantity",
+      label: "Detalle",
+      field: "detail",
       sort: "asc",
       width: 150
     }
   ];
+  let rows = [];
 
-  let rowsasd = [
-    {
-      show: (
-        <button
-          type="button"
-          className="btn btn-info btn-sm p-0"
-          onClick={() => handleEntryClick(1)}
-        >
-          &#10010;
-        </button>
-      ),
-      date: "12/12/13",
-      rup: "1.1.1.1",
-      establishment: "Lo Beltran",
-      rut: "",
-      mva: "",
-      quantity: "3"
-    },
-    {
-      show: (
-        <button
-          type="button"
-          className="btn btn-info btn-sm p-0"
-          onClick={() => handleEntryClick(2)}
-        >
-          &#10010;
-        </button>
-      ),
-      date: "12/12/13",
-      rup: "1.1.1.1",
-      establishment: "Estancia La Fe",
-      rut: "",
-      mva: "",
-      quantity: "3"
-    }
-  ];
-
-  // function getColumnItem(index, item) {
-  //   if (index != 0) {
-  //     return item[index];
-  //   }
-  // }
-
-  // function getData() {
-  //   var jsonRow = {};
-  //   data.map(
-  //     item => (
-  //       columns.map(
-  //         (col, index) =>
-  //           (jsonRow[String(col.field)] = getColumnItem(index, item))
-  //       ),
-  //       rows.push(jsonRow),
-  //       (jsonRow = {})
-  //     )
-  //   );
-  // }
-
-  // getData();
-
-  const handleEntryClick = registryId => {
-    setModalRegistryId(registryId);
-    toggleModal();
-  };
-  const fakeData = {
-    columns: columnsasd,
-    rows: rowsasd
-  };
+  useEffect(() => {
+    data.map(animals => {
+      rows.push({
+        diio: animals.diio,
+        specie: animals.specie,
+        date: animals.date,
+        establishment: animals.establishment.name,
+        down_type: animals.down_type,
+        detail: animals.detail
+      });
+    });
+  }, [data]);
 
   return (
     <>
@@ -130,7 +79,7 @@ export const AnimalEstablishmentRegistryTable = ({
         small
         maxHeight="370px"
         header
-        data={fakeData} // TODO: change with 'data'
+        data={{ columns: columns, rows: rows }} // TODO: change with 'data'
         entriesLabel={["Entradas por página"]}
         infoLabel={["Mostrando de", "a", "entradas, de"]}
         paginationLabel={["Anterior", "Siguiente"]}

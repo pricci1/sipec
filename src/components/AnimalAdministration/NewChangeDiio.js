@@ -1,12 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import * as Yup from "yup";
 import ApiContext from "../APIProvider";
 import { Formik, Field, FieldArray } from "formik";
 import DatePicker from "react-datepicker";
-import Selector from "../Diio/Utilities/FormikSelector";
+import { Selector } from "../AnimalAdministration/Utils/FormikSelectors";
 import {
   getSpeciesApi,
-  getEstablishmentsApi
+  getUserEstablishmentsApi,
+  getMvasApi,
+  getOwnersApi,
+  postDiioChange
 } from "../../lib/ApiAnimalAdministration";
 
 const changeDiioSchema = Yup.object().shape({
@@ -41,25 +44,41 @@ const changeDiioSchema = Yup.object().shape({
 
 const NewChangeDiio = () => {
   const api = useContext(ApiContext);
+  const [establishment_id, setestablishment_id] = useState("");
+  const [mvasData, setmvasData] = useState([]);
+  const [speciesData, setspeciesData] = useState([]);
+  const [establishmentsData, setestablishmentsData] = useState([]);
+  const [ownersData, setownersData] = useState([]);
+  useEffect(() => {
+    getSpecies();
+    getEstablishments();
+  }, []);
+
+  useEffect(() => {
+    getMvas();
+    getOwners();
+  }, [establishment_id]);
+
   async function getSpecies() {
     const data = await getSpeciesApi(api);
-    return data;
+    setspeciesData(data);
   }
   async function getEstablishments() {
-    const data = await getEstablishmentsApi(api);
-    return data;
+    const data = await getUserEstablishmentsApi(api, api.titular.id);
+    setestablishmentsData(data);
   }
+
   async function getOwners() {
-    return [
-      { value: 1, label: "Agricola y ganaderia las vertientes SPA" },
-      { value: 2, label: "Gonzales Marquez Guido" }
-    ];
+    const data = await getOwnersApi(api, establishment_id);
+    setownersData(data);
   }
   async function getMvas() {
-    return [
-      { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
-      { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
-    ];
+    let data = await getMvasApi(api, establishment_id);
+    // data = [
+    //   { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
+    //   { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
+    // ];
+    setmvasData(data);
   }
   return (
     <div className="body">
@@ -74,8 +93,23 @@ const NewChangeDiio = () => {
           diio_changes: []
         }}
         validationSchema={changeDiioSchema}
-        onSubmit={(values, {setSubmitting}) => {
-          console.log(values)
+        onSubmit={(values, { setSubmitting }) => {
+          console.log(values);
+          postDiioChange(
+            api,
+            values.specie.value,
+            values.establishment.value,
+            values.owner.value,
+            values.mva.value,
+            values.verification_date.toUTCString(),
+            JSON.stringify(
+              values.diio_changes.map(change => [change.old, change.new])
+            )
+          ).then(resp => {
+            alert(resp.data);
+            console.log(resp);
+          });
+          setSubmitting(false);
         }}
       >
         {props => {
@@ -97,59 +131,75 @@ const NewChangeDiio = () => {
               <Selector
                 fieldName="specie"
                 fieldValue={values.specie}
-                labelName="Especie"
+                label="Especie"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.specie}
-                data={getSpecies}
+                options={speciesData}
                 errors={errors.specie}
               />
-              <br/>
+              <br />
               <Selector
                 fieldName="establishment"
                 fieldValue={values.establishment}
-                labelName="RUP - Establecimiento"
-                onChange={setFieldValue}
+                label="RUP - Establecimiento"
+                onChange={(field, fieldValue) => {
+                  setFieldValue(field, fieldValue);
+                  setestablishment_id(fieldValue.value);
+                }}
                 onBlur={setFieldTouched}
                 touched={touched.establishment}
-                data={getEstablishments}
+                options={establishmentsData}
                 errors={errors.establishment}
               />
-              <br/>
+              <br />
 
               <Selector
                 fieldName="owner"
-                fieldValue={values.establishment}
-                labelName="Titular o mandatario"
+                fieldValue={values.owner}
+                label="Titular o mandatario"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.owner}
-                data={getOwners}
+                options={ownersData}
                 errors={errors.owner}
               />
-              <br/>
-
+              <br />
               <Selector
                 fieldName="mva"
-                fieldValue={values.establishment}
-                labelName="MVA"
+                fieldValue={values.mva}
+                label="MVA"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.mva}
-                data={getMvas}
+                options={mvasData}
                 errors={errors.mva}
               />
-              <br/>
+              <br />
+              <div
+                className="row"
+                style={{ textAlign: "justify", marginTop: "10px" }}
+              >
+                <div className="col-md-2" style={{ direction: "rtl" }}>
+                  <label htmlFor="verification_date">Fecha verificación</label>
+                </div>
+                <div className="col-md-2">
+                  <DatePicker
+                    className={"form-control"}
+                    id="verification_date"
+                    onChange={value => {
+                      setFieldValue("verification_date", value);
+                    }}
+                    value={values.verification_date}
+                    onBlur={handleBlur}
+                    onSelect={handleChange}
+                    selected={values.verification_date}
+                    dateFormat="dd/MM/yy"
+                    name="verification_date"
+                  />
+                </div>
+              </div>
 
-              <label htmlFor="verification_date">Fecha verificación cambio Diio</label>
-              <DatePicker
-								className={"form-control"}
-								id="verification_date"
-								onChange={value => {
-                  setFieldValue("verification_date", value)
-                }}
-								value={values.verification_date}
-              />
               <FieldArray
                 name="diio_changes"
                 render={arrayHelpers => (

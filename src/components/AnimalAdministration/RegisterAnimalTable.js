@@ -1,21 +1,83 @@
-import React,{ useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { MDBDataTable } from "mdbreact";
 import ApiContext from "../APIProvider";
-import getAnimalTableApi from "../../lib/ApiAnimalAdministration";
+import DatePicker from "react-datepicker";
+import { getAnimalTableApi } from "../../lib/ApiAnimalAdministration";
+//import Selector from "../Diio/Utilities/FormikSelector";
 
 export const RegisterAnimalTable = ({
-  data,
   setModalRegistryId,
+  getReload,
+  setReloadHandler,
   toggleModal,
   setLoadingState,
   getLoadingState
 }) => {
   const api = useContext(ApiContext);
-  async function getAnimal() {
-    const data = await getAnimalTableApi(api);
-    return data;
-  }
+  const [data, setData] = useState([]);
 
+  useEffect(() => {}, []);
+  async function getAnimal() {
+    const data1 = await getAnimalTableApi(api);
+    console.log(data1);
+    
+    const Data = {
+      columns: [
+        {
+          label: "DIIO",
+          field: "diio",
+          sort: "asc",
+          width: 150
+        },
+        {
+          label: "Especie",
+          field: "specie",
+          sort: "asc",
+          width: 270
+        },
+        {
+          label: "Rut Comprador",
+          field: "rut",
+          sort: "asc",
+          width: 150
+        },
+        {
+          label: "raza",
+          field: "breed",
+          sort: "asc",
+          width: 200
+        },
+        {
+          label: "Sexo",
+          field: "sex",
+          sort: "asc",
+          width: 150
+        },
+        {
+          label: "Fecha de Nacimiento",
+          field: "date",
+          sort: "asc",
+          width: 150
+        },
+        {
+          label: "Categoria",
+          field: "category",
+          sort: "asc",
+          width: 150
+        }
+      ],
+      rows: data1
+    };
+    setData(Data);
+
+    return Data;
+  }
+  const reloadHandler = () => {
+    if (getReload()) {
+      getAnimal();
+      setReloadHandler();
+    }
+  };
   const handleEntryClick = registryId => {
     setModalRegistryId(registryId);
     toggleModal();
@@ -29,32 +91,44 @@ export const RegisterAnimalTable = ({
         width: 40
       },
       {
-        label: "RUP",
-        field: "rup",
+        label: "DIIO",
+        field: "diio",
         sort: "asc",
         width: 150
       },
       {
-        label: "Establecimiento",
-        field: "establishment",
+        label: "Especie",
+        field: "specie",
         sort: "asc",
         width: 270
       },
       {
-        label: "Titular",
-        field: "titular",
+        label: "Rut Comprador",
+        field: "rut",
         sort: "asc",
         width: 150
       },
       {
-        label: "Fecha de Registro",
+        label: "raza",
+        field: "breed",
+        sort: "asc",
+        width: 150
+      },
+      {
+        label: "Sexo",
+        field: "sex",
+        sort: "asc",
+        width: 150
+      },
+      {
+        label: "Fecha de Nacimiento",
         field: "date",
         sort: "asc",
         width: 150
       },
       {
-        label: "Cantidad",
-        field: "quantity",
+        label: "Categoria",
+        field: "category",
         sort: "asc",
         width: 150
       }
@@ -75,8 +149,8 @@ export const RegisterAnimalTable = ({
         titular: "Richard Feynman",
         date: "12/12/13",
         quantity: "13"
-      },
-      {
+      }
+      /*{
         show: (
           <button
             type="button"
@@ -91,9 +165,13 @@ export const RegisterAnimalTable = ({
         titular: "John Doe",
         date: "12/11/13",
         quantity: "99"
-      }
+      }*/
     ]
   };
+  useEffect(() => {
+    getAnimal();
+  }, []);
+  reloadHandler();
   return (
     <>
       <MDBDataTable
@@ -104,7 +182,7 @@ export const RegisterAnimalTable = ({
         bordered
         small
         maxHeight="370px"
-        data={fakeData} // TODO: change with 'data'
+        data={data} // TODO: change with 'data'
         entriesLabel={["Entradas por página"]}
         infoLabel={["Mostrando de", "a", "entradas, de"]}
         paginationLabel={["Anterior", "Siguiente"]}

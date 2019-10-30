@@ -6,10 +6,9 @@ class API {
     this.token = localStorage.token || null;
     this.client = localStorage.client || null;
     this.uid = localStorage.uid || null;
-    //this.apiUrl = "https://sipec-backend.herokuapp.com";
+    this.apiUrl = "https://sipec-backend.herokuapp.com";
     this.titular = localStorage.titular || null;
-    this.apiUrl = "http://192.168.0.20:3000";
-    //this.apiUrl = "http://192.168.0.26:3000";
+    //this.apiUrl = "http://192.168.0.49:3000";
   }
 
   login = async (email, password) => {
