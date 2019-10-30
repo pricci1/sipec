@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import getChangeRegistryDataApi from "../../lib/ApiAnimalAdministration";
+import {getChangeRegistryDataApi} from "../../lib/ApiAnimalAdministration";
 import ApiContext from "../APIProvider";
 import { MDBDataTable } from "mdbreact";
 
