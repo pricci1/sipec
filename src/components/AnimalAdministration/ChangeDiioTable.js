@@ -14,6 +14,7 @@ export const ChangeDiioTable = ({
   let rows = [];
 
   useEffect(() => {
+    
     tableData.map(d => {
       rows.push({
         show: (
@@ -21,7 +22,7 @@ export const ChangeDiioTable = ({
             type="button"
             className="btn btn-info btn-sm p-0"
             onClick={() => handleEntryClick(d.id)}
-          >
+          > 
             &#10010;
           </button>
         ),

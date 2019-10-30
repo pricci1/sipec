@@ -16,6 +16,8 @@ export const postDiioChange = async (
     diio_changes
   };
   const result = await apiInstance.post("/diio_changes", data);
+  console.log(data);
+  
   return result;
 };
 
@@ -100,6 +102,8 @@ export const getChangeDiioDataApi = async (apiInstance, titular_id) => {
 export const getChangeRegistryDataApi = (api, registry_id) => {
   return [];
 };
+
+
 export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
   const result = await apiInstance.get(
     `/diio_purchases/user_establishment/${user_id}`

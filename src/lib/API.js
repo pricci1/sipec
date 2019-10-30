@@ -8,7 +8,7 @@ class API {
     this.uid = localStorage.uid || null;
     this.apiUrl = "https://sipec-backend.herokuapp.com";
     this.titular = localStorage.titular || null;
-    //this.apiUrl = "http://192.168.0.16:3000";
+    //this.apiUrl = "http://192.168.0.49:3000";
   }
 
   login = async (email, password) => {
@@ -87,15 +87,18 @@ class API {
     const path = this.apiUrl + url;
     var results = { success: false };
     try {
-      const postResponse = await axios.post(path, {
-        headers: {
-          "Content-Type": "application/json",
-          "access-token": this.token,
-          client: this.client,
-          uid: this.uid
-        },
-        ...obj
-      });
+      const postResponse = await axios.post(
+        path,
+        { ...obj },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": this.token,
+            client: this.client,
+            uid: this.uid
+          }
+        }
+      );
       if (Math.floor(postResponse.status / 100) === 2) {
         results.success = true;
         results.data = postResponse.data;
