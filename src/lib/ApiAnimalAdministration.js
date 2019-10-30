@@ -17,7 +17,7 @@ export const postDiioChange = async (
   };
   const result = await apiInstance.post("/diio_changes", data);
   console.log(data);
-  
+
   return result;
 };
 
@@ -103,7 +103,6 @@ export const getChangeRegistryDataApi = (api, registry_id) => {
   return [];
 };
 
-
 export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
   const result = await apiInstance.get(
     `/diio_purchases/user_establishment/${user_id}`
@@ -142,6 +141,7 @@ export const postAnimalDeathRegistration = async (
     death_date,
     diio_array
   };
+  console.log(data);
   const result = await apiInstance.post("/report_death", data);
   return result;
 };

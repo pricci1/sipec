@@ -93,6 +93,8 @@ const NewDeathRegistration = () => {
         }}
         validationSchema={newAnimalDownRegistration}
         onSubmit={(values, { setSubmitting }) => {
+          console.log(death_date.value);
+          console.log(values);
           postAnimalDeathRegistration(
             api,
             values.owner.value,
@@ -102,6 +104,7 @@ const NewDeathRegistration = () => {
             JSON.stringify(values.down_details.value),
             JSON.stringify(values.diio_array)
           ).then(resp => {
+            console.log(resp);
             resp.success ? alert("Baja realizada") : alert("Error en la baja");
           });
           setSubmitting(false);
