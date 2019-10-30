@@ -57,15 +57,6 @@ export const AnimalEstablishmentRegistryTable = ({
 
   useEffect(() => {
     data.map(animals => {
-      // console.log(animals);
-      // console.log(
-      //   "diio:" + animals.diio,
-      //   "specie:" + animals.specie,
-      //   "date:" + animals.date,
-      //   "establishment:" + animals.establishment.name,
-      //   "down_type:" + animals.down_type,
-      //   "detail:" + animals.detail
-      // );
       rows.push({
         diio: animals.diio,
         specie: animals.specie,

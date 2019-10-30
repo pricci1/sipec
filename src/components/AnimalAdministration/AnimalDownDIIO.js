@@ -47,7 +47,7 @@ const SearchAnimalDownDIIO = () => {
 
   return (
     <div className="body">
-      <h2>Buscar baja animales con DIIO</h2>
+      <h1>Buscar baja animales con DIIO</h1>
       <div>
         <Formik
           initialValues={{
@@ -61,6 +61,7 @@ const SearchAnimalDownDIIO = () => {
             values,
             touched,
             errors,
+            dirty,
             handleSubmit,
             handleReset,
             isSubmitting,
@@ -97,20 +98,24 @@ const SearchAnimalDownDIIO = () => {
               </div>
               {/* {errors.password && touched.password && errors.password} */}
               <br />
-              <button
-                className="btn btn-outline-primary"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                Buscar
-              </button>
-              <button
-                onClick={handleReset}
-                className="btn btn-secondary "
-                type="button"
-              >
-                Limpiar
-              </button>
+              <div className="row" style={{ justifyContent: "flex-end" }}>
+                <div className="col-md-7">
+                  <button
+                    className="btn btn-outline-primary mt-4"
+                    type="submit"
+                    disabled={!dirty || isSubmitting}
+                  >
+                    Buscar registros
+                  </button>
+                  <button
+                    onClick={handleReset}
+                    className="btn btn-secondary mt-4 ml-1"
+                    type="button"
+                  >
+                    Limpiar
+                  </button>
+                </div>
+              </div>
             </form>
           )}
         </Formik>
