@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { MDBDataTable } from "mdbreact";
+import ApiContext from "../APIProvider";
+import { getAnimalDeathTableApi } from "../../lib/ApiAnimalAdministration";
 
 export const AnimalEstablishmentRegistryTable = ({
   data,
   setModalRegistryId,
   toggleModal
 }) => {
-  let columns = [
+  const api = useContext(ApiContext);
+  var columns = [
     {
       label: "DIIO baja",
       field: "diio",
@@ -31,7 +34,12 @@ export const AnimalEstablishmentRegistryTable = ({
       sort: "asc",
       width: 270
     },
-
+    // {
+    //   label: "MVA",
+    //   field: "veterinario",
+    //   sort: "asc",
+    //   width: 150
+    // },
     {
       label: "Tipo baja",
       field: "down_type",
@@ -45,56 +53,29 @@ export const AnimalEstablishmentRegistryTable = ({
       width: 150
     }
   ];
+  let rows = [];
 
-  let rows = [
-    {
-      diio: "diio",
-      specie: "specie",
-      date: "date",
-      establishment: "establishment",
-      down_type: "down_type",
-      detail: "detail"
-    },
-    {
-      diio: "diio2",
-      specie: "specie2",
-      date: "date2",
-      establishment: "establishment2",
-      down_type: "down_type2",
-      detail: "detail2"
-    }
-  ];
-
-  // function getColumnItem(index, item) {
-  //   if (index != 0) {
-  //     return item[index];
-  //   }
-  // }
-
-  // function getData() {
-  //   var jsonRow = {};
-  //   data.map(
-  //     item => (
-  //       columns.map(
-  //         (col, index) =>
-  //           (jsonRow[String(col.field)] = getColumnItem(index, item))
-  //       ),
-  //       rows.push(jsonRow),
-  //       (jsonRow = {})
-  //     )
-  //   );
-  // }
-
-  // getData();
-
-  // const handleEntryClick = registryId => {
-  //   setModalRegistryId(registryId);
-  //   toggleModal();
-  // };
-  const fakeData = {
-    columns: columns,
-    rows: data
-  };
+  useEffect(() => {
+    data.map(animals => {
+      // console.log(animals);
+      // console.log(
+      //   "diio:" + animals.diio,
+      //   "specie:" + animals.specie,
+      //   "date:" + animals.date,
+      //   "establishment:" + animals.establishment.name,
+      //   "down_type:" + animals.down_type,
+      //   "detail:" + animals.detail
+      // );
+      rows.push({
+        diio: animals.diio,
+        specie: animals.specie,
+        date: animals.date,
+        establishment: animals.establishment.name,
+        down_type: animals.down_type,
+        detail: animals.detail
+      });
+    });
+  }, [data]);
 
   return (
     <>
@@ -107,7 +88,7 @@ export const AnimalEstablishmentRegistryTable = ({
         small
         maxHeight="370px"
         header
-        data={fakeData} // TODO: change with 'data'
+        data={{ columns: columns, rows: rows }} // TODO: change with 'data'
         entriesLabel={["Entradas por página"]}
         infoLabel={["Mostrando de", "a", "entradas, de"]}
         paginationLabel={["Anterior", "Siguiente"]}

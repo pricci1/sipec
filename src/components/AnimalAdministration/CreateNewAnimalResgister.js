@@ -12,43 +12,51 @@ import AnimalEstablishmentRecordDetails from "./AnimalEstablishmentRecordDetails
 import RegisterAnimal from "./RegisterAnimal";
 import { set } from "date-fns";
 
-
-
-
 const CreateNewAnimalRegister = () => {
   const api = useContext(APIContext);
-  const { modal: Modal, modalIsOpened, toggleModal } = useModal();
-  const [modalRegistryId, setModalRegistryId] = useState();
-  const [data, setData] = useState([]);
-  const [loadingTable, setLoadingTable] = useState(false);
 
+  const [data, setData] = useState();
+  const [items, setItems] = useState([]);
+  const [reload, setReload] = useState(false);
 
+  const handleFormSubmit = e => {
+    setItems([...items, data]);
+  };
+  const getItem = dataItem => {
+    setData(dataItem);
+  };
 
-  function getLoadingState(){
-    return loadingTable
-  }
-  function setLoadingState(){
-    setLoadingTable(!loadingTable)
-  }
+  /*handleInputChange = (e) => {
+    let input = e.target;
+    let name = e.target.name;
+    let value = input.value;
+
+    this.setState({
+      [name]: value
+    })
+  };*/
+
+  const setReloadHandler = () => {
+    setReload(!reload);
+  };
+
+  const getReload = () => {
+    return reload;
+  };
 
   return (
     <div className="body">
       <h1 className="d-md-inline pr-3">Nuevo Registro Animal</h1>
-      <RegisterAnimal setLoadingState={setLoadingState}></RegisterAnimal>
-      <RegisterAnimalTable
-        setLoadingState={setLoadingState}
-        getLoadingState={loadingTable}
-        data={data}
-        toggleModal={toggleModal}
-        setModalRegistryId={setModalRegistryId}
+      <RegisterAnimal
+        setReloadHandler={setReloadHandler}
+        handleFormSubmit={handleFormSubmit}
+        getItem={getItem}
+      ></RegisterAnimal>
+      <h2 className="d-md-inline pr-3">Diios Seleccionados</h2>
+      <RegisterAnimalTable data={items}
+        setReloadHandler={setReloadHandler}
+        getReload={getReload}
       />
-       <h2 className="d-md-inline pr-3">Seleccionar DIIOs disponibles</h2>
-      {modalIsOpened && (
-        <Modal>
-          <AnimalEstablishmentRecordDetails registryId={modalRegistryId} />
-          <h2>{modalRegistryId}</h2>
-        </Modal>
-      )}
     </div>
   );
 };

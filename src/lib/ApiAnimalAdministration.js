@@ -61,10 +61,19 @@ export const getEstablishmentsApi = async apiInstance => {
 
 
 
-export const getWorkerApi = async apiInstance => {
-  const result = await apiInstance.get("/personal_establishment");
-  console.log(result, "AAAAA");
+export const getBreedApi = async apiInstance => {
+  const result = await apiInstance.get("/breeds");
+}
 
+export const getWorkerApi = async apiInstance => {
+  const result = await apiInstance.get("/personal_by_company");
+  return result.data.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
+};
+export const getCategoriesApi = async apiInstance => {
+  const result = await apiInstance.get("/diio_models");
   return result.data.map(({ id, name }) => ({
     value: id,
     label: name
@@ -75,15 +84,14 @@ export const getAnimalTableApi = async apiInstance => {
   const result = await apiInstance.get("/animals_by_personal");
   console.log(result);
   
-
-  return result.data.map(({ diio, specie, rutbuyer, bread, sex, date, category }) => ({
+  return result.data.map(({ diio, specie, rut, breed, sex, date, model }) => ({
     diio: diio,
     specie: specie,
-    rutbuyer: rutbuyer,
-    bread: bread,
+    rut: rut,
+    breed: breed.name,
     sex: sex,
     date: date,
-    category: category
+    category: model
   }));
 }
 export const getChangeDiioDataApi =  async (apiInstance, titular_id) => {
@@ -139,9 +147,7 @@ export const postAnimalDeathRegistration = async (
 };
 
 export const getAnimalDeathTableApi = async apiInstance => {
-  const result = await apiInstance.get("/animals_death_list");
-  console.log(result);
-
+  const result = await apiInstance.get("/animal_death_list");
   return result.data.map(
     ({ diio, specie, date, down_type, detail, establishment }) => ({
       diio: diio,
