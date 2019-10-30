@@ -5,7 +5,7 @@ import "./sidebar.css";
 const Sidebar = () => {
   const pageLinks = [
     { text: "Administración DIIOs", linkTo: "/diio/lista-compra" },
-    { text: "Administración animal con DIIO", linkTo: "/animal-diio" },
+    { text: "Administración animal con DIIO", linkTo: "/animal-diio/animales" },
     { text: "Establecimiento", linkTo: "/establecimientos" },
     { text: "Existencias animales", linkTo: "/existencias" },
     { text: "Movimientos animales", linkTo: "/movimientos" }
@@ -21,7 +21,9 @@ const Sidebar = () => {
                 <li key={index} className="nav-item">
                   <Link
                     className={`nav-link ${
-                      pathname === linkTo ? "active" : ""
+                      pathname.split("/")[1] === linkTo.split("/")[1]
+                        ? "active"
+                        : ""
                     }`}
                     to={linkTo}
                   >

@@ -11,6 +11,15 @@ import ListadoBajaDIIO from "../pages/listadoBajaDIIO";
 import CreateAnimalMoves from "../components/AnimalMoves/CreateAnimalMoves";
 import AnimalMoves from "../pages/AnimalMoves";
 import AnimalExistence from "../components/AnimalExistence/AnimalExistence";
+import AnimalAdministrationDIIOMenu from "./AnimalAdministrationDIIOMenu";
+import ConsultDataSingleDiio from "../components/AnimalAdministration/ConsultDataSingleDiio";
+import AnimalDeathRegistrationTab from "./AnimalAdministrationMenuTabs/AnimalDeathRegistrationTab";
+import CreateNewAnimalDeath from "../components/AnimalAdministration/CreateNewAnimalDeath";
+import AnimalEstablishmentRegistry from "../components/AnimalAdministration/AnimalEstablishmentRegistry";
+import NewChangeDiio from "../components/AnimalAdministration/NewChangeDiio";
+import CreateNewAnimalRegister from "../components/AnimalAdministration/CreateNewAnimalResgister";
+import ChangeDiioList from "../components/AnimalAdministration/ChangeDiioList"
+
 const MenuRouter = () => {
   return (
     <>
@@ -18,7 +27,7 @@ const MenuRouter = () => {
         <Sidebar />
       </div>
       <main className="col-10">
-        <Router>
+        <Router className="m-2">
           <DiioMenu path="/diio">
             <PurchaseListDiioTab path="lista-compra" />
             <NewPurchaseDiio path="compra" />
@@ -26,6 +35,15 @@ const MenuRouter = () => {
             <NotAppliedDroppedDiio path="baja-diios" />
             <ListadoBajaDIIO path="lista-baja-diios" />
           </DiioMenu>
+          <AnimalAdministrationDIIOMenu path="/animal-diio">
+            <AnimalEstablishmentRegistry path="animales" />
+            <CreateNewAnimalRegister path="animales/new"/>
+            <ConsultDataSingleDiio path="consulta-un-diio" />
+            <AnimalDeathRegistrationTab path="registro-muerte-animal" />
+            <CreateNewAnimalDeath path="registro-muerte-animal/nueva" />
+          	<ChangeDiioList path="cambio-diio"/>
+            <NewChangeDiio path="cambio-diio/new"/>
+          </AnimalAdministrationDIIOMenu>
           <AnimalMovementMenu path="/movimientos">
             <CreateAnimalMoves path="create_animal_moves" />
             <AnimalMoves path="animal_moves" />

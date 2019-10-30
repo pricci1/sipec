@@ -26,7 +26,6 @@ const buyDiioSchema = Yup.object().shape({
     Yup.object()
       .shape({
         desde: Yup.number()
-
           .min(0, "Desde debe ser >= 0")
           .required("Requerido"),
         hasta: Yup.number()
@@ -112,7 +111,7 @@ const NewPurchaseDiio = () => {
           } = props;
           return (
             <form onSubmit={handleSubmit}>
-              <div className="vendedor">
+              <div className="">
                 <h4>Datos de Vendedor</h4>
                 <Selector
                   fieldName="seller_type"
@@ -139,7 +138,7 @@ const NewPurchaseDiio = () => {
                 />
                 <label>Rut: {selectedSellerRut}</label>
               </div>
-              <div className="comprador">
+              <div className="">
                 <h4>Datos de Comprador</h4>
                 <Selector
                   fieldName="buyer_type"
@@ -164,7 +163,7 @@ const NewPurchaseDiio = () => {
                   errors={errors.establishment_id}
                 />
               </div>
-              <div className="validacion">
+              <div className="">
                 <h4>Validación de Rangos</h4>
                 <p>Rango</p>
                 <FieldArray

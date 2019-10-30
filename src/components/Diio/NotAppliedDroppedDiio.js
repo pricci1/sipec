@@ -10,10 +10,10 @@ const NotAppliedDroppedDiio = () => {
   const api = useContext(APIContext);
 
   const getOwnerRut = () => {
-    return "123456789";
+    return api.titular.run;
   };
   const getOwnerName = () => {
-    return "Ignacio Figueroa";
+    return `${api.titular.name} ${api.titular.last_name}` ;
   };
   async function getSpeciesData() {
     const data = await getSpecies(api);
@@ -90,7 +90,7 @@ const NotAppliedDroppedDiio = () => {
             <form onSubmit={handleSubmit}>
               <p>Rut: {values.ownerRut}</p>
               <p>Nombre: {getOwnerName()}</p>
-              <div className="rango-diio">
+              <div className="">
                 <Selector
                   fieldName="specie"
                   fieldValue={values.specie}

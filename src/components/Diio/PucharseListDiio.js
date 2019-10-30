@@ -57,7 +57,7 @@ const PucharseListDiio = props => {
 
   return (
     <>
-    <h2>{title}</h2>
+      <h2>{title}</h2>
       <MDBDataTable
         className="data-table"
         striped
