@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Formik } from "formik";
 import { Datepicker } from "react-formik-ui";
 import useModal from "../Modal";
@@ -37,6 +37,14 @@ const SearchAnimalDownDIIO = () => {
     return data;
   }
 
+  async function getTableData() {
+    const data = await getAnimalDeathTableApi(api);
+    setData(data);
+  }
+  useEffect(() => {
+    getTableData();
+  }, []);
+
   return (
     <div className="body">
       <h2>Buscar baja animales con DIIO</h2>
@@ -47,17 +55,7 @@ const SearchAnimalDownDIIO = () => {
             desde: "",
             hasta: ""
           }}
-          // validationSchema={searchAnimalDownSchema}
-          onSubmit={formData => {
-            // send formData to backend
-            // set 'data' using 'setData' with backend's response with thisstructure:
-            // [{rup, establishment, tiutlar, date, quantity},{rup, establishment, ttiutlar, date, quantity}]
-            console.log(formData);
-            getAnimalDeathTableApi(api).then(resp => {
-              console.log(resp);
-              setData(resp);
-            });
-          }}
+          onSubmit={formData => {}}
         >
           {({
             values,

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { MDBDataTable } from "mdbreact";
 import ApiContext from "../APIProvider";
 import { getAnimalDeathTableApi } from "../../lib/ApiAnimalAdministration";
@@ -53,10 +53,9 @@ export const AnimalEstablishmentRegistryTable = ({
       width: 150
     }
   ];
-  async function getAnimalDeathTable() {
-    console.log(data);
-    let rows = [];
+  let rows = [];
 
+  useEffect(() => {
     data.map(animals => {
       // console.log(animals);
       // console.log(
@@ -76,8 +75,8 @@ export const AnimalEstablishmentRegistryTable = ({
         detail: animals.detail
       });
     });
-    return rows;
-  }
+  }, [data]);
+
   return (
     <>
       <MDBDataTable
@@ -89,7 +88,7 @@ export const AnimalEstablishmentRegistryTable = ({
         small
         maxHeight="370px"
         header
-        data={{ columns: columns, rows: getAnimalDeathTable() }} // TODO: change with 'data'
+        data={{ columns: columns, rows: rows }} // TODO: change with 'data'
         entriesLabel={["Entradas por página"]}
         infoLabel={["Mostrando de", "a", "entradas, de"]}
         paginationLabel={["Anterior", "Siguiente"]}
