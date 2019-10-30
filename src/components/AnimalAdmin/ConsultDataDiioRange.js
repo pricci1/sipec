@@ -22,7 +22,6 @@ const ConsultDataDiioRange = () => {
 
   async function getInfoDiioRangeApiConsult(diioStart, diioEnd) {
     const data = await getInfoDiioRange(api, diioStart, diioEnd);
-    console.log(data);
 
     setData(
       data.map(
@@ -39,16 +38,7 @@ const ConsultDataDiioRange = () => {
               animal_breed: breed
             }
           }
-          /*diio_serial: diio_number,
-          rup_establishment: rup,
-          name_establishment: establishment,
-          animal_gender: gender,
-          birth_date: birth_date,
-          animal_alive: alive,
-          animal_spices: spices,
-          animal_breed: breed*/
         }) => ({
-          //diio_id,
           diio_number,
           rup,
           establishment,
@@ -94,7 +84,7 @@ const ConsultDataDiioRange = () => {
                 }}
                 value={values.diioStart}
               />
-              <label htmlFor="diio fin">DIIO fin:</label>
+              <label htmlFor="diio fin">DIIO fin (exclusivo):</label>
               <input
                 id="diioEnd"
                 name="diioEnd"
