@@ -12,16 +12,19 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "@reach/router";
 import { getRegions, getNeighborhoods } from "../../lib/APICommon";
 import AnimalExistanceDetails from "./AnimalExistanceDetails";
+import { getAnimalExistnceDeclarations } from "../../lib/APIAnimalExistence";
 
 const filterDeclarations = (declarations, criteria) => {
   function notNullAndIncludes(item, thing) {
     if (criteria[thing] && criteria[thing] !== "") {
-      console.log(criteria[thing]);
-
-      return (
-        item[thing] &&
-        item[thing].toLowerCase().includes(criteria[thing].toLowerCase())
-      );
+      try {
+        return (
+          item[thing] &&
+          item[thing].toLowerCase().includes(criteria[thing].toLowerCase())
+        );
+      } catch (_) {
+        return true;
+      }
     }
     return true;
   }
@@ -30,8 +33,7 @@ const filterDeclarations = (declarations, criteria) => {
       notNullAndIncludes(item, "rup") &&
       notNullAndIncludes(item, "name") &&
       notNullAndIncludes(item, "region") &&
-      notNullAndIncludes(item, "neighborhood") &&
-      notNullAndIncludes(item, "rup")
+      notNullAndIncludes(item, "neighborhood")
     ) {
       return true;
     }
@@ -91,9 +93,12 @@ const DeclarationsList = ({ declarations }) => {
             registrationDate,
             declarationDate
           };
-          setDeclarationList(filterDeclarations(declarations, req));
-          alert(JSON.stringify(req));
-          setSubmitting(false);
+          getAnimalExistnceDeclarations(api).then(r => {
+            setDeclarationList(filterDeclarations(r, req));
+            setSubmitting(false);
+          });
+          // setDeclarationList(filterDeclarations(declarations, req));
+          // alert(JSON.stringify(req));
         }}
       >
         {props => {
@@ -212,7 +217,10 @@ const DeclarationsList = ({ declarations }) => {
       />
       {modalIsOpened && (
         <Modal>
-          <AnimalExistanceDetails declarationId={modalDeclarationId} />
+          <AnimalExistanceDetails
+            declarationId={modalDeclarationId}
+            declarations={declarationList}
+          />
         </Modal>
       )}
     </div>

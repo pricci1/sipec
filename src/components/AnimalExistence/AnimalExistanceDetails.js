@@ -17,7 +17,7 @@ const fakeData = {
   year: "2020"
 };
 
-const AnimalExistanceDetails = ({ declarationId }) => {
+const AnimalExistanceDetails = ({ declarationId, declarations }) => {
   const [fetchedData, setFetchedData] = useState({});
   useEffect(() => {
     setFetchedData(fakeData);
