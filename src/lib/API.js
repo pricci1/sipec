@@ -87,15 +87,18 @@ class API {
     const path = this.apiUrl + url;
     var results = { success: false };
     try {
-      const postResponse = await axios.post(path, {
-        headers: {
-          "Content-Type": "application/json",
-          "access-token": this.token,
-          client: this.client,
-          uid: this.uid
-        },
-        ...obj
-      });
+      const postResponse = await axios.post(
+        path,
+        { ...obj },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": this.token,
+            client: this.client,
+            uid: this.uid
+          }
+        }
+      );
       if (Math.floor(postResponse.status / 100) === 2) {
         results.success = true;
         results.data = postResponse.data;
