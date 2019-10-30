@@ -7,7 +7,10 @@ import Selector from "../Diio/Utilities/FormikSelector";
 import { AnimalEstablishmentRegistryTable } from "./AnimalDownDIIOTable";
 import { Link } from "@reach/router";
 import AnimalEstablishmentRecordDetails from "./AnimalDownDIIODetails";
-import { getEstablishmentsApi } from "../../lib/ApiAnimalAdministration";
+import {
+  getEstablishmentsApi,
+  getAnimalDeathTableApi
+} from "../../lib/ApiAnimalAdministration";
 // import { getUserEstablishments } from "../../lib/APIDiio";
 import * as Yup from "yup";
 
@@ -50,7 +53,8 @@ const SearchAnimalDownDIIO = () => {
               alert(JSON.stringify(values, null, 2));
               setSubmitting(false);
             }, 400);
-            console.log(values);
+            var response = getAnimalDeathTableApi(api, values);
+            setData(response);
           }}
         >
           {({

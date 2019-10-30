@@ -87,13 +87,13 @@ export const AnimalEstablishmentRegistryTable = ({
 
   // getData();
 
-  const handleEntryClick = registryId => {
-    setModalRegistryId(registryId);
-    toggleModal();
-  };
+  // const handleEntryClick = registryId => {
+  //   setModalRegistryId(registryId);
+  //   toggleModal();
+  // };
   const fakeData = {
     columns: columns,
-    rows: rows
+    rows: data
   };
 
   return (
