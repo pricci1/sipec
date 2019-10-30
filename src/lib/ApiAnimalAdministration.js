@@ -37,6 +37,15 @@ export const getMvasApi = async (apiInstance, establishment_id) => {
   }))
 }
 
+export const getOwnersApi = async (apiInstance, establishment_id) => {
+  const result = await apiInstance.get(`/establishments/${establishment_id}/personals?role_id=5`)
+
+  return result.data.map(({id, name, run}) => ({
+    value: id,
+    label: run + " - " + name
+  }))
+}
+
 export const getEstablishmentsApi = async apiInstance => {
   const result = await apiInstance.get("/establishments");
 
@@ -45,6 +54,8 @@ export const getEstablishmentsApi = async apiInstance => {
     label: rup + " - " + name
   }));
 };
+
+
 
 export const getWorkerApi = async apiInstance => {
   const result = await apiInstance.get("/personal_establishment");
@@ -72,8 +83,9 @@ export const getAnimalTableApi = async apiInstance => {
     category: category
   }));
 }
-export const getChangeDiioDataApi = (api, titular_id) => {
-  return [];
+export const getChangeDiioDataApi =  async (apiInstance, titular_id) => {
+  const result = await apiInstance.get("/diio_changes_details/1")
+  return result
 };
 
 export const getChangeRegistryDataApi = (api, registry_id) => {
