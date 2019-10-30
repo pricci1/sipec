@@ -122,3 +122,19 @@ export const postAnimalDeathRegistration = async (
   const result = await apiInstance.post("/report_death", data);
   return result;
 };
+
+export const getAnimalDeathTableApi = async apiInstance => {
+  const result = await apiInstance.get("/animals_death_list");
+  console.log(result);
+
+  return result.data.map(
+    ({ diio, specie, date, down_type, detail, establishment }) => ({
+      diio: diio,
+      specie: specie,
+      date: date,
+      down_type: down_type,
+      detail: detail,
+      establishment: establishment
+    })
+  );
+};

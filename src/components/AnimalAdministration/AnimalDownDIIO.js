@@ -111,12 +111,6 @@ const SearchAnimalDownDIIO = () => {
           toggleModal={toggleModal}
           setModalRegistryId={setModalRegistryId}
         />
-        {modalIsOpened && (
-          <Modal>
-            <AnimalEstablishmentRecordDetails registryId={modalRegistryId} />
-            <h2>{modalRegistryId}</h2>
-          </Modal>
-        )}
       </div>
     </div>
   );

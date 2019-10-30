@@ -6,22 +6,22 @@ export const AnimalEstablishmentRegistryTable = ({
   setModalRegistryId,
   toggleModal
 }) => {
-  let columnsasd = [
+  let columns = [
     {
-      label: "Ver",
-      field: "show",
-      sort: "asc",
-      width: 40
-    },
-    {
-      label: "Fecha de Registro",
-      field: "date",
+      label: "DIIO baja",
+      field: "diio",
       sort: "asc",
       width: 150
     },
     {
-      label: "RUP",
-      field: "rup",
+      label: "Especie",
+      field: "specie",
+      sort: "asc",
+      width: 150
+    },
+    {
+      label: "Fecha de Registro",
+      field: "date",
       sort: "asc",
       width: 150
     },
@@ -31,60 +31,37 @@ export const AnimalEstablishmentRegistryTable = ({
       sort: "asc",
       width: 270
     },
+
     {
-      label: "RUT",
-      field: "rut",
+      label: "Tipo baja",
+      field: "down_type",
       sort: "asc",
       width: 150
     },
     {
-      label: "MVA",
-      field: "mva",
-      sort: "asc",
-      width: 150
-    },
-    {
-      label: "Cantidad",
-      field: "quantity",
+      label: "Detalle",
+      field: "detail",
       sort: "asc",
       width: 150
     }
   ];
 
-  let rowsasd = [
+  let rows = [
     {
-      show: (
-        <button
-          type="button"
-          className="btn btn-info btn-sm p-0"
-          onClick={() => handleEntryClick(1)}
-        >
-          &#10010;
-        </button>
-      ),
-      date: "12/12/13",
-      rup: "1.1.1.1",
-      establishment: "Lo Beltran",
-      rut: "",
-      mva: "",
-      quantity: "3"
+      diio: "diio",
+      specie: "specie",
+      date: "date",
+      establishment: "establishment",
+      down_type: "down_type",
+      detail: "detail"
     },
     {
-      show: (
-        <button
-          type="button"
-          className="btn btn-info btn-sm p-0"
-          onClick={() => handleEntryClick(2)}
-        >
-          &#10010;
-        </button>
-      ),
-      date: "12/12/13",
-      rup: "1.1.1.1",
-      establishment: "Estancia La Fe",
-      rut: "",
-      mva: "",
-      quantity: "3"
+      diio: "diio2",
+      specie: "specie2",
+      date: "date2",
+      establishment: "establishment2",
+      down_type: "down_type2",
+      detail: "detail2"
     }
   ];
 
@@ -115,8 +92,8 @@ export const AnimalEstablishmentRegistryTable = ({
     toggleModal();
   };
   const fakeData = {
-    columns: columnsasd,
-    rows: rowsasd
+    columns: columns,
+    rows: rows
   };
 
   return (
