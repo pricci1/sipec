@@ -6,7 +6,7 @@ import DiioRangeTable from "../../components/AnimalAdmin/DiioRangeTable";
 
 const ConsultDataDiioRange = () => {
   const api = useContext(APIContext);
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   //const [state, setState] = useState({ infoAvailable: false });
   //var diios_list = [];
 
@@ -21,24 +21,42 @@ const ConsultDataDiioRange = () => {
   }
 
   async function getInfoDiioRangeApiConsult(diioStart, diioEnd) {
-    const info = await getInfoDiioRange(api, diioStart, diioEnd);
+    const data = await getInfoDiioRange(api, diioStart, diioEnd);
+    console.log(data);
 
     setData(
-      info.diios.map(
+      data.map(
         ({
-          diio_serial: diio_number,
+          diio: {
+            0: {
+              diio_serial: diio_number,
+              rup_establishment: rup,
+              name_establishment: establishment,
+              animal_gender: gender,
+              birth_date: birth_date,
+              animal_alive: alive,
+              animal_spices: spices,
+              animal_breed: breed
+            }
+          }
+          /*diio_serial: diio_number,
           rup_establishment: rup,
           name_establishment: establishment,
           animal_gender: gender,
           birth_date: birth_date,
-          animal_alive: alive
+          animal_alive: alive,
+          animal_spices: spices,
+          animal_breed: breed*/
         }) => ({
+          //diio_id,
           diio_number,
           rup,
           establishment,
           gender,
           birth_date,
-          alive
+          alive,
+          spices,
+          breed
         })
       )
     );
@@ -46,7 +64,7 @@ const ConsultDataDiioRange = () => {
 
   return (
     <>
-      <h2>Info range:</h2>
+      <h2>Consulta por animales con rango de DIIOs</h2>
       <Formik
         initialValues={{ diioStart: "", diioEnd: "" }}
         onSubmit={(values, { setSubmitting }) => {
@@ -102,6 +120,8 @@ const ConsultDataDiioRange = () => {
           "RUP de establecimiento",
           "Nombre de establecimiento",
           "Sexo",
+          "Especie",
+          "Raza",
           "Fecha de nacimiento",
           "Estado"
         ]}
@@ -110,6 +130,8 @@ const ConsultDataDiioRange = () => {
           diio.rup,
           diio.establishment,
           diio.gender,
+          diio.spices,
+          diio.breed,
           diio.birth_date,
           getStringAliveDead(diio.alive)
         ])}
