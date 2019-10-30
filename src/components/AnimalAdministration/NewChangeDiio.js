@@ -8,7 +8,8 @@ import {
   getSpeciesApi,
   getUserEstablishmentsApi,
   getMvasApi,
-  getOwnersApi
+  getOwnersApi,
+  postDiioChange
 } from "../../lib/ApiAnimalAdministration";
 
 const changeDiioSchema = Yup.object().shape({
@@ -43,7 +44,7 @@ const changeDiioSchema = Yup.object().shape({
 
 const NewChangeDiio = () => {
   const api = useContext(ApiContext);
-  const [establishment_id, setestablishment_id] = useState("5");
+  const [establishment_id, setestablishment_id] = useState("");
   const [mvasData, setmvasData] = useState([]);
   const [speciesData, setspeciesData] = useState([]);
   const [establishmentsData, setestablishmentsData] = useState([]);
@@ -72,13 +73,12 @@ const NewChangeDiio = () => {
     setownersData(data);
   }
   async function getMvas() {
-    const data = await getMvasApi(api, establishment_id);
+    let data = await getMvasApi(api, establishment_id);
+    data = [
+      { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
+      { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
+    ];
     setmvasData(data);
-
-    // return [
-    //   { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
-    //   { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
-    // ];
   }
   return (
     <div className="body">
@@ -95,6 +95,23 @@ const NewChangeDiio = () => {
         validationSchema={changeDiioSchema}
         onSubmit={(values, { setSubmitting }) => {
           console.log(values);
+          postDiioChange(
+            api,
+            values.specie.value,
+            values.establishment.value,
+            values.owner.value,
+            values.mva.value,
+            values.verification_date.toUTCString(),
+            JSON.stringify(
+              values.diio_changes.map(change => ({
+                previous_diio: change.old,
+                new_diio: change.new
+              }))
+            )
+          ).then(resp => {
+            alert(resp.data);
+            console.log(resp);
+          });
           setSubmitting(false);
         }}
       >

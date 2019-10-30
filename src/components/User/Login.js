@@ -6,7 +6,6 @@ import APIContext from "../APIProvider";
 const Login = ({ setLoggedCallback }) => {
   const api = useContext(APIContext);
   const [loginError, setLoginError] = useState(false);
-  const [error, setError] = useState("null");
 
   const successfulLogin = () => {
     setLoggedCallback(true);
@@ -14,27 +13,28 @@ const Login = ({ setLoggedCallback }) => {
 
   return (
     <div style={{ margin: "50px" }} className="jumbotron">
-      {loginError ? <h3 className="text-danger">{error}</h3> : null}
+      {loginError ? (
+        <h3 className="text-danger">Credenciales erroneas.</h3>
+      ) : null}
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={Yup.object().shape({
           email: Yup.string()
-            .email()
+            .email("Debe ser un email válido")
             .required("Required"),
-          password: Yup.string().required("Password is required")
+          password: Yup.string().required("La contraseña es requerida")
         })}
         onSubmit={(fields, { setSubmitting }) => {
           api.login(fields.email, fields.password).then(resp => {
             resp.success ? successfulLogin() : setLoginError(true);
             setSubmitting(false);
-            setError(resp.type);
           });
         }}
       >
         {props => {
           const { touched, errors, handleSubmit, isSubmitting } = props;
           return (
-            <Form onSubmit={handleSubmit}>
+            <Form autocomplete="off" onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <Field
@@ -52,7 +52,7 @@ const Login = ({ setLoggedCallback }) => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Contraseña</label>
                 <Field
                   name="password"
                   type="password"
@@ -73,10 +73,10 @@ const Login = ({ setLoggedCallback }) => {
                   className="btn btn-primary mr-2"
                   disabled={isSubmitting}
                 >
-                  Sign In
+                  Iniciar sesión
                 </button>
                 <button type="reset" className="btn btn-secondary">
-                  Reset
+                  Limpiar
                 </button>
               </div>
             </Form>
