@@ -1,7 +1,5 @@
 import React from "react";
 import { MDBDataTable } from "mdbreact";
-import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from "@material-ui/core/styles";
 
 export const AnimalEstablishmentRegistryTable = ({
   data,
@@ -30,7 +28,7 @@ export const AnimalEstablishmentRegistryTable = ({
         label: "Establecimiento",
         field: "establishment",
         sort: "asc",
-        width: 270  
+        width: 270
       },
       {
         label: "Titular",

@@ -26,9 +26,6 @@ const AnimalEstablishmentRegistry = () => {
   return (
     <div className="body">
       <h1 className="d-md-inline pr-3">Buscar Registro Animal</h1>
-      <Link to="new" className="d-md-inline btn btn-primary">
-        &#10010; Nuevo
-      </Link>
       <br></br>
       <Formik
         initialValues={{
@@ -82,8 +79,6 @@ const AnimalEstablishmentRegistry = () => {
                 dateFormat="dd/MM/yy"
               />
               <span> </span>
-              <span> </span>
-              <span> </span>
               <DatePicker
                 onBlur={handleBlur}
                 className="form-control"
@@ -116,6 +111,9 @@ const AnimalEstablishmentRegistry = () => {
         }}
       </Formik>
       <br />
+      <Link to="new" className="d-md-inline btn btn-primary">
+        &#10010; Nuevo
+      </Link>
       <AnimalEstablishmentRegistryTable
         data={data}
         toggleModal={toggleModal}
