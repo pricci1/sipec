@@ -86,23 +86,23 @@ const NewDeathRegistration = () => {
           owner: "",
           mva: "",
           death_date: "",
-          specie_array: [],
-          down: [],
-          down_details: [],
+          specie_array: "",
+          down: "",
+          down_details: "",
           diio_array: []
         }}
         validationSchema={newAnimalDownRegistration}
         onSubmit={(values, { setSubmitting }) => {
           postAnimalDeathRegistration(
             api,
-            values.owner.value,
             values.mva.value,
-            values.death_date.value,
-            JSON.stringify(values.down.value),
-            JSON.stringify(values.down_details.value),
-            JSON.stringify(values.diio_array)
+            values.down,
+            values.death_date,
+            values.diio_array
           ).then(resp => {
-            resp.success ? alert("Baja realizada") : alert("Error en la baja");
+            resp.success
+              ? alert("Baja realizada")
+              : alert(`Error en la baja: ${resp.data}`);
           });
           setSubmitting(false);
         }}
@@ -170,12 +170,12 @@ const NewDeathRegistration = () => {
               />
               <br />
               <Selector
-                fieldName="type_id"
+                fieldName="down"
                 fieldValue={values.down}
                 labelName="*Tipo de Baja"
                 onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.value);
-                  setSelectedSellerRut(fieldValue.value);
+                  setFieldValue(field, fieldValue.label);
+                  setSelectedSellerRut(fieldValue.label);
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.down}
@@ -236,7 +236,7 @@ const NewDeathRegistration = () => {
                                   <Field
                                     type="number"
                                     className="form-control mr-4"
-                                    name={`diio_array[${index}]`}
+                                    name={`diio_array[${index}].diio]`}
                                   />
                                   <button
                                     type="button"
@@ -261,7 +261,7 @@ const NewDeathRegistration = () => {
                 </div>
               </div>
               <br />
-              <button className="btn btn-outline-secondary" type="submit">
+              <button className="btn btn-outline-secondary" type="reset">
                 Eliminar Cambio
               </button>{" "}
               <button className="btn btn-primary" onClick={() => {}}>

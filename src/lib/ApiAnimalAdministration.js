@@ -1,3 +1,5 @@
+import { array } from "prop-types";
+
 export const postDiioChange = async (
   apiInstance,
   specie,
@@ -16,6 +18,8 @@ export const postDiioChange = async (
     diio_changes
   };
   const result = await apiInstance.post("/diio_changes", data);
+  console.log(data);
+
   return result;
 };
 
@@ -40,13 +44,15 @@ export const getMvasApi = async (apiInstance, establishment_id) => {
 };
 
 export const getOwnersApi = async (apiInstance, establishment_id) => {
-  const result = await apiInstance.get(`/establishments/${establishment_id}/personals?role_id=5`)
+  const result = await apiInstance.get(
+    `/establishments/${establishment_id}/personals?role_id=5`
+  );
 
-  return result.data.map(({id, name, run}) => ({
+  return result.data.map(({ id, name, run }) => ({
     value: id,
     label: run + " - " + name
-  }))
-}
+  }));
+};
 
 export const getEstablishmentsApi = async apiInstance => {
   const result = await apiInstance.get("/establishments");
@@ -56,8 +62,6 @@ export const getEstablishmentsApi = async apiInstance => {
     label: rup + " - " + name
   }));
 };
-
-
 
 export const getBreedApi = async apiInstance => {
   const result = await apiInstance.get("/breeds");
@@ -86,8 +90,8 @@ export const getCategoriesApi = async apiInstance => {
 
 export const getAnimalTableApi = async apiInstance => {
   const result = await apiInstance.get("/animals_by_personal");
-  console.log("GET:/animals_by_personal" ,result);
-  
+  console.log(result);
+
   return result.data.map(({ diio, specie, rut, breed, sex, date, model }) => ({
     diio: diio,
     specie: specie,
@@ -97,15 +101,16 @@ export const getAnimalTableApi = async apiInstance => {
     date: date,
     category: model
   }));
-}
-export const getChangeDiioDataApi =  async (apiInstance, titular_id) => {
-  const result = await apiInstance.get("/diio_changes_details/1")
-  return result
+};
+export const getChangeDiioDataApi = async (apiInstance, titular_id) => {
+  const result = await apiInstance.get("/diio_changes_details/1");
+  return result;
 };
 
 export const getChangeRegistryDataApi = (api, registry_id) => {
   return [];
 };
+
 export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
   const result = await apiInstance.get(
     `/diio_purchases/user_establishment/${user_id}`
@@ -129,29 +134,33 @@ export const getMva = async apiInstance => {
 
 export const postAnimalDeathRegistration = async (
   apiInstance,
-  owner,
   mva,
   down,
-  down_details,
   death_date,
   diio_array
 ) => {
-  let data = {
-    owner,
-    mva,
-    down,
-    down_details,
-    death_date,
-    diio_array
-  };
-  const result = await apiInstance.post("/report_death", data);
+  let result = { success: false, data: "OK" };
+
+  for (let i = 0; i < diio_array.length; i++) {
+    let data = {
+      veterinario: mva,
+      death_motive: down,
+      death_date: death_date,
+      serial_diio: diio_array[i].diio
+    };
+    console.log(data);
+    const response = await apiInstance.post("/report_death", data);
+    result.success = result.success || response.success;
+    if (response.success === false) {
+      result.data = response.data;
+    }
+  }
+
   return result;
 };
 
 export const getAnimalDeathTableApi = async apiInstance => {
-  const result = await apiInstance.get("/animals_death_list");
-  console.log(result);
-
+  const result = await apiInstance.get("/animal_death_list");
   return result.data.map(
     ({ diio, specie, date, down_type, detail, establishment }) => ({
       diio: diio,

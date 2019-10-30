@@ -24,7 +24,7 @@ const ChangeDiioList = () => {
 
   async function getTableData() {
     const data = await getChangeDiioDataApi(api);
-    settableData(data);
+    settableData(data.data);
   }
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Formik } from "formik";
 import { Datepicker } from "react-formik-ui";
 import useModal from "../Modal";
@@ -37,9 +37,17 @@ const SearchAnimalDownDIIO = () => {
     return data;
   }
 
+  async function getTableData() {
+    const data = await getAnimalDeathTableApi(api);
+    setData(data);
+  }
+  useEffect(() => {
+    getTableData();
+  }, []);
+
   return (
     <div className="body">
-      <h2>Buscar baja animales con DIIO</h2>
+      <h1>Buscar baja animales con DIIO</h1>
       <div>
         <Formik
           initialValues={{
@@ -47,21 +55,15 @@ const SearchAnimalDownDIIO = () => {
             desde: "",
             hasta: ""
           }}
-          validationSchema={searchAnimalDownSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
-            var response = getAnimalDeathTableApi(api, values);
-            setData(response);
-          }}
+          onSubmit={formData => {}}
         >
           {({
             values,
             touched,
             errors,
+            dirty,
             handleSubmit,
+            handleReset,
             isSubmitting,
             setFieldValue,
             setFieldTouched
@@ -96,13 +98,24 @@ const SearchAnimalDownDIIO = () => {
               </div>
               {/* {errors.password && touched.password && errors.password} */}
               <br />
-              <button
-                className="btn btn-outline-primary"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                Buscar
-              </button>
+              <div className="row" style={{ justifyContent: "flex-end" }}>
+                <div className="col-md-7">
+                  <button
+                    className="btn btn-outline-primary mt-4"
+                    type="submit"
+                    disabled={!dirty || isSubmitting}
+                  >
+                    Buscar registros
+                  </button>
+                  <button
+                    onClick={handleReset}
+                    className="btn btn-secondary mt-4 ml-1"
+                    type="button"
+                  >
+                    Limpiar
+                  </button>
+                </div>
+              </div>
             </form>
           )}
         </Formik>
