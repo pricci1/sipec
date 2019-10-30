@@ -93,11 +93,11 @@ const DeclarationsList = ({ declarations }) => {
             registrationDate,
             declarationDate
           };
-          getAnimalExistnceDeclarations(api).then(r => {
-            setDeclarationList(filterDeclarations(r, req));
-            setSubmitting(false);
-          });
-          // setDeclarationList(filterDeclarations(declarations, req));
+          // getAnimalExistnceDeclarations(api).then(r => {
+          //   setDeclarationList(filterDeclarations(r, req));
+          //   setSubmitting(false);
+          // });
+          setDeclarationList(filterDeclarations(declarations, req));
           // alert(JSON.stringify(req));
         }}
       >
