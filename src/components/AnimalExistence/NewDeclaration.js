@@ -8,11 +8,17 @@ import { Selector } from "./Utils/FormikSelectors";
 import Select from "react-select";
 import axios from "axios";
 
-const formatEstablishments = establishments =>
-  establishments.map(({ id, rup, name }) => ({
-    value: id,
-    label: `${rup} - ${name}`
-  }));
+const formatEstablishments = establishments => {
+  try {
+    const res = establishments.map(({ id, rup, name }) => ({
+      value: id,
+      label: `${rup} - ${name}`
+    }));
+    return res;
+  } catch (error) {
+    return [];
+  }
+};
 
 const getPendingDeclarationsYears = establishment => {
   return [
