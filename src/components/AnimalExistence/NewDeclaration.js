@@ -6,6 +6,7 @@ import APIContext from "../APIProvider";
 import { getSpecies, getTitularEstablishments } from "../../lib/APICommon";
 import { Selector } from "./Utils/FormikSelectors";
 import Select from "react-select";
+import axios from "axios";
 
 const formatEstablishments = establishments =>
   establishments.map(({ id, rup, name }) => ({
@@ -69,24 +70,31 @@ const NewDeclaration = () => {
         }}
         onSubmit={(values, { setSubmitting }) => {
           const {
-            establishment: { value: establishmentId },
-            year: { value: declarationYear },
-            titularId,
+            establishment: { value: establishment_id },
+            year: { value: year },
+            titularId: titular_id,
             species_groups: species_groupsOld
           } = values;
 
-          const species_groups = species_groupsOld.map(
-            ({ specie: specieId, quantity }) => ({ specieId, quantity })
+          const existence_specie_declarations_attributes = species_groupsOld.map(
+            ({ specie: specie_id, quantity }) => ({
+              species_id: parseInt(specie_id),
+              quantity: parseInt(quantity)
+            })
           );
 
           const req = {
-            establishmentId,
-            species_groups,
-            declarationYear,
-            titularId
+            establishment_id: parseInt(establishment_id),
+            existence_specie_declarations_attributes,
+            year: parseInt(year),
+            personal_id: parseInt(titular_id)
           };
-          alert(JSON.stringify(req));
-          setSubmitting(false);
+          api.post("/existence_declarations", req).then(resp => {
+            resp.success
+              ? alert("Declaración realizada")
+              : alert("Error en la declaración");
+            setSubmitting(false);
+          });
         }}
       >
         {props => {
