@@ -3,10 +3,13 @@ import { Formik, FieldArray, Field } from "formik";
 // import * as Yup from "yup";
 import APIContext from "../APIProvider";
 // import {  } from "../../lib/APIAnimalExistence";
-import { getSpecies, getTitularEstablishments } from "../../lib/APICommon";
+import {
+  getSpecies,
+  getTitularEstablishments,
+  getSpeciesGroups
+} from "../../lib/APICommon";
 import { Selector } from "./Utils/FormikSelectors";
 import Select from "react-select";
-import axios from "axios";
 
 const formatEstablishments = establishments => {
   try {
@@ -44,6 +47,7 @@ const speciesReducer = (state, action) => {
 const NewDeclaration = () => {
   const api = useContext(APIContext);
   const [selectedSpecie, setSelectedSpecie] = useState();
+  const [selectedSpecieGroup, setSelectedSpecieGroup] = useState();
   const [species, updateSpecies] = useReducer(speciesReducer, []);
   const [fetchedData, setFetchedData] = useState({});
 
@@ -54,6 +58,12 @@ const NewDeclaration = () => {
           type: "set",
           data: res
         })
+      ),
+      getSpeciesGroups(api).then(res =>
+        setFetchedData(oldState => ({
+          ...oldState,
+          species_groups: res
+        }))
       )
     ];
     Promise.all(tasks);
@@ -72,37 +82,66 @@ const NewDeclaration = () => {
       <Formik
         initialValues={{
           establishment: "",
-          species_groups: [],
+          species_quantity: [],
           year: "",
-          titularId: 1
+          titularId: api.titular.id
         }}
         onSubmit={(values, { setSubmitting }) => {
           const {
             establishment: { value: establishment_id },
             year: { value: year },
             titularId: titular_id,
-            species_groups: species_groupsOld
+            species_quantity
           } = values;
 
-          const existence_specie_declarations_attributes = species_groupsOld.map(
-            ({ specie: specie_id, quantity }) => ({
-              species_id: parseInt(specie_id),
-              quantity: parseInt(quantity)
-            })
+          const species_group_temp = {};
+          species_quantity.forEach(
+            ({ specie: specie_id, quantity, species_group_id }) => {
+              const obj = {
+                species_id: parseInt(specie_id),
+                quantity: parseInt(quantity)
+              };
+              if (species_group_temp[species_group_id]) {
+                species_group_temp[species_group_id].push(obj);
+              } else {
+                species_group_temp[species_group_id] = [obj];
+              }
+            }
           );
+
+          const existence_specie_group_declarations_attributes = [];
+
+          for (const group_id in species_group_temp) {
+            if (species_group_temp.hasOwnProperty(group_id)) {
+              const existence_specie_declarations_attributes =
+                species_group_temp[group_id];
+              existence_specie_group_declarations_attributes.push({
+                species_group_id: group_id,
+                existence_specie_declarations_attributes
+              });
+            }
+          }
+
+          // const existence_specie_declarations_attributes = species_quantity.map(
+          //   ({ specie: specie_id, quantity }) => ({
+          //     species_id: parseInt(specie_id),
+          //     quantity: parseInt(quantity)
+          //   })
+          // );
 
           const req = {
             establishment_id: parseInt(establishment_id),
-            existence_specie_declarations_attributes,
+            existence_specie_group_declarations_attributes,
             year: parseInt(year),
             personal_id: parseInt(titular_id)
           };
-          api.post("/existence_declarations", req).then(resp => {
-            resp.success
-              ? alert("Declaración realizada")
-              : alert("Error en la declaración");
-            setSubmitting(false);
-          });
+          // api.post("/existence_declarations", req).then(resp => {
+          //   resp.success
+          //     ? alert("Declaración realizada")
+          //     : alert("Error en la declaración");
+          //   setSubmitting(false);
+          // });
+          alert(JSON.stringify(req));
         }}
       >
         {props => {
@@ -149,11 +188,24 @@ const NewDeclaration = () => {
               <br />
               <h6>Grupos de Especies</h6>
               <Select
-                options={species}
+                options={fetchedData.species_groups}
+                onChange={value => setSelectedSpecieGroup(value)}
+              />
+              <h6>Especie</h6>
+              <Select
+                options={
+                  selectedSpecieGroup
+                    ? species.filter(
+                        specie =>
+                          specie.species_group_id == selectedSpecieGroup.value
+                      )
+                    : []
+                }
+                value={selectedSpecie}
                 onChange={value => setSelectedSpecie(value)}
               />
               <FieldArray
-                name="species_groups"
+                name="species_quantity"
                 render={arrayHelpers => (
                   <div id="species">
                     <button
@@ -164,16 +216,20 @@ const NewDeclaration = () => {
                         arrayHelpers.push({
                           specie: selectedSpecie.value,
                           label: selectedSpecie.label,
+                          species_group_id: selectedSpecie.species_group_id,
                           quantity: 0
                         });
                         setSelectedSpecie(); // TODO: clear value from select
                         updateSpecies({ type: "remove", data: selectedSpecie });
+                        // Crear the specie selector
+                        setSelectedSpecie(null);
                       }}
                     >
                       Añadir
                     </button>
-                    {values.species_groups && values.species_groups.length > 0
-                      ? values.species_groups.map((specie, index) => (
+                    {values.species_quantity &&
+                    values.species_quantity.length > 0
+                      ? values.species_quantity.map((specie, index) => (
                           <div key={index} className="form-inline md-0">
                             <label className="col-form-label pr-3">
                               {specie.label}
@@ -181,7 +237,7 @@ const NewDeclaration = () => {
                             <Field
                               type="number"
                               className="form-control"
-                              name={`species_groups[${index}].quantity`}
+                              name={`species_quantity[${index}].quantity`}
                             />
                             <button
                               type="button"
@@ -191,7 +247,8 @@ const NewDeclaration = () => {
                                   type: "add",
                                   data: {
                                     value: specie.specie,
-                                    label: specie.label
+                                    label: specie.label,
+                                    species_group_id: specie.species_group_id
                                   }
                                 });
                                 arrayHelpers.remove(index);
