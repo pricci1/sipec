@@ -1,9 +1,10 @@
 export const getSpecies = async apiInstance => {
   const result = await apiInstance.get("/species");
 
-  return result.data.map(({ id, name }) => ({
+  return result.data.map(({ id, name, species_group_id }) => ({
     value: id,
-    label: name
+    label: name,
+    species_group_id: species_group_id
   }));
 };
 
@@ -23,4 +24,12 @@ export const getRegions = async apiInstance => {
 export const getNeighborhoods = async apiInstance => {
   const regions = await apiInstance.get(`/neighborhoods`);
   return regions.data.map(({ id: value, name: label }) => ({ value, label }));
+};
+
+export const getSpeciesGroups = async apiInstance => {
+  const speciesGroups = await apiInstance.get("/species_groups");
+  return speciesGroups.data.map(({ id: value, name: label }) => ({
+    value,
+    label
+  }));
 };

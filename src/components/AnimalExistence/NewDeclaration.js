@@ -135,13 +135,13 @@ const NewDeclaration = () => {
             year: parseInt(year),
             personal_id: parseInt(titular_id)
           };
-          // api.post("/existence_declarations", req).then(resp => {
-          //   resp.success
-          //     ? alert("Declaración realizada")
-          //     : alert("Error en la declaración");
-          //   setSubmitting(false);
-          // });
-          alert(JSON.stringify(req));
+          api.post("/existence_declarations", req).then(resp => {
+            resp.success
+              ? alert("Declaración realizada")
+              : alert("Error en la declaración");
+            setSubmitting(false);
+          });
+          // alert(JSON.stringify(req));
         }}
       >
         {props => {
