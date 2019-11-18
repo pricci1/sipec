@@ -20,6 +20,9 @@ import NewChangeDiio from "../components/AnimalAdministration/NewChangeDiio";
 import CreateNewAnimalRegister from "../components/AnimalAdministration/CreateNewAnimalResgister";
 import ChangeDiioList from "../components/AnimalAdministration/ChangeDiioList";
 import ConsultDataDiioRange from "../components/AnimalAdministration/ConsultDataDiioRange";
+import EstablishmentMenu from "./EstablishmentMenu";
+import EstablishmentPeople from "../components/Establishment/EstablishmentPeople";
+
 const MenuRouter = () => {
   return (
     <>
@@ -50,6 +53,9 @@ const MenuRouter = () => {
             <AnimalMoves path="animal_moves" />
           </AnimalMovementMenu>
           <AnimalExistence path="existencias/*" />
+          <EstablishmentMenu path="establecimientos">
+            <EstablishmentPeople path="personas" />
+          </EstablishmentMenu>
         </Router>
       </main>
     </>
