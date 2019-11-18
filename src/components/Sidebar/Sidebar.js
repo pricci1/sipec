@@ -6,7 +6,10 @@ const Sidebar = () => {
   const pageLinks = [
     { text: "Administración DIIOs", linkTo: "/diio/lista-compra" },
     { text: "Administración animal con DIIO", linkTo: "/animal-diio/animales" },
-    { text: "Establecimiento", linkTo: "/establecimientos" },
+    {
+      text: "Establecimiento",
+      linkTo: "/establecimientos/mis-establecimientos"
+    },
     { text: "Existencias animales", linkTo: "/existencias" },
     { text: "Movimientos animales", linkTo: "/movimientos" }
   ];

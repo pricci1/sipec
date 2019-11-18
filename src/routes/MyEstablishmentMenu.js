@@ -4,12 +4,13 @@ import { ButtonGroup } from "react-bootstrap";
 import "./DIIOMenu.css";
 
 const menuLinks = [
-  { text: "Establecimientos Asociados", linkTo: "mis-establecimientos" },
-  { text: "Establecimientos Externos", linkTo: "establecimientos-externos" },
-  { text: "Actualizar Datos Titular", linkTo: "mis-datos" }
+  { text: "Personas", linkTo: "personas" },
+  { text: "Especies", linkTo: "especies" },
+  { text: "Rubros", linkTo: "rubros" },
+  { text: "Otros datos", linkTo: "otros-datos" }
 ];
 
-const EstablishmentMenu = ({ children }) => (
+const MyEstablishmentMenu = ({ children }) => (
   <div>
     <div className="row">
       <div className=" d-flex flex-column">
@@ -44,4 +45,4 @@ const EstablishmentMenu = ({ children }) => (
   </div>
 );
 
-export default EstablishmentMenu;
+export default MyEstablishmentMenu;
