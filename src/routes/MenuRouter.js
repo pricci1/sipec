@@ -63,7 +63,7 @@ const MenuRouter = () => {
             <ExternalEstablishments path="establecimientos-externos" />
             <UpdateTitularData path="mis-datos" />
           </EstablishmentMenu>
-          <MyEstablishmentMenu path="/establecimiento/:id">
+          <MyEstablishmentMenu path="/establecimiento/:establishmentId">
             <EstablishmentPeople path="personas" />
           </MyEstablishmentMenu>
         </Router>

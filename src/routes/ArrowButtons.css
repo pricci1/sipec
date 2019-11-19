@@ -1,0 +1,60 @@
+/* Based on https://stackoverflow.com/a/11075216 */
+
+ul.arrows {
+  margin: 0px;
+  margin-bottom: 5px;
+  padding: 0px;
+}
+
+ul.arrows li {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  width: auto;
+  margin: 0px 5px 0 0;
+  text-indent: 35px;
+  position: relative;
+}
+
+ul.arrows li:before {
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  left: -2px;
+  border-style: solid;
+  border-width: 15px 0 15px 15px;
+  border-color: transparent transparent transparent #fff;
+  z-index: 0;
+}
+
+ul.arrows li:first-child:before {
+  border-color: transparent;
+}
+
+ul.arrows li a:after {
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  right: -15px;
+  border-style: solid;
+  border-width: 15px 0 15px 15px;
+  border-color: transparent transparent transparent #ccc;
+  z-index: 10;
+}
+
+ul.arrows li a {
+  display: block;
+  background: #ccc;
+  text-decoration: none;
+  color: rgb(77, 75, 75);
+}
+
+ul.arrows li a:hover {
+  background: rgb(150, 149, 149);
+}
+
+ul.arrows li a:hover:after {
+  border-color: transparent transparent transparent rgb(150, 149, 149);
+}
