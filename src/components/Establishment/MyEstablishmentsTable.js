@@ -61,26 +61,26 @@ export const MyEstablishmentsTable = ({
         width: 100
       }
     ],
-    rows: tableData.map(data => ({
+    rows: tableData.map(({ id, ...dataWithoutId }) => ({
       show: (
         <span className="btn-group">
-          <Link
-            to={"/establecimiento/"+ data.id}
-            className="btn btn-info btn-sm p-0"
-            style={{ fontFamily: "serif" }}
-          >
-            👁
-          </Link>
           <button
             type="button"
             className="btn btn-info btn-sm p-0"
-            onClick={() => handleEntryClick(data.id)}
+            onClick={() => handleEntryClick(id)}
+            style={{ fontFamily: "serif" }}
+          >
+            👁
+          </button>
+          <Link
+            to={`/establecimiento/${id}`}
+            className="btn btn-info btn-sm p-0"
           >
             🖉
-          </button>
+          </Link>
         </span>
       ),
-      ...data
+      ...dataWithoutId
     }))
   };
   return (
