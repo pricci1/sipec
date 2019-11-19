@@ -5,6 +5,7 @@ import APIContext from "../APIProvider";
 
 const mockData = [
   {
+    id: "1",
     rup: "1.1.1.1",
     inscriptionDate: "1/1/1",
     name: "Las Lilas",
@@ -14,6 +15,7 @@ const mockData = [
     anabolics: "No"
   },
   {
+    id: "2",
     rup: "2.2.2.2",
     inscriptionDate: "2/2/2",
     name: "La Fe",

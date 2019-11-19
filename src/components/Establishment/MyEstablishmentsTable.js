@@ -1,5 +1,6 @@
 import React from "react";
 import { MDBDataTable } from "mdbreact";
+import { Link } from "@reach/router";
 
 export const MyEstablishmentsTable = ({
   setModalEstablishmentId,
@@ -63,14 +64,13 @@ export const MyEstablishmentsTable = ({
     rows: tableData.map(data => ({
       show: (
         <span className="btn-group">
-          <button
-            type="button"
+          <Link
+            to={"/establecimiento/"+ data.id}
             className="btn btn-info btn-sm p-0"
             style={{ fontFamily: "serif" }}
-            onClick={() => handleEntryClick(data.id)}
           >
             👁
-          </button>
+          </Link>
           <button
             type="button"
             className="btn btn-info btn-sm p-0"

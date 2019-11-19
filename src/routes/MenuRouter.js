@@ -22,6 +22,7 @@ import ChangeDiioList from "../components/AnimalAdministration/ChangeDiioList";
 import ConsultDataDiioRange from "../components/AnimalAdministration/ConsultDataDiioRange";
 import MyEstablishmentMenu from "./MyEstablishmentMenu";
 import EstablishmentPeople from "../components/Establishment/EstablishmentPeople";
+
 import EstablishmentMenu from "./EstablishmentMenu";
 import MyEstablishments from "../components/Establishment/MyEstablishments";
 import ExternalEstablishments from "../components/Establishment/ExternalEstablishments";
@@ -62,6 +63,8 @@ const MenuRouter = () => {
             <ExternalEstablishments path="establecimientos-externos" />
             <UpdateTitularData path="mis-datos" />
           </EstablishmentMenu>
+          <MyEstablishmentMenu path="/establecimiento/:id"/>
+                <EstablishmentPeople path="personas"/>
         </Router>
       </main>
     </>
