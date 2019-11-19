@@ -63,8 +63,9 @@ const MenuRouter = () => {
             <ExternalEstablishments path="establecimientos-externos" />
             <UpdateTitularData path="mis-datos" />
           </EstablishmentMenu>
-          <MyEstablishmentMenu path="/establecimiento/:id"/>
-                <EstablishmentPeople path="personas"/>
+          <MyEstablishmentMenu path="/establecimiento/:id">
+            <EstablishmentPeople path="personas" />
+          </MyEstablishmentMenu>
         </Router>
       </main>
     </>
