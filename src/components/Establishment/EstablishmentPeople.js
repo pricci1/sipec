@@ -1,7 +1,11 @@
 import React from "react";
 
-const EstablishmentPeople = () => {
-  return <h1>Personas</h1>;
+const EstablishmentPeople = ({ establishmentId }) => {
+  return (
+    <>
+      <h2>Personas {establishmentId}</h2>
+    </>
+  );
 };
 
 export default EstablishmentPeople;

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { MyEstablishmentsTable } from "./MyEstablishmentsTable";
 import useModal from "../Modal";
 import APIContext from "../APIProvider";
+import EstablishmentDetailsMenu from "../../routes/EstablishmentDetailsMenu";
 
 const mockData = [
   {
@@ -29,17 +30,19 @@ const mockData = [
 const MyEstablishments = () => {
   const api = useContext(APIContext);
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
+  const [selectedEstablishmentId, setSelectedEstablishmentId] = useState();
+
   return (
     <div>
       <h2>Establecimientos Asociados</h2>
       <MyEstablishmentsTable
-        setModalEstablishmentId={() => {}}
+        setModalEstablishmentId={setSelectedEstablishmentId}
         toggleModal={toggleModal}
         tableData={mockData || []}
       />
       {modalIsOpened && (
         <Modal>
-          <h1>Detalles</h1>
+          <EstablishmentDetailsMenu establishmentId={selectedEstablishmentId} />
         </Modal>
       )}
     </div>
