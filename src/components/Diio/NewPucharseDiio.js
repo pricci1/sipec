@@ -44,7 +44,7 @@ const NewPurchaseDiio = () => {
   }
 
   const [selectedSellerRut, setSelectedSellerRut] = useState();
-
+  
   const getBuyerRut = () => {
     return "123456789";
   };
