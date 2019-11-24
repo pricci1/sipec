@@ -142,7 +142,6 @@ export const postAnimalDeathRegistration = async (
   let year = death_date.getFullYear();
   let month = death_date.getMonth() + 1;
   let day = death_date.getDate();
-  console.log(year + "/" + month + "/" + day);
   for (let i = 0; i < diio_array.length; i++) {
     let data = {
       veterinario: mva,
@@ -163,6 +162,30 @@ export const postAnimalDeathRegistration = async (
 
 export const getAnimalDeathTableApi = async apiInstance => {
   const result = await apiInstance.get("/animal_death_list");
+  return result.data.map(
+    ({ diio, specie, date, down_type, detail, establishment }) => ({
+      diio: diio,
+      specie: specie,
+      date: date,
+      down_type: down_type,
+      detail: detail,
+      establishment: establishment
+    })
+  );
+};
+
+export const getAnimalDeathTableFilteredApi = async (
+  apiInstance,
+  establishment,
+  desde,
+  hasta
+) => {
+  let data = { establishment, desde, hasta };
+  console.log("data:", data);
+  console.log("try:", data.desde);
+  const result = await apiInstance.get("/animal_death_filtered", data);
+  console.log(result);
+
   return result.data.map(
     ({ diio, specie, date, down_type, detail, establishment }) => ({
       diio: diio,
