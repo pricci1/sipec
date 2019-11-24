@@ -6,9 +6,9 @@ import * as Yup from "yup";
 import {
   postAnimalDeathRegistration,
   getOwnersApi,
-  getMvasApi,
+  getEstablishmentMvasApi,
   getSpeciesApi,
-  getEstablishmentsApi
+  getUserEstablishmentsApi
 } from "../../lib/ApiAnimalAdministration";
 import APIContext from "../APIProvider";
 import "../Diio/newPucharseDiio.css";
@@ -41,7 +41,6 @@ const NewDeathRegistration = () => {
   const [establishment_id, setestablishment_id] = useState("");
   const [mvasData, setmvasData] = useState([]);
   const [speciesData, setspeciesData] = useState([]);
-  const [establishmentsData, setestablishmentsData] = useState([]);
   const [ownersData, setownersData] = useState([]);
   useEffect(() => {
     getSpecies();
@@ -58,22 +57,26 @@ const NewDeathRegistration = () => {
   }
 
   async function getEstablishments() {
-    const data = await getEstablishmentsApi(api);
-    setestablishmentsData(data);
+    const data = await getUserEstablishmentsApi(api, api.currentUserId); // user id
+    return data;
   }
 
   async function getOwners() {
     const data = await getOwnersApi(api, establishment_id);
     setownersData(data);
+    console.log(ownersData);
   }
 
   async function getMvas() {
-    let data = await getMvasApi(api, establishment_id);
+    console.log("Establishment id");
+    console.log(establishment_id);
+    let data = await getEstablishmentMvasApi(api, establishment_id);
     // data = [
     //   { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
     //   { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
     // ];
     setmvasData(data);
+    console.log(mvasData);
   }
 
   async function getDown() {
@@ -95,7 +98,7 @@ const NewDeathRegistration = () => {
       <h2>Nuevo Registro de Muerte Animal</h2>
       <Formik
         initialValues={{
-          establishment_id: "",
+          establishment: "",
           owner: "",
           mva: "",
           death_date: "",
@@ -147,13 +150,13 @@ const NewDeathRegistration = () => {
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.establishment}
-                options={establishmentsData}
+                data={getEstablishments}
                 errors={errors.establishment}
               />
               <br />
               <Selector
                 fieldName="owner"
-                fieldValue={values.establishment}
+                fieldValue={values.owner}
                 labelName="Titular o mandatario"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
