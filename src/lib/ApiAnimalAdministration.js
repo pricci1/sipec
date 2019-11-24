@@ -18,7 +18,6 @@ export const postDiioChange = async (
     diio_changes
   };
   const result = await apiInstance.post("/diio_changes", data);
-  console.log(data);
 
   return result;
 };
@@ -32,14 +31,16 @@ export const getSpeciesApi = async apiInstance => {
   }));
 };
 
-export const getMvasApi = async (apiInstance, establishment_id) => {
+export const getEstablishmentMvasApi = async (
+  apiInstance,
+  establishment_id
+) => {
   const result = await apiInstance.get(
-    `/establishments/${establishment_id}/personals?role_id=1`
+    `/establishments/${establishment_id}/mvas`
   );
-
-  return result.data.map(({ id, name, run }) => ({
+  return result.data.map(({ id, first_name, last_name, run }) => ({
     value: id,
-    label: run + " - " + name
+    label: run + " - " + first_name + " " + last_name
   }));
 };
 
@@ -47,7 +48,6 @@ export const getOwnersApi = async (apiInstance, establishment_id) => {
   const result = await apiInstance.get(
     `/establishments/${establishment_id}/personals?role_id=5`
   );
-
   return result.data.map(({ id, name, run }) => ({
     value: id,
     label: run + " - " + name
@@ -111,9 +111,8 @@ export const getChangeRegistryDataApi = (api, registry_id) => {
 };
 
 export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
-  const result = await apiInstance.get(
-    `/diio_purchases/user_establishment/${user_id}`
-  );
+  const result = await apiInstance.get(`/user/${user_id}/establishments`);
+
   return result.data.map(({ id, name, rup }) => ({
     value: id,
     label: rup + " - " + name
@@ -127,7 +126,7 @@ export const getInfoSingleDiioConsult = async (apiInstance, diio) => {
 
 export const getMva = async apiInstance => {
   /* cambiar */
-  const info = await apiInstance.get("/mva");
+  const info = await apiInstance.get("/mvas");
   return info.data[0];
 };
 
