@@ -46,12 +46,25 @@ const SearchAnimalDownDIIO = () => {
 
   async function getDataTable(establishment, desde, hasta) {
     console.log(establishment, desde, hasta);
-
+    var new_desde = new String();
+    var new_hasta = new String();
+    new_desde =
+      desde.getFullYear().toString() +
+      "-" +
+      (desde.getMonth() + 1).toString() +
+      "-" +
+      desde.getDate().toString();
+    new_hasta =
+      hasta.getFullYear().toString() +
+      "-" +
+      (hasta.getMonth() + 1).toString() +
+      "-" +
+      hasta.getDate().toString();
     const data = await getAnimalDeathTableFilteredApi(
       api,
       establishment.value,
-      desde.toLocaleDateString(),
-      hasta.toLocaleDateString()
+      new_desde,
+      new_hasta
     );
     setData(data);
     return data;
