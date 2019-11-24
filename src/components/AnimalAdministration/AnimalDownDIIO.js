@@ -9,7 +9,8 @@ import { Link } from "@reach/router";
 import AnimalEstablishmentRecordDetails from "./AnimalDownDIIODetails";
 import {
   getEstablishmentsApi,
-  getAnimalDeathTableApi
+  getAnimalDeathTableApi,
+  getAnimalDeathTableFilteredApi
 } from "../../lib/ApiAnimalAdministration";
 // import { getUserEstablishments } from "../../lib/APIDiio";
 import * as Yup from "yup";
@@ -31,6 +32,7 @@ const SearchAnimalDownDIIO = () => {
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
   const [modalRegistryId, setModalRegistryId] = useState();
   const [data, setData] = useState([]);
+  useEffect(() => {}, []);
 
   async function getEstablishments() {
     const data = await getEstablishmentsApi(api);
@@ -41,9 +43,21 @@ const SearchAnimalDownDIIO = () => {
     const data = await getAnimalDeathTableApi(api);
     setData(data);
   }
-  useEffect(() => {
-    getTableData();
-  }, []);
+
+  async function getDataTable(establishment, desde, hasta) {
+    console.log(establishment, desde, hasta);
+    const data = await getAnimalDeathTableFilteredApi(
+      api,
+      establishment.value,
+      desde,
+      hasta
+    );
+    setData(data);
+    return data;
+  }
+  // useEffect(() => {
+  //   getTableData();
+  // }, []);
 
   return (
     <div className="body">
@@ -55,7 +69,10 @@ const SearchAnimalDownDIIO = () => {
             desde: "",
             hasta: ""
           }}
-          onSubmit={formData => {}}
+          onSubmit={(values, { setSubmitting }) => {
+            getDataTable(values.establishment, values.desde, values.hasta);
+            setSubmitting(false);
+          }}
         >
           {({
             values,
