@@ -46,11 +46,12 @@ const SearchAnimalDownDIIO = () => {
 
   async function getDataTable(establishment, desde, hasta) {
     console.log(establishment, desde, hasta);
+
     const data = await getAnimalDeathTableFilteredApi(
       api,
       establishment.value,
-      desde,
-      hasta
+      desde.toLocaleDateString(),
+      hasta.toLocaleDateString()
     );
     setData(data);
     return data;
