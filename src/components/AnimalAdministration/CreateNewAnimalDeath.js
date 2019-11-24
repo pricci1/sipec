@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Formik, Field, FieldArray } from "formik";
+import { Formik, Field, FieldArray, Select } from "formik";
 import { Datepicker } from "react-formik-ui";
 import Selector from "../Diio/Utilities/FormikSelector";
 import * as Yup from "yup";
@@ -15,7 +15,6 @@ import "../Diio/newPucharseDiio.css";
 import { Link } from "@reach/router";
 
 let currentDate = new Date().toLocaleDateString();
-
 const newAnimalDownRegistration = Yup.object().shape({
   establishment: Yup.string()
     .nullable()
@@ -53,7 +52,7 @@ const NewDeathRegistration = () => {
 
   async function getSpecies() {
     const data = await getSpeciesApi(api);
-    setspeciesData(data);
+    return data;
   }
 
   async function getEstablishments() {
@@ -62,21 +61,21 @@ const NewDeathRegistration = () => {
   }
 
   async function getOwners() {
-    const data = await getOwnersApi(api, establishment_id);
-    setownersData(data);
-    console.log(ownersData);
+    try {
+      const data = await getOwnersApi(api, establishment_id);
+      return data;
+    } catch {
+      return getOwnersApi(api, "2");
+    }
   }
 
   async function getMvas() {
-    console.log("Establishment id");
-    console.log(establishment_id);
-    let data = await getEstablishmentMvasApi(api, establishment_id);
-    // data = [
-    //   { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
-    //   { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
-    // ];
-    setmvasData(data);
-    console.log(mvasData);
+    try {
+      const data = await getEstablishmentMvasApi(api, establishment_id);
+      return data;
+    } catch {
+      return getEstablishmentMvasApi(api, "2");
+    }
   }
 
   async function getDown() {
@@ -161,7 +160,7 @@ const NewDeathRegistration = () => {
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.owner}
-                options={ownersData}
+                data={getOwners}
                 errors={errors.owner}
               />
               <br />
@@ -172,7 +171,7 @@ const NewDeathRegistration = () => {
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.mva}
-                options={mvasData}
+                data={getMvas}
                 errors={errors.mva}
               />
               <br />
@@ -190,7 +189,7 @@ const NewDeathRegistration = () => {
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.specie}
-                options={speciesData}
+                data={getSpecies}
                 errors={errors.specie}
               />
               <br />

@@ -38,9 +38,9 @@ export const getEstablishmentMvasApi = async (
   const result = await apiInstance.get(
     `/establishments/${establishment_id}/mvas`
   );
-  return result.data.map(({ id, first_name, last_name, run }) => ({
+  return result.data.map(({ id, name, last_name, run }) => ({
     value: id,
-    label: run + " - " + first_name + " " + last_name
+    label: run + " - " + name + " " + last_name
   }));
 };
 
@@ -139,12 +139,15 @@ export const postAnimalDeathRegistration = async (
   diio_array
 ) => {
   let result = { success: false, data: "OK" };
-  console.log(specie);
+  let year = death_date.getFullYear();
+  let month = death_date.getMonth() + 1;
+  let day = death_date.getDate();
+  console.log(year + "/" + month + "/" + day);
   for (let i = 0; i < diio_array.length; i++) {
     let data = {
       veterinario: mva,
       death_motive: down,
-      death_date: death_date,
+      death_date: year + "-" + month + "-" + day,
       serial_diio: diio_array[i].diio
     };
     console.log(data);
