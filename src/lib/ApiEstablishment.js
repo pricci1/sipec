@@ -1,3 +1,5 @@
+import { array } from "prop-types";
+
 export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
   const result = await apiInstance.get(`/user/${user_id}/establishments`);
   function boolToString(boolData) {
@@ -18,4 +20,22 @@ export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
       anabolics: boolToString(anabolics)
     })
   );
+};
+
+//TODO: Do this right
+export const postSpecieChangeApi = async (
+  apiInstance,
+  arraylist,
+  establishment
+) => {
+  for(let arraylistobject of arraylist){
+    console.log(arraylistobject);
+    let data = {
+      establishment,
+      arraylistobject
+    };
+    const result = await apiInstance.post("/diio_changes", data);
+    return result;
+  }
+  
 };

@@ -33,12 +33,7 @@ const ListadoBajaDIIO = () => {
       (hasta.getMonth() + 1).toString() +
       "-" +
       hasta.getDate().toString();
-    const data = await getDownListTableApi(
-      api,
-      specie.value,
-      new_desde,
-      new_hasta
-    );
+    const data = await getDownListTableApi(api, specie, new_desde, new_hasta);
     setData(data);
     return data;
   }
