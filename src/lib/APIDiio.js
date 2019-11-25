@@ -67,6 +67,64 @@ export const getUserEstablishments = async apiInstance => {
   return establishments.data;
 };
 
+//TODO: Create the route
+export const getDownListTableApi = async (
+  apiInstance,
+  specie,
+  desde,
+  hasta
+) => {
+  let data = { specie, desde, hasta };
+  console.log("data:", data);
+  console.log("try:", data.desde);
+  const result = await apiInstance.get("/down_list_filtered", data);
+  console.log(result);
+
+  return result.data.map(({ diio, reason, date, specie }) => ({
+    diio: diio,
+    reason: reason,
+    specie: specie,
+    date: date
+  }));
+};
+
+//CREATE ROUTE
+export const getStockDIIOEstablishmentTableApi = async (
+  apiInstance,
+  buyer,
+  seller,
+  establishment,
+  rup,
+  brand,
+  type,
+  specie,
+  desde,
+  hasta
+) => {
+  let data = {
+    buyer,
+    seller,
+    establishment,
+    rup,
+    brand,
+    type,
+    specie,
+    desde,
+    hasta
+  };
+  console.log("data:", data);
+  console.log("try:", data.desde);
+  const result = await apiInstance.get("/down_list_filtered", data);
+  console.log(result);
+
+  return result.data.map(({ diio, buyer, date, name }) => ({
+    diio: diio,
+    buyer: buyer,
+    date: date,
+    name: name
+  }));
+};
+
 // export const getDataStockDIIOEstablecimiento = async apiInstance => {
 //   const result = await apiInstance.get("/diio_stock_table");
 //   return result.data.map(({data,index}) => ({

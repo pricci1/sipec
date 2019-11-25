@@ -39,11 +39,6 @@ const SearchAnimalDownDIIO = () => {
     return data;
   }
 
-  async function getTableData() {
-    const data = await getAnimalDeathTableApi(api);
-    setData(data);
-  }
-
   async function getDataTable(establishment, desde, hasta) {
     console.log(establishment, desde, hasta);
     var new_desde = new String();
