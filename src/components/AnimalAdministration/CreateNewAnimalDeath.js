@@ -63,8 +63,10 @@ const NewDeathRegistration = () => {
   async function getOwners() {
     try {
       const data = await getOwnersApi(api, establishment_id);
+      setownersData(data);
       return data;
     } catch {
+      setownersData(getOwnersApi(api, "2"));
       return getOwnersApi(api, "2");
     }
   }
@@ -72,8 +74,10 @@ const NewDeathRegistration = () => {
   async function getMvas() {
     try {
       const data = await getEstablishmentMvasApi(api, establishment_id);
+      setmvasData(data);
       return data;
     } catch {
+      setmvasData(getEstablishmentMvasApi(api, "2"));
       return getEstablishmentMvasApi(api, "2");
     }
   }
