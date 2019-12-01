@@ -138,6 +138,33 @@ class API {
     // TODO: If the response says that the token is not valid, redirect to login
     return results;
   };
+  patch = async (url, obj) => {
+    const path = this.apiUrl + url;
+    var results = { success: false };
+    try {
+      const postResponse = await axios.patch(
+        path,
+        { ...obj },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": this.token,
+            client: this.client,
+            uid: this.uid
+          }
+        }
+      );
+      if (Math.floor(postResponse.status / 100) === 2) {
+        results.success = true;
+        results.data = postResponse.data;
+      }
+    } catch (error) {
+      results.success = false;
+      results.data = error;
+    }
+    // TODO: If the response says that the token is not valid, redirect to login
+    return results;
+  };
 }
 
 export default API;
