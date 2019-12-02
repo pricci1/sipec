@@ -23,18 +23,17 @@ export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
 };
 
 //TODO: Do this right
-export const postSpecieChangeApi = async (
+export const updateSpecieChangeApi = async (
   apiInstance,
   arraylist,
   establishment
 ) => {
   for (let arraylistobject of arraylist) {
-    console.log(arraylistobject);
     let data = {
       establishment,
       arraylistobject
     };
-    const result = await apiInstance.post("/diio_changes", data);
+    const result = await apiInstance.patch("/diio_changes", data);
     return result;
   }
 };
