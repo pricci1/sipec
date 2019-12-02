@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DualListBox from "react-dual-listbox";
 import "react-dual-listbox/lib/react-dual-listbox.css";
 
@@ -13,6 +13,13 @@ const options = [
 
 const EstablishmentSpecies = ({ establishmentId }) => {
   const [selected, setSelected] = useState([2, 5]);
+  const [establishmentName, setEstablishmentName] = useState();
+  useEffect(() => {
+    // TODO: Get establishment's name from backend (using establishmentId)
+    setTimeout(() => {
+      setEstablishmentName("Estancia Las Palmas");
+    }, 500);
+  }, []);
 
   const onChange = selected => {
     setSelected(selected);
