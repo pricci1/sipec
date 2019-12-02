@@ -60,7 +60,7 @@ const NewChangeDiio = () => {
   }, [establishment_id]);
 
   async function getSpecies() {
-    const data = await getSpeciesApi(api);
+    const data = await getSpeciesApi(api);  
     setspeciesData(data);
   }
   async function getEstablishments() {
