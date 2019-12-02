@@ -121,7 +121,7 @@ const SearchAnimalDownDIIO = () => {
         </Formik>
         <br />
         <Link to="nueva" className="btn btn-primary">
-          Nueva Muerte
+          &#10010; Nueva Muerte
         </Link>
         <AnimalEstablishmentRegistryTable
           data={data}

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 // import { Formik, Field, FieldArray } from "formik";
 // import * as Yup from "yup";
 import APIContext from "../APIProvider";
-import { Formik, Field } from "formik";
+import { Formik } from "formik";
 import { Link } from "@reach/router";
 import useModal from "../Modal";
 import DatePicker from "react-datepicker";

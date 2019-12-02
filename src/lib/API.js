@@ -8,7 +8,6 @@ class API {
     this.uid = localStorage.uid || null;
     this.apiUrl = "https://sipec-backend.herokuapp.com";
     this.titular = localStorage.titular || null;
-    //this.apiUrl = "http://192.168.0.49:3000";
   }
 
   login = async (email, password) => {
@@ -88,6 +87,34 @@ class API {
     var results = { success: false };
     try {
       const postResponse = await axios.post(
+        path,
+        { ...obj },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": this.token,
+            client: this.client,
+            uid: this.uid
+          }
+        }
+      );
+      if (Math.floor(postResponse.status / 100) === 2) {
+        results.success = true;
+        results.data = postResponse.data;
+      }
+    } catch (error) {
+      results.success = false;
+      results.data = error;
+    }
+    // TODO: If the response says that the token is not valid, redirect to login
+    return results;
+  };
+
+  patch = async (url, obj) => {
+    const path = this.apiUrl + url;
+    var results = { success: false };
+    try {
+      const postResponse = await axios.patch(
         path,
         { ...obj },
         {

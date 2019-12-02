@@ -29,7 +29,7 @@ const Navbar = ({ setLoggedOutCallback, isLogged }) => {
       </nav>
       {isLogged && (
         <div className="user-bar bg-secondary">
-          <span className="ml-3 text-white ">Juan José Días</span>
+          <span className="ml-3 text-white ">{`${api.titular.name} ${api.titular.last_name}`}</span>
           <Link className="mr-3 text-white float-right" to="/" onClick={logout}>
             Cerrar Sesión
           </Link>

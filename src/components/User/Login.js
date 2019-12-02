@@ -34,7 +34,7 @@ const Login = ({ setLoggedCallback }) => {
         {props => {
           const { touched, errors, handleSubmit, isSubmitting } = props;
           return (
-            <Form autocomplete="off" onSubmit={handleSubmit}>
+            <Form autoComplete="off" onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <Field
