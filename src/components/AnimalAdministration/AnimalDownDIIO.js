@@ -57,7 +57,7 @@ const SearchAnimalDownDIIO = () => {
       hasta.getDate().toString();
     const data = await getAnimalDeathTableFilteredApi(
       api,
-      establishment,
+      establishment.value,
       new_desde,
       new_hasta
     );
