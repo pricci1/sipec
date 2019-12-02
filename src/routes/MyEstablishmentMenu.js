@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, Location } from "@reach/router";
 import { ButtonGroup } from "react-bootstrap";
 import "./DIIOMenu.css";
 import "./ArrowButtons.css";
+import { getEstablishmentByIdApi } from "../lib/ApiEstablishment";
+import APIContext from "../components/APIProvider";
 
 const menuLinks = [
   { text: "Personas", linkTo: "personas" },
@@ -12,13 +14,20 @@ const menuLinks = [
 ];
 
 const MyEstablishmentMenu = ({ children, establishmentId }) => {
-  const [establishmentName, setEstablishmentName] = useState();
+  const api = useContext(APIContext);
+  const [establishmentName, setEstablishmentName] = useState("");
   useEffect(() => {
-    // TODO: Get establishment's name from backend (using establishmentId)
-    setTimeout(() => {
-      setEstablishmentName("Estancia Las Palmas");
-    }, 500);
-  }, []);
+    getEstablishmentById();
+  }, [establishmentName]);
+
+  async function getEstablishmentById() {
+    const data = await getEstablishmentByIdApi(api, establishmentId);
+    if (!data) {
+      setEstablishmentName("Default");
+    } else {
+      setEstablishmentName(data.name);
+    }
+  }
   return (
     <div>
       <div className="row">

@@ -23,18 +23,17 @@ export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
 };
 
 //TODO: Do this right
-export const postSpecieChangeApi = async (
+export const updateSpecieChangeApi = async (
   apiInstance,
   arraylist,
   establishment
 ) => {
   for (let arraylistobject of arraylist) {
-    console.log(arraylistobject);
     let data = {
       establishment,
       arraylistobject
     };
-    const result = await apiInstance.post("/diio_changes", data);
+    const result = await apiInstance.patch("/diio_changes", data);
     return result;
   }
 };
@@ -70,4 +69,14 @@ export const getEstablishmentsApi = async apiInstance => {
     value: id,
     label: rup + " - " + name
   }));
+};
+
+export const getEstablishmentByIdApi = async (apiInstance, establishmentId) => {
+  const Establecimento = await apiInstance.get(
+    `/establishments/${establishmentId}`
+  );
+  if (!Establecimento.success) {
+    return Establecimento.succes;
+  }
+  return Establecimento.data;
 };
