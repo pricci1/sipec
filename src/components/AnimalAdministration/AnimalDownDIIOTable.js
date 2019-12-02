@@ -1,7 +1,15 @@
-import React, { useContext, useEffect } from "react";
-import { MDBDataTable } from "mdbreact";
+import React, {
+  useContext,
+  useEffect
+} from "react";
+import {
+  MDBDataTable
+} from "mdbreact";
 import ApiContext from "../APIProvider";
-import { getAnimalDeathTableApi } from "../../lib/ApiAnimalAdministration";
+import {
+  getAnimalDeathTableApi,
+  getAnimalDeathTableFilteredApi
+} from "../../lib/ApiAnimalAdministration";
 
 export const AnimalEstablishmentRegistryTable = ({
   data,
@@ -9,8 +17,7 @@ export const AnimalEstablishmentRegistryTable = ({
   toggleModal
 }) => {
   const api = useContext(ApiContext);
-  var columns = [
-    {
+  var columns = [{
       label: "DIIO baja",
       field: "diio",
       sort: "asc",
@@ -68,23 +75,30 @@ export const AnimalEstablishmentRegistryTable = ({
     });
   }, [data]);
 
-  return (
-    <>
-      <MDBDataTable
-        className="data-table"
-        striped
-        scrollY
-        hover
-        bordered
-        small
-        maxHeight="370px"
-        header
-        data={{ columns: columns, rows: rows }} // TODO: change with 'data'
-        entriesLabel={["Entradas por página"]}
-        infoLabel={["Mostrando de", "a", "entradas, de"]}
-        paginationLabel={["Anterior", "Siguiente"]}
-        searchLabel={["Filtrar"]}
-      />
-    </>
+  return ( <
+    >
+    <
+    MDBDataTable className = "data-table"
+    striped scrollY hover bordered small maxHeight = "370px"
+    header data = {
+      {
+        columns: columns,
+        rows: rows
+      }
+    } // TODO: change with 'data'
+    entriesLabel = {
+      ["Entradas por página"]
+    }
+    infoLabel = {
+      ["Mostrando de", "a", "entradas, de"]
+    }
+    paginationLabel = {
+      ["Anterior", "Siguiente"]
+    }
+    searchLabel = {
+      ["Filtrar"]
+    }
+    /> <
+    />
   );
 };

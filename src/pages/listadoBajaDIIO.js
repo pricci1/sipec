@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Formik } from "formik";
 import { Datepicker } from "react-formik-ui";
 import * as Yup from "yup";
@@ -7,7 +7,7 @@ import Selector from "../components/Diio/Utilities/FormikSelector";
 
 // import SIPECtable from "../components/AnimalMoves/SIPECtable";
 
-import { getSpecies } from "../lib/APIDiio";
+import { getSpecies, getDownListTableApi } from "../lib/APIDiio";
 import APIContext from "../components/APIProvider";
 
 import ListDroppedDiioTab from "../routes/DIIOMenuTabs/ListDroppedDiioTab";
@@ -15,6 +15,28 @@ import "./listadoBajaDIIO.css";
 
 const ListadoBajaDIIO = () => {
   const api = useContext(APIContext);
+  const [data, setData] = useState([]);
+  useEffect(() => {}, []);
+
+  async function getDataTable(specie, desde, hasta) {
+    var new_desde = new String();
+    var new_hasta = new String();
+    new_desde =
+      desde.getFullYear().toString() +
+      "-" +
+      (desde.getMonth() + 1).toString() +
+      "-" +
+      desde.getDate().toString();
+    new_hasta =
+      hasta.getFullYear().toString() +
+      "-" +
+      (hasta.getMonth() + 1).toString() +
+      "-" +
+      hasta.getDate().toString();
+    const data = await getDownListTableApi(api, specie, new_desde, new_hasta);
+    setData(data);
+    return data;
+  }
 
   async function getSpeciesAPI() {
     const data = await getSpecies(api);
@@ -28,10 +50,8 @@ const ListadoBajaDIIO = () => {
         <Formik
           initialValues={{ desde: "", hasta: "", specie: "" }}
           onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
+            getDataTable(values.establishment, values.desde, values.hasta);
+            setSubmitting(false);
           }}
           validationSchema={Yup.object().shape({
             desde: Yup.string()
@@ -49,6 +69,8 @@ const ListadoBajaDIIO = () => {
             values,
             errors,
             touched,
+            handleReset,
+            dirty,
             //   handleChange,
             //   handleBlur,
             handleSubmit,
@@ -58,24 +80,22 @@ const ListadoBajaDIIO = () => {
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
-              <div className="selector">
-                <Selector
-                  fieldName="specie"
-                  fieldValue={values.specie}
-                  labelName="Especie"
-                  onChange={(field, fieldValue) => {
-                    setFieldValue(field, fieldValue.label);
-                  }}
-                  onBlur={setFieldTouched}
-                  touched={touched.specie}
-                  // data={getSpecies}
-                  data={getSpeciesAPI}
-                  required={true}
-                  errors={errors.specie}
-                />
-              </div>
+              <Selector
+                fieldName="specie"
+                fieldValue={values.specie}
+                labelName="Especie"
+                onChange={(field, fieldValue) => {
+                  setFieldValue(field, fieldValue.label);
+                }}
+                onBlur={setFieldTouched}
+                touched={touched.specie}
+                // data={getSpecies}
+                data={getSpeciesAPI}
+                required={true}
+                errors={errors.specie}
+              />
               <br />
-              Rango DIIO
+              <p className="label">Fecha</p>
               <div className="fecha">
                 <Datepicker
                   selected={values.desde}
@@ -96,22 +116,30 @@ const ListadoBajaDIIO = () => {
                   required={true}
                 />
               </div>
-              <br />
-              <button
-                type="submit"
-                className="btn btn-outline-primary"
-                disabled={isSubmitting}
-              >
-                Filtrar
-              </button>
+              <div className="row" style={{ justifyContent: "flex-end" }}>
+                <div className="col-md-7">
+                  <button
+                    className="btn btn-outline-primary mt-4"
+                    type="submit"
+                    disabled={!dirty || isSubmitting}
+                  >
+                    Buscar registros
+                  </button>
+                  <button
+                    onClick={handleReset}
+                    className="btn btn-secondary mt-4 ml-1"
+                    type="button"
+                  >
+                    Limpiar
+                  </button>
+                </div>
+              </div>
             </form>
           )}
         </Formik>
       </div>
       <div>
-        {/* <SIPECtable cases="listadebajas" /> */}
-        {/* <InventoryDiioTab /> */}
-        <ListDroppedDiioTab />
+        <ListDroppedDiioTab data={data} />
       </div>
     </div>
   );
