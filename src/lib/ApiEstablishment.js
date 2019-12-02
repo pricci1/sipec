@@ -28,7 +28,7 @@ export const postSpecieChangeApi = async (
   arraylist,
   establishment
 ) => {
-  for(let arraylistobject of arraylist){
+  for (let arraylistobject of arraylist) {
     console.log(arraylistobject);
     let data = {
       establishment,
@@ -37,5 +37,8 @@ export const postSpecieChangeApi = async (
     const result = await apiInstance.post("/diio_changes", data);
     return result;
   }
-  
+};
+
+export const getEstablishmentInfo = async (apiInstance, establishmentId) => {
+  return await apiInstance.get(`/establishments/${establishmentId}/background`);
 };
