@@ -28,7 +28,7 @@ export const postSpecieChangeApi = async (
   arraylist,
   establishment
 ) => {
-  for(let arraylistobject of arraylist){
+  for (let arraylistobject of arraylist) {
     console.log(arraylistobject);
     let data = {
       establishment,
@@ -37,5 +37,37 @@ export const postSpecieChangeApi = async (
     const result = await apiInstance.post("/diio_changes", data);
     return result;
   }
-  
+};
+
+export const getEstablishmentAnimalsApi = async (
+  apiInstance,
+  establishmentId,
+  species
+) => {
+  console.log(
+    "RUTA:",
+    `/animal_search?id_del_establecimiento=${establishmentId}&especie=${species}`
+  );
+  const info = await apiInstance.get(
+    `/animal_search?id_del_establecimiento=${establishmentId}&especie=${species}`
+  );
+  return info.data;
+};
+
+export const getSpeciesApi = async apiInstance => {
+  const result = await apiInstance.get("/species");
+
+  return result.data.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
+};
+
+export const getEstablishmentsApi = async apiInstance => {
+  const result = await apiInstance.get("/establishments");
+
+  return result.data.map(({ id, name, rup }) => ({
+    value: id,
+    label: rup + " - " + name
+  }));
 };
