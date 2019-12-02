@@ -62,7 +62,7 @@ export const getDiioPurchaseDetails = async (apiInstance, purchaseId) => {
 export const getUserEstablishments = async apiInstance => {
   const titularId = apiInstance.titular.id;
   const establishments = await apiInstance.get(
-    `/diio_purchases/user_establishment/${titularId}`
+    `/user/${titularId}/establishments`
   );
   return establishments.data;
 };
