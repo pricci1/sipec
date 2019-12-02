@@ -7,8 +7,8 @@ export const MyEstablishmentsTable = ({
   toggleModal,
   tableData
 }) => {
-  const handleEntryClick = declarationId => {
-    setModalEstablishmentId(declarationId);
+  const handleEntryClick = establishmentid => {
+    setModalEstablishmentId(establishmentid);
     toggleModal();
   };
   const data = {

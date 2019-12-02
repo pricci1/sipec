@@ -1,17 +1,25 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {getChangeRegistryDataApi} from "../../lib/ApiAnimalAdministration";
 import ApiContext from "../APIProvider";
 import { MDBDataTable } from "mdbreact";
 
 const ChangeDiioDetails = ({ changeId }) => {
   const api = useContext(ApiContext);
+  const [modaldata, setmodaldata] = useState({});
+
+
   async function getModalData() {
     const data = await getChangeRegistryDataApi(api, changeId);
-    return data;
+    console.log();
+    
+    setmodaldata(data);
   }
 
-  const modalData = getModalData();
+  
 
+  useEffect(() => {
+    getModalData();
+  }, []);
   const columns = [
     {
       label: "DIIO antiguo",
@@ -33,23 +41,23 @@ const ChangeDiioDetails = ({ changeId }) => {
         <tbody>
           <tr>
             <th className="text-nowrap">MVA o tercer acreditado</th>
-            <td>modalData.mva</td>
+            <td>{modaldata.mva}</td>
           </tr>
           <tr>
             <th className="text-nowrap">Especie</th>
-            <td>modalData.specie</td>
+            <td>{modaldata.specie}</td>
           </tr>
           <tr>
             <th className="text-nowrap">Fecha registro</th>
-            <td>modalData.date</td>
+            <td>{modaldata.date}</td>
           </tr>
           <tr>
             <th className="text-nowrap">Fecha Aplicacion</th>
-            <td>modalData.verification</td>
+            <td>{modaldata.verification}</td>
           </tr>
           <tr>
             <th className="text-nowrap">Establecimiento</th>
-            <td>modalData.establishment</td>
+            <td>{modaldata.establishment}</td>
           </tr>
         </tbody>
       </table>
@@ -61,7 +69,7 @@ const ChangeDiioDetails = ({ changeId }) => {
         bordered
         small
         maxHeight="250px"
-        data={{ columns: columns, rows: modalData.changes }}
+        data={{ columns: columns, rows: modaldata.changes}}
         entriesLabel={["Entradas por página"]}
         infoLabel={["Mostrando de", "a", "entradas, de"]}
         paginationLabel={["Anterior", "Siguiente"]}
