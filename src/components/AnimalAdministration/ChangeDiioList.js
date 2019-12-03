@@ -23,7 +23,7 @@ const ChangeDiioList = () => {
   }
 
   async function getTableData() {
-    const data = await getChangeDiioDataApi(api);
+    const data = await getChangeDiioDataApi(api, api.titular.id);
     settableData(data.data);
   }
 
