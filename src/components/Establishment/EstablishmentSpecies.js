@@ -1,25 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import APIContext from "../APIProvider";
 import DualListBox from "react-dual-listbox";
 import "react-dual-listbox/lib/react-dual-listbox.css";
-
-const options = [
-  { value: 1, label: "Ovinos" },
-  { value: 2, label: "Mulares" },
-  { value: 3, label: "Bobinos" },
-  { value: 4, label: "Caballares" },
-  { value: 5, label: "Caprinos" },
-  { value: 6, label: "Conejos" }
-];
+import {
+  getEstablishmentByIdApi,
+  getSpecies
+} from "../../lib/ApiEstablishment";
 
 const EstablishmentSpecies = ({ establishmentId }) => {
+  const api = useContext(APIContext);
   const [selected, setSelected] = useState([2, 5]);
   const [establishmentName, setEstablishmentName] = useState();
+  const [species, setSpecies] = useState([]);
   useEffect(() => {
-    // TODO: Get establishment's name from backend (using establishmentId)
-    setTimeout(() => {
-      setEstablishmentName("Estancia Las Palmas");
-    }, 500);
+    getEstablishmentById();
+  }, [establishmentName]);
+  useEffect(() => {
+    getAllSpecies();
   }, []);
+
+  async function getAllSpecies() {
+    const data = await getSpecies(api);
+    setSpecies(data);
+  }
+
+  async function getEstablishmentById() {
+    const data = await getEstablishmentByIdApi(api, establishmentId);
+    if (!data) {
+      setEstablishmentName("Default");
+    } else {
+      setEstablishmentName(data.name);
+    }
+  }
 
   const onChange = selected => {
     setSelected(selected);
@@ -32,9 +44,9 @@ const EstablishmentSpecies = ({ establishmentId }) => {
 
   return (
     <>
-      <h3>Especies {establishmentId}</h3>
+      <h3>Especies {establishmentName}</h3>
       <DualListBox
-        options={options}
+        options={species}
         selected={selected}
         onChange={onChange}
         icons={{

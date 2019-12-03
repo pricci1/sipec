@@ -29,6 +29,7 @@ export const updateSpecieChangeApi = async (
   establishment
 ) => {
   for (let arraylistobject of arraylist) {
+    console.log(arraylistobject);
     let data = {
       establishment,
       arraylistobject
@@ -115,4 +116,16 @@ export const getBreedApi = async apiInstance => {
     value: id,
     label: name
   }));
+};
+
+export const getSpecies = async apiInstance => {
+  const result = await apiInstance.get("/species");
+  return result.data.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
+};
+
+export const getEstablishmentInfo = async (apiInstance, establishmentId) => {
+  return await apiInstance.get(`/establishments/${establishmentId}/background`);
 };

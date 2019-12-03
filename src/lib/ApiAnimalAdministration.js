@@ -191,7 +191,9 @@ export const getAnimalDeathTableFilteredApi = async (
   let data = { establishment, desde, hasta };
   console.log("data:", data);
   console.log("try:", data.desde);
-  const result = await apiInstance.get("/animal_death_filtered", data);
+  const result = await apiInstance.get(
+    `/animal_death_filtered?desde=${desde}&establishment_id=${establishment}&hasta=${hasta}`
+  );
   console.log(result);
 
   return result.data.map(
