@@ -126,6 +126,25 @@ export const getSpecies = async apiInstance => {
   }));
 };
 
+export const getEntries = async apiInstance => {
+  const result = await apiInstance.get("/entries");
+  return result.data.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
+};
+
+export const getEntryByIdApi = async (apiInstance, establishmentId) => {
+  const Entries = await apiInstance.get(
+    `/entry_by_establishment/${establishmentId}`
+  );
+  if (!Entries.success) {
+    return Entries.succes;
+  }
+  console.log(Entries.data);
+  return Entries.data;
+};
+
 export const getEstablishmentInfo = async (apiInstance, establishmentId) => {
   return await apiInstance.get(`/establishments/${establishmentId}/background`);
 };
