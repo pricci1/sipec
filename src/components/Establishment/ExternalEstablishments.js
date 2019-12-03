@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import APIContext from "../APIProvider";
 import AsyncSelect from "react-select/async";
+import { getEstablishmentsApi } from "../../lib/ApiAnimalAdministration";
 
 const promiseOptions = inputValue =>
   new Promise(resolve => {
@@ -24,8 +26,15 @@ const mockData = {
 };
 
 const ExternalEstablishments = () => {
+  const api = useContext(APIContext);
   const [selectedEstablishment, setSelectedEstablishment] = useState();
   const [fetchedData, setFetchedData] = useState(mockData);
+
+  async function getEstablishments() {
+    const data = await getEstablishmentsApi(api);
+    return data;
+  }
+
   return (
     <div>
       <h2>Establecimientos externos</h2>
@@ -41,10 +50,10 @@ const ExternalEstablishments = () => {
           <div className="col-sm-10">
             <AsyncSelect
               id="establishment"
-              placeholder="RUP / Nombre"
+              placeholder="RUP - Nombre"
               cacheOptions
               defaultOptions
-              loadOptions={promiseOptions}
+              loadOptions={getEstablishments}
               onChange={setSelectedEstablishment}
               // onBlur={setSelectedEstablishment}
               value={selectedEstablishment}
