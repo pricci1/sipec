@@ -147,7 +147,10 @@ export const getEntryByIdApi = async (apiInstance, establishmentId) => {
 };
 
 export const getEstablishmentInfo = async (apiInstance, establishmentId) => {
-  return await apiInstance.get(`/establishments/${establishmentId}/background`);
+  const info = await apiInstance.get(
+    `/establishments/${establishmentId}/background`
+  );
+  return info.data[0];
 };
 
 export const getEstablishmentSpeciesApi = async (
