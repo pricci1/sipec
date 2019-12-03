@@ -1,4 +1,4 @@
-import { array } from "prop-types";
+
 
 export const postDiioChange = async (
   apiInstance,
@@ -73,7 +73,6 @@ export const getBreedApi = async apiInstance => {
 
 export const getWorkerApi = async apiInstance => {
   const result = await apiInstance.get("/personal_by_company");
-  console.log("GET:/personal_by_company", result);
   return result.data.map(({ id, name }) => ({
     value: id,
     label: name
@@ -89,7 +88,6 @@ export const getCategoriesApi = async apiInstance => {
 
 export const getAnimalTableApi = async apiInstance => {
   const result = await apiInstance.get("/animals_by_personal");
-  console.log(result);
 
   return result.data.map(({ diio, specie, rut, breed, sex, date, model }) => ({
     diio: diio,
@@ -102,12 +100,23 @@ export const getAnimalTableApi = async apiInstance => {
   }));
 };
 export const getChangeDiioDataApi = async (apiInstance, titular_id) => {
-  const result = await apiInstance.get("/diio_changes_details/1");
+  const result = await apiInstance.get(`/diio_changes_details/${titular_id}`);
   return result;
 };
 
-export const getChangeRegistryDataApi = (api, registry_id) => {
-  return [];
+export const getChangeRegistryDataApi = async (apiInstance, registry_id) => {
+  const result = await apiInstance.get(`/diio_changes_by_batch?diio_batch_id=${registry_id}`)
+  
+  
+  return result.data.length == 0 ? [] : {
+    mva: result.data[0].mva_name,
+    specie: result.data[0].specie, 
+    date:result.data[0].date, 
+    verification:result.data[0].verification,
+    establishment:result.data[0].establishment_name,
+    changes: result.data[0].changes.map((change) => {return {last_diio:change.last_diio_id, new_diio:change.new_diio_id}})
+  }
+ 
 };
 
 export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
@@ -125,7 +134,6 @@ export const getInfoSingleDiioConsult = async (apiInstance, diio) => {
 };
 
 export const getMva = async apiInstance => {
-  /* cambiar */
   const info = await apiInstance.get("/mvas");
   return info.data[0];
 };
@@ -183,7 +191,9 @@ export const getAnimalDeathTableFilteredApi = async (
   let data = { establishment, desde, hasta };
   console.log("data:", data);
   console.log("try:", data.desde);
-  const result = await apiInstance.get("/animal_death_filtered", data);
+  const result = await apiInstance.get(
+    `/animal_death_filtered?desde=${desde}&establishment_id=${establishment}&hasta=${hasta}`
+  );
   console.log(result);
 
   return result.data.map(
