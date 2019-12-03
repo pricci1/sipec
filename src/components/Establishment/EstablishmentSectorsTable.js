@@ -18,7 +18,7 @@ const EstablishmentSectorsTable = ({ data }) => {
           <tr key={sector.id}>
             <th scope="row">X</th>
             <td>{sector.name}</td>
-            <td>{sector.pabellones}</td>
+            <td>{sector.pabellones || 3}</td>
             <td>{sector.coord_x}</td>
             <td>{sector.coord_y}</td>
             <td>{sector.huso}</td>

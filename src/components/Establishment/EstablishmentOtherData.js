@@ -26,6 +26,25 @@ const EstablishmentOtherData = ({ establishmentId }) => {
       return old;
     });
   };
+
+  const addSector = e => {
+    e.preventDefault();
+    api
+      .post("/establishments/1/establishment_sectors", {
+        name: data.name,
+        coord_x: data.xCoor,
+        coord_y: data.yCoor,
+        huso: data.huso,
+        pabellones: parseInt(data.pabQuantity)
+      })
+      .then(resp => {
+        resp.success
+          ? alert("Persona añadida")
+          : alert("Error al añadir persona");
+        getEstablishmentSectors();
+      });
+  };
+
   return (
     <>
       <h3>Editar Sectores y Superficie</h3>
@@ -38,12 +57,7 @@ const EstablishmentOtherData = ({ establishmentId }) => {
           <tr>
             <th className="text-nowrap">Superficie en hectáreas</th>
             <td>
-              <input
-                type="number"
-                name="area"
-                className="form-control w-50"
-                onBlur={onChange}
-              />
+              <input type="number" name="area" className="form-control w-50" />
             </td>
           </tr>
         </tbody>
@@ -114,7 +128,9 @@ const EstablishmentOtherData = ({ establishmentId }) => {
           </tr>
         </tbody>
       </table>
-      <button className="btn btn-primary">Agregar sector</button>
+      <button className="btn btn-primary" onClick={addSector}>
+        Agregar sector
+      </button>
       <hr />
       {sectors.length > 0 ? (
         <EstablishmentSectorsTable data={sectors} />
