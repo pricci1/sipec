@@ -151,3 +151,16 @@ export const getEstablishmentInfo = async (apiInstance, establishmentId) => {
   );
   return info.data[0];
 };
+
+export const getEstablishmentSpeciesApi = async (
+  apiInstance,
+  establishmentId
+) => {
+  let result = await apiInstance.get(
+    `/species_by_establishment/${establishmentId}`
+  );
+  return result.data.species_group.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
+};
