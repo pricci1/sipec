@@ -4,7 +4,9 @@ import DualListBox from "react-dual-listbox";
 import "react-dual-listbox/lib/react-dual-listbox.css";
 import {
   getEstablishmentByIdApi,
-  getSpecies
+  getSpeciesApi,
+  getEstablishmentSpeciesApi,
+  updateSpecieChangeApi
 } from "../../lib/ApiEstablishment";
 
 const EstablishmentSpecies = ({ establishmentId }) => {
@@ -18,10 +20,21 @@ const EstablishmentSpecies = ({ establishmentId }) => {
   useEffect(() => {
     getAllSpecies();
   }, []);
-
+  useEffect(() => {
+    getEstablishmentSpecies();
+  }, []);
   async function getAllSpecies() {
-    const data = await getSpecies(api);
+    const data = await getSpeciesApi(api);
     setSpecies(data);
+  }
+
+  async function getEstablishmentSpecies() {
+    const data = await getEstablishmentSpeciesApi(api, establishmentId);
+    let selectedList = [];
+    for (var key in data) {
+      selectedList.push(data[key].value);
+    }
+    setSelected(selectedList);
   }
 
   async function getEstablishmentById() {
@@ -39,6 +52,7 @@ const EstablishmentSpecies = ({ establishmentId }) => {
 
   const onClickCallback = () => {
     // TODO: send to backend
+    updateSpecieChangeApi(api, selected, parseInt(establishmentId, 10));
     alert(selected);
   };
 

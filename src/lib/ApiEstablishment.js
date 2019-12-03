@@ -25,18 +25,20 @@ export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
 //TODO: Do this right
 export const updateSpecieChangeApi = async (
   apiInstance,
-  arraylist,
-  establishment
+  input,
+  establishment_id
 ) => {
-  for (let arraylistobject of arraylist) {
-    console.log(arraylistobject);
-    let data = {
-      establishment,
-      arraylistobject
-    };
-    const result = await apiInstance.patch("/diio_changes", data);
-    return result;
-  }
+  let data = {
+    establishment_id,
+    input
+  };
+  console.log(data);
+  const result = await apiInstance.post(
+    "/update_species_by_establishment",
+    data
+  );
+  console.log(result);
+  return result;
 };
 
 export const getEstablishmentAnimalsApi = async (
@@ -126,8 +128,39 @@ export const getSpecies = async apiInstance => {
   }));
 };
 
+export const getEntries = async apiInstance => {
+  const result = await apiInstance.get("/entries");
+  return result.data.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
+};
+
+export const getEntryByIdApi = async (apiInstance, establishmentId) => {
+  const Entries = await apiInstance.get(
+    `/entry_by_establishment/${establishmentId}`
+  );
+  if (!Entries.success) {
+    return Entries.succes;
+  }
+  return Entries.data;
+};
+
 export const getEstablishmentInfo = async (apiInstance, establishmentId) => {
   return await apiInstance.get(`/establishments/${establishmentId}/background`);
+};
+
+export const getEstablishmentSpeciesApi = async (
+  apiInstance,
+  establishmentId
+) => {
+  let result = await apiInstance.get(
+    `/species_by_establishment/${establishmentId}`
+  );
+  return result.data.species_group.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
 };
 
 export const getEstablishmentPersonals = async (
