@@ -10,6 +10,7 @@ import {
 } from "../../lib/APICommon";
 import { Selector } from "./Utils/FormikSelectors";
 import Select from "react-select";
+import DatePicker from "react-datepicker";
 
 const formatEstablishments = establishments => {
   try {
@@ -84,7 +85,8 @@ const NewDeclaration = () => {
           establishment: "",
           species_quantity: [],
           year: "",
-          titularId: api.titular.id
+          titularId: api.titular.id,
+          date: ""
         }}
         onSubmit={(values, { setSubmitting }) => {
           const {
@@ -182,16 +184,30 @@ const NewDeclaration = () => {
                 errors={errors.establishment}
               />
               <br />
-              <h6>Datos del Titular</h6>
+              <h5>Datos del Titular</h5>
               <p>RUT: {api.titular.run}</p>
               <p>Nombre: {`${api.titular.name} ${api.titular.last_name}`}</p>
               <br />
-              <h6>Grupos de Especies</h6>
+              <h5>Fecha de Declaración</h5>
+              <DatePicker
+                id="date"
+                onBlur={handleBlur}
+                className="form-control"
+                selected={values.date}
+                onChange={value => {
+                  setFieldValue("date", value);
+                }}
+                onSelect={handleChange}
+                name="date"
+                dateFormat="dd/MM/yy"
+              />
+              <br />
+              <h5>Grupos de Especies</h5>
               <Select
                 options={fetchedData.species_groups}
                 onChange={value => setSelectedSpecieGroup(value)}
               />
-              <h6>Especie</h6>
+              <h5>Especie</h5>
               <Select
                 options={
                   selectedSpecieGroup
