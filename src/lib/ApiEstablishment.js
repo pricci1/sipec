@@ -146,7 +146,23 @@ export const getEntryByIdApi = async (apiInstance, establishmentId) => {
 };
 
 export const getEstablishmentInfo = async (apiInstance, establishmentId) => {
-  return await apiInstance.get(`/establishments/${establishmentId}/background`);
+  const info = await apiInstance.get(
+    `/establishments/${establishmentId}/background`
+  );
+  return info.data[0];
+};
+
+export const getEstablishmentSpeciesApi = async (
+  apiInstance,
+  establishmentId
+) => {
+  let result = await apiInstance.get(
+    `/species_by_establishment/${establishmentId}`
+  );
+  return result.data.species_group.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
 };
 
 export const getExternalEstablishmentInfo = async (apiInstance, establishmentId) => {
