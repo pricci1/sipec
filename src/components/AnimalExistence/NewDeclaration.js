@@ -70,9 +70,9 @@ const NewDeclaration = () => {
     setFetchedData(oldState => ({
       ...oldState,
       establishments: [
-        { value: 1, label: "Pajaro Bobo" },
-        { value: 2, label: "Cimera Brindacolobitos" },
-        { value: 3, label: "Bigotes" }
+        { value: 1, label: "123456789 - Pajaro Bobo" },
+        { value: 2, label: "135792468 - Cimera Brindacolobitos" },
+        { value: 3, label: "246813579 - Bigotes" }
       ]
     }));
   }, []);
