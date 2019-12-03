@@ -1,7 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import APIContext from "../APIProvider";
+import EstablishmentSectorsTable from "./EstablishmentSectorsTable";
 
-const EstablishmentOtherData = () => {
+const EstablishmentOtherData = ({ establishmentId }) => {
+  const api = useContext(APIContext);
+  const [sectors, setSectors] = useState([]);
   const [data, setData] = useState({});
+
+  const getEstablishmentSectors = async () => {
+    const sectors = await api.get(
+      `/establishments/${establishmentId}/establishment_sectors`
+    );
+    if (sectors.success) {
+      setSectors(sectors.data);
+    }
+  };
+  useEffect(() => {
+    getEstablishmentSectors();
+  }, []);
+
   const onChange = e => {
     const target = e.target;
     setData(old => {
@@ -99,26 +116,11 @@ const EstablishmentOtherData = () => {
       </table>
       <button className="btn btn-primary">Agregar sector</button>
       <hr />
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col"> </th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Pabellones</th>
-            <th scope="col">Coord. X</th>
-            <th scope="col">Coord. Y</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">X</th>
-            <td>Las Palmas 01</td>
-            <td>3</td>
-            <td>-1.112123</td>
-            <td>12.123122</td>
-          </tr>
-        </tbody>
-      </table>
+      {sectors.length > 0 ? (
+        <EstablishmentSectorsTable data={sectors} />
+      ) : (
+        "Cargando sectores"
+      )}
     </>
   );
 };
