@@ -82,6 +82,14 @@ export const getEstablishmentByIdApi = async (apiInstance, establishmentId) => {
   return Establecimento.data;
 };
 
+export const getSpecies = async apiInstance => {
+  const result = await apiInstance.get("/species");
+  return result.data.map(({ id, name }) => ({
+    value: id,
+    label: name
+  }));
+};
+
 export const getEstablishmentInfo = async (apiInstance, establishmentId) => {
   return await apiInstance.get(`/establishments/${establishmentId}/background`);
 };
