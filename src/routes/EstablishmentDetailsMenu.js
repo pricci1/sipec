@@ -7,7 +7,7 @@ import EstablishmentAnimals from "../components/Establishment/EstablishmentAnima
 const MyEstablishmentMenu = ({ establishmentId }) => {
   const [componentToRender, setComponentToRender] = useState("info");
   return (
-    <div>
+    <div style={{ height: "70vh" }}>
       <div className="row">
         <div className=" d-flex flex-column">
           <ButtonGroup>
