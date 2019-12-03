@@ -149,7 +149,7 @@ export const getEstablishmentInfo = async (apiInstance, establishmentId) => {
   const info = await apiInstance.get(
     `/establishments/${establishmentId}/background`
   );
-  return info.data;
+  return info.data[0];
 };
 
 export const getEstablishmentSpeciesApi = async (
@@ -164,3 +164,7 @@ export const getEstablishmentSpeciesApi = async (
     label: name
   }));
 };
+
+export const getExternalEstablishmentInfo = async (apiInstance, establishmentId) => {
+  return await apiInstance.get(`/establishment_info/${establishmentId}`);
+}
