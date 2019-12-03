@@ -137,6 +137,32 @@ class API {
     // TODO: If the response says that the token is not valid, redirect to login
     return results;
   };
+
+  delete = async url => {
+    const path = this.apiUrl + url;
+    var results = { success: false, data: null };
+    try {
+      const getResponse = await axios.delete(path, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": this.token,
+          client: this.client,
+          uid: this.uid
+        }
+      });
+      if (getResponse.status === 200) {
+        results.success = true;
+        results.data = getResponse.data;
+      } else {
+        results.success = false;
+      }
+    } catch (error) {
+      results.success = false;
+      results.data = error;
+    }
+    // TODO: If the response says that the token is not valid, redirect to login
+    return results;
+  };
 }
 
 export default API;
