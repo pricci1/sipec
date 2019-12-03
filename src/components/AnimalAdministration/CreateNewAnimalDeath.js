@@ -1,21 +1,20 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Formik, Field, FieldArray } from "formik";
+import { Formik, Field, FieldArray, Select } from "formik";
 import { Datepicker } from "react-formik-ui";
 import Selector from "../Diio/Utilities/FormikSelector";
 import * as Yup from "yup";
 import {
   postAnimalDeathRegistration,
   getOwnersApi,
-  getMvasApi,
+  getEstablishmentMvasApi,
   getSpeciesApi,
-  getEstablishmentsApi
+  getUserEstablishmentsApi
 } from "../../lib/ApiAnimalAdministration";
 import APIContext from "../APIProvider";
 import "../Diio/newPucharseDiio.css";
 import { Link } from "@reach/router";
 
 let currentDate = new Date().toLocaleDateString();
-
 const newAnimalDownRegistration = Yup.object().shape({
   establishment: Yup.string()
     .nullable()
@@ -41,7 +40,6 @@ const NewDeathRegistration = () => {
   const [establishment_id, setestablishment_id] = useState("");
   const [mvasData, setmvasData] = useState([]);
   const [speciesData, setspeciesData] = useState([]);
-  const [establishmentsData, setestablishmentsData] = useState([]);
   const [ownersData, setownersData] = useState([]);
   useEffect(() => {
     getSpecies();
@@ -54,26 +52,34 @@ const NewDeathRegistration = () => {
 
   async function getSpecies() {
     const data = await getSpeciesApi(api);
-    setspeciesData(data);
+    return data;
   }
 
   async function getEstablishments() {
-    const data = await getEstablishmentsApi(api);
-    setestablishmentsData(data);
+    const data = await getUserEstablishmentsApi(api, api.currentUserId); // user id
+    return data;
   }
 
   async function getOwners() {
-    const data = await getOwnersApi(api, establishment_id);
-    setownersData(data);
+    try {
+      const data = await getOwnersApi(api, establishment_id);
+      setownersData(data);
+      return data;
+    } catch {
+      setownersData(getOwnersApi(api, "2"));
+      return getOwnersApi(api, "2");
+    }
   }
 
   async function getMvas() {
-    let data = await getMvasApi(api, establishment_id);
-    // data = [
-    //   { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
-    //   { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
-    // ];
-    setmvasData(data);
+    try {
+      const data = await getEstablishmentMvasApi(api, establishment_id);
+      setmvasData(data);
+      return data;
+    } catch {
+      setmvasData(getEstablishmentMvasApi(api, "2"));
+      return getEstablishmentMvasApi(api, "2");
+    }
   }
 
   async function getDown() {
@@ -95,7 +101,7 @@ const NewDeathRegistration = () => {
       <h2>Nuevo Registro de Muerte Animal</h2>
       <Formik
         initialValues={{
-          establishment_id: "",
+          establishment: "",
           owner: "",
           mva: "",
           death_date: "",
@@ -147,18 +153,18 @@ const NewDeathRegistration = () => {
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.establishment}
-                options={establishmentsData}
+                data={getEstablishments}
                 errors={errors.establishment}
               />
               <br />
               <Selector
                 fieldName="owner"
-                fieldValue={values.establishment}
+                fieldValue={values.owner}
                 labelName="Titular o mandatario"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.owner}
-                options={ownersData}
+                data={getOwners}
                 errors={errors.owner}
               />
               <br />
@@ -169,7 +175,7 @@ const NewDeathRegistration = () => {
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.mva}
-                options={mvasData}
+                data={getMvas}
                 errors={errors.mva}
               />
               <br />
@@ -187,7 +193,7 @@ const NewDeathRegistration = () => {
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.specie}
-                options={speciesData}
+                data={getSpecies}
                 errors={errors.specie}
               />
               <br />

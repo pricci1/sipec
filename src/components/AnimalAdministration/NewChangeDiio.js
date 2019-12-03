@@ -7,7 +7,7 @@ import { Selector } from "../AnimalAdministration/Utils/FormikSelectors";
 import {
   getSpeciesApi,
   getUserEstablishmentsApi,
-  getMvasApi,
+  getEstablishmentMvasApi,
   getOwnersApi,
   postDiioChange
 } from "../../lib/ApiAnimalAdministration";
@@ -60,7 +60,7 @@ const NewChangeDiio = () => {
   }, [establishment_id]);
 
   async function getSpecies() {
-    const data = await getSpeciesApi(api);
+    const data = await getSpeciesApi(api);  
     setspeciesData(data);
   }
   async function getEstablishments() {
@@ -73,7 +73,7 @@ const NewChangeDiio = () => {
     setownersData(data);
   }
   async function getMvas() {
-    let data = await getMvasApi(api, establishment_id);
+    let data = await getEstablishmentMvasApi(api, establishment_id);
     // data = [
     //   { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
     //   { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
