@@ -1,56 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Formik, Form } from "formik";
 import { getEstablishmentInfo } from "../../lib/ApiEstablishment";
 import APIContext from "../../components/APIProvider";
-import { number } from "prop-types";
-import { formatDistanceStrict } from "date-fns";
-import { Card } from "react-bootstrap";
 
 const EstablishmentInfo = ({ establishmentId }) => {
   const api = useContext(APIContext);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
 
   useEffect(() => {}, []);
 
   async function getEstablishmentInfoApiConsult(establishmentId) {
-    const data = await getEstablishmentInfo(api, establishmentId);
-    console.log(data);
-
-    setData(
-      data.map(
-        ({
-          nombre: name,
-          rup: rup,
-          calle: street,
-          numero: number,
-          comuna: district,
-          provincia: providence,
-          region: region
-        }) => ({
-          name,
-          street,
-          number,
-          rup,
-          district,
-          providence,
-          region
-        })
-      )
-    );
+    const info = await getEstablishmentInfo(api, establishmentId);
+    console.log(info[0]);
+    setData(info[0]);
   }
-
   return (
     <>
-      {getEstablishmentInfoApiConsult({ establishmentId })}
-      <h2>Antecedentes de Establecimiento "{data.name}" </h2>
+      {getEstablishmentInfoApiConsult(establishmentId)}
+      {console.log(data)}
+      <h2>Antecedentes de Establecimiento {data.nombre} </h2>
       <table className="table table-striped table-sm">
         <tbody>
-          {/*<tr>
-              <td>
-                <b>Nombre de establecimiento</b>
-              </td>
-              <td>{data.name}</td>
-            </tr>*/}
           <tr>
             <td>
               <b>RUP</b>
@@ -62,14 +31,14 @@ const EstablishmentInfo = ({ establishmentId }) => {
               <b>Dirección</b>
             </td>
             <td>
-              {data.district}, {data.street} {data.number}
+              {data.comuna}, {data.calle} {data.numero}
             </td>
           </tr>
           <tr>
             <td>
               <b>Provincia</b>
             </td>
-            <td>{data.providence}</td>
+            <td>{data.provincia}</td>
           </tr>
           <tr>
             <td>
