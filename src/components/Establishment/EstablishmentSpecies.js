@@ -5,7 +5,8 @@ import "react-dual-listbox/lib/react-dual-listbox.css";
 import {
   getEstablishmentByIdApi,
   getSpeciesApi,
-  getEstablishmentSpeciesApi
+  getEstablishmentSpeciesApi,
+  updateSpecieChangeApi
 } from "../../lib/ApiEstablishment";
 
 const EstablishmentSpecies = ({ establishmentId }) => {
@@ -51,6 +52,7 @@ const EstablishmentSpecies = ({ establishmentId }) => {
 
   const onClickCallback = () => {
     // TODO: send to backend
+    updateSpecieChangeApi(api, selected, parseInt(establishmentId, 10));
     alert(selected);
   };
 
