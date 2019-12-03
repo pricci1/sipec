@@ -1,6 +1,6 @@
 import React from "react";
 
-const EstablishmentPeopleTable = ({ data }) => {
+const EstablishmentPeopleTable = ({ data, deleteCallback }) => {
   return (
     <table className="table">
       <thead>
@@ -15,7 +15,16 @@ const EstablishmentPeopleTable = ({ data }) => {
       <tbody>
         {data.map(person => (
           <tr key={person.id}>
-            <th scope="row">X</th>
+            <th scope="row">
+              <button
+                className="btn btn-danger p-0"
+                onClick={e => {
+                  deleteCallback(e, person.id);
+                }}
+              >
+                X
+              </button>
+            </th>
             <td>{person.run}</td>
             <td>{person.name}</td>
             <td>{person.person_role.name}</td>
