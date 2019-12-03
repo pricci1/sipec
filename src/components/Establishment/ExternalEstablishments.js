@@ -125,12 +125,14 @@ const ExternalEstablishments = () => {
               <tr>
                 <th className="text-nowrap">Titular</th>
                 <td>
-                  {fetchedData.titular.lastname}, {fetchedData.titular.name}
+                  {/* {fetchedData.titular.lastname}, {fetchedData.titular.name} */}
+                  {"name y lastname titular"}
                 </td>
               </tr>
               <tr>
                 <th className="text-nowrap">RUT Titular</th>
-                <td>{fetchedData.titular.run}</td>
+                {/* <td>{fetchedData.titular.run}</td> */}
+                {"run"}
               </tr>
             </tbody>
           </table>

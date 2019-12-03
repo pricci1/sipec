@@ -11,7 +11,6 @@ class API {
   }
 
   login = async (email, password) => {
-    console.log("hola");
     var response = { success: false, type: "" };
     await axios
       .post(this.apiUrl + "/auth/sign_in", { email, password })
@@ -30,10 +29,8 @@ class API {
       })
       .catch(error => {
         try {
-          console.log("try");
           response.type = JSON.parse(error.request.response).errors[0];
         } catch (error) {
-          console.log("catch");
           response.type = "Unknown error.";
         }
       });
