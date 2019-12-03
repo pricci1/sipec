@@ -4,7 +4,7 @@ import DualListBox from "react-dual-listbox";
 import "react-dual-listbox/lib/react-dual-listbox.css";
 import {
   getEstablishmentByIdApi,
-  getSpecies,
+  getSpeciesApi,
   getEstablishmentSpeciesApi
 } from "../../lib/ApiEstablishment";
 
@@ -23,12 +23,14 @@ const EstablishmentSpecies = ({ establishmentId }) => {
     getEstablishmentSpecies();
   }, []);
   async function getAllSpecies() {
-    const data = await getSpecies(api);
+    const data = await getSpeciesApi(api);
+    console.log(data);
     setSpecies(data);
   }
 
   async function getEstablishmentSpecies() {
     const data = await getEstablishmentSpeciesApi(api, establishmentId);
+    console.log(data);
     let selectedList = [];
     for (var key in data) {
       selectedList.push(data[key].value);

@@ -83,7 +83,7 @@ export const getEstablishmentAnimalsApi = async (
 };
 
 export const getSpeciesApi = async apiInstance => {
-  const result = await apiInstance.get("/species");
+  const result = await apiInstance.get("/species_groups");
 
   return result.data.map(({ id, name }) => ({
     value: id,
