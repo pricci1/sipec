@@ -12,13 +12,13 @@ const promiseOptions = inputValue =>
   });
 
 const mockData = {
-  rup: "1.1.1.1",
+  rup: "123456789",
   region: "Valparaiso",
   neighborhood: "Casablanca",
-  name: "Los Castaños",
+  name: "Pajaro Bobo",
   address: "El Estero, Lote 42",
-  locationX: "12.12312",
-  locationY: "-2.3323",
+  coordinate_x: "12.12312",
+  coordinate_y: "-2.3323",
   huso: "19",
   anabolics: "No",
   pabco: "--",
@@ -29,9 +29,7 @@ const mockData = {
 const ExternalEstablishments = () => {
   const api = useContext(APIContext);
   const [selectedEstablishment, setSelectedEstablishment] = useState();
-  const [fetchedData, setFetchedData] = useState(
-    getEstablishmentInfo(selectedEstablishment)
-  );
+  const [fetchedData, setFetchedData] = useState({});
 
   async function getEstablishments() {
     const data = await getEstablishmentsApi(api);
@@ -39,7 +37,7 @@ const ExternalEstablishments = () => {
   }
 
   async function getEstablishmentInfo(establishment) {
-    const data = await getExternalEstablishmentInfo(api, establishment);
+    const data = await getExternalEstablishmentInfo(api, establishment.value);
     return data;
   }
 
@@ -49,6 +47,11 @@ const ExternalEstablishments = () => {
       <form
         onSubmit={e => {
           e.preventDefault();
+          // getEstablishmentInfo({ value: 1 }).then(resp =>
+          //   );
+          setTimeout(() => {
+            setFetchedData(mockData);
+          }, 1200);
         }}
       >
         <div className="form-group row">

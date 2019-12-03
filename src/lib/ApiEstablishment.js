@@ -178,3 +178,10 @@ export const getEstablishmentPersonals = async (
   }
   return personals.data;
 };
+
+export const getExternalEstablishmentInfo = async (
+  apiInstance,
+  establishmentId
+) => {
+  return await apiInstance.get(`/establishment_info/${establishmentId}`);
+};
