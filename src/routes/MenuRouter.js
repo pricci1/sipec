@@ -29,6 +29,7 @@ import ExternalEstablishments from "../components/Establishment/ExternalEstablis
 import UpdateTitularData from "../components/Establishment/UpdateTitularData";
 import EstablishmentRubros from "../components/Establishment/EstablishmentRubros";
 import EstablishmentSpecies from "../components/Establishment/EstablishmentSpecies";
+import EstablishmentOtherData from "../components/Establishment/EstablishmentOtherData";
 
 const MenuRouter = () => {
   return (
@@ -69,6 +70,7 @@ const MenuRouter = () => {
             <EstablishmentPeople path="personas" />
             <EstablishmentRubros path="rubros" />
             <EstablishmentSpecies path="especies" />
+            <EstablishmentOtherData path="otros-datos" />
           </MyEstablishmentMenu>
         </Router>
       </main>

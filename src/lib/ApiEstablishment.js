@@ -161,4 +161,16 @@ export const getEstablishmentSpeciesApi = async (
     value: id,
     label: name
   }));
+
+export const getEstablishmentPersonals = async (
+  apiInstance,
+  establishmentId
+) => {
+  const personals = await apiInstance.get(
+    `/establishments/${establishmentId}/personals`
+  );
+  if (!personals.success) {
+    return null;
+  }
+  return personals.data;
 };
