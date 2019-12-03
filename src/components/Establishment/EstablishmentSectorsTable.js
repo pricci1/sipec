@@ -1,6 +1,6 @@
 import React from "react";
 
-const EstablishmentSectorsTable = ({ data }) => {
+const EstablishmentSectorsTable = ({ data, deleteCallback }) => {
   return (
     <table className="table">
       <thead>
@@ -16,7 +16,16 @@ const EstablishmentSectorsTable = ({ data }) => {
       <tbody>
         {data.map(sector => (
           <tr key={sector.id}>
-            <th scope="row">X</th>
+            <th scope="row">
+              <button
+                className="btn btn-danger p-0"
+                onClick={e => {
+                  deleteCallback(e, sector.id);
+                }}
+              >
+                X
+              </button>
+            </th>
             <td>{sector.name}</td>
             <td>{sector.pabellones || 3}</td>
             <td>{sector.coord_x}</td>

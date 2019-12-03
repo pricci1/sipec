@@ -45,6 +45,15 @@ const EstablishmentOtherData = ({ establishmentId }) => {
       });
   };
 
+  const deleteSector = React.useCallback((e, id) => {
+    e.preventDefault();
+    api
+      .delete(`/establishments/${establishmentId}/establishment_sectors/${id}}`)
+      .then(() => {
+        getEstablishmentSectors();
+      });
+  }, []);
+
   return (
     <>
       <h3>Editar Sectores y Superficie</h3>
@@ -133,7 +142,10 @@ const EstablishmentOtherData = ({ establishmentId }) => {
       </button>
       <hr />
       {sectors.length > 0 ? (
-        <EstablishmentSectorsTable data={sectors} />
+        <EstablishmentSectorsTable
+          data={sectors}
+          deleteCallback={deleteSector}
+        />
       ) : (
         "Cargando sectores"
       )}
