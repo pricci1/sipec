@@ -134,6 +134,17 @@ export const getEntries = async apiInstance => {
   }));
 };
 
+export const getEntryByIdApi = async (apiInstance, establishmentId) => {
+  const Entries = await apiInstance.get(
+    `/entry_by_establishment/${establishmentId}`
+  );
+  if (!Entries.success) {
+    return Entries.succes;
+  }
+  console.log(Entries.data);
+  return Entries.data;
+};
+
 export const getEstablishmentInfo = async (apiInstance, establishmentId) => {
   return await apiInstance.get(`/establishments/${establishmentId}/background`);
 };

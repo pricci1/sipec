@@ -3,13 +3,14 @@ import APIContext from "../APIProvider";
 import DualListBox from "react-dual-listbox";
 import {
   getEstablishmentByIdApi,
-  getEntries
+  getEntries,
+  getEntryByIdApi
 } from "../../lib/ApiEstablishment";
 import "react-dual-listbox/lib/react-dual-listbox.css";
 
 const EstablishmentRubros = ({ establishmentId }) => {
   const api = useContext(APIContext);
-  const [selected, setSelected] = useState([2, 5]);
+  const [selected, setSelected] = useState([]);
   const [establishmentName, setEstablishmentName] = useState();
   const [entries, setEntries] = useState([]);
   useEffect(() => {
@@ -18,10 +19,27 @@ const EstablishmentRubros = ({ establishmentId }) => {
   useEffect(() => {
     getAllEntries();
   }, []);
+  useEffect(() => {
+    getEntryById();
+  }, []);
 
   async function getAllEntries() {
     const data = await getEntries(api);
     setEntries(data);
+  }
+
+  async function getEntryById() {
+    var entrylist = [];
+    const data = await getEntryByIdApi(api, establishmentId);
+    if (!data) {
+      //null
+    } else {
+      for (var key in data.entries) {
+        entrylist.push(data.entries[key].id);
+      }
+      var lalista = [2, 5];
+      setSelected(lalista);
+    }
   }
 
   async function getEstablishmentById() {
