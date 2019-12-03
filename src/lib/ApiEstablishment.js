@@ -149,5 +149,5 @@ export const getEstablishmentInfo = async (apiInstance, establishmentId) => {
   const info = await apiInstance.get(
     `/establishments/${establishmentId}/background`
   );
-  return info.data;
+  return info.data[0];
 };
