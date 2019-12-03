@@ -37,8 +37,7 @@ const EstablishmentRubros = ({ establishmentId }) => {
       for (var key in data.entries) {
         entrylist.push(data.entries[key].id);
       }
-      var lalista = [2, 5];
-      setSelected(lalista);
+      setSelected(entrylist);
     }
   }
 
