@@ -1,5 +1,3 @@
-
-
 export const postDiioChange = async (
   apiInstance,
   specie,
@@ -105,18 +103,25 @@ export const getChangeDiioDataApi = async (apiInstance, titular_id) => {
 };
 
 export const getChangeRegistryDataApi = async (apiInstance, registry_id) => {
-  const result = await apiInstance.get(`/diio_changes_by_batch?diio_batch_id=${registry_id}`)
-  
-  
-  return result.data.length == 0 ? [] : {
-    mva: result.data[0].mva_name,
-    specie: result.data[0].specie, 
-    date:result.data[0].date, 
-    verification:result.data[0].verification,
-    establishment:result.data[0].establishment_name,
-    changes: result.data[0].changes.map((change) => {return {last_diio:change.last_diio_id, new_diio:change.new_diio_id}})
-  }
- 
+  const result = await apiInstance.get(
+    `/diio_changes_by_batch?diio_batch_id=${registry_id}`
+  );
+
+  return result.data.length == 0
+    ? []
+    : {
+        mva: result.data[0].mva_name,
+        specie: result.data[0].specie,
+        date: result.data[0].date,
+        verification: result.data[0].verification,
+        establishment: result.data[0].establishment_name,
+        changes: result.data[0].changes.map(change => {
+          return {
+            last_diio: change.last_diio_id,
+            new_diio: change.new_diio_id
+          };
+        })
+      };
 };
 
 export const getUserEstablishmentsApi = async (apiInstance, user_id) => {
@@ -194,7 +199,7 @@ export const getAnimalDeathTableFilteredApi = async (
   const result = await apiInstance.get(
     `/animal_death_filtered?desde=${desde}&establishment_id=${establishment}&hasta=${hasta}`
   );
-  console.log(result);
+  console.log("Result: ", result.data);
 
   return result.data.map(
     ({ diio, specie, date, down_type, detail, establishment }) => ({

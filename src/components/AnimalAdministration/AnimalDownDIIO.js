@@ -40,7 +40,7 @@ const SearchAnimalDownDIIO = () => {
   }
 
   async function getDataTable(establishment, desde, hasta) {
-    console.log(establishment, desde, hasta);
+
     var new_desde = new String();
     var new_hasta = new String();
     new_desde =
