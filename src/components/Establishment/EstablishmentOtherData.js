@@ -56,22 +56,8 @@ const EstablishmentOtherData = ({ establishmentId }) => {
 
   return (
     <>
-      <h3>Editar Sectores y Superficie</h3>
-      <table className="table table-borderless w-50">
-        <tbody>
-          <tr>
-            <th className="text-nowrap">Establecimiento</th>
-            <td>12.234.552-1 - Estancia Las Palmas</td>
-          </tr>
-          <tr>
-            <th className="text-nowrap">Superficie en hectáreas</th>
-            <td>
-              <input type="number" name="area" className="form-control w-50" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <hr />
+      <h3>Editar Sectores</h3>
+
       <table className="table table-borderless">
         <tbody>
           <tr>
