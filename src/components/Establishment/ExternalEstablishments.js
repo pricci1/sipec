@@ -63,7 +63,7 @@ const ExternalEstablishments = () => {
               defaultOptions
               loadOptions={getEstablishments}
               onChange={setSelectedEstablishment}
-              // onBlur={setSelectedEstablishment}
+              onBlur={setSelectedEstablishment}
               value={selectedEstablishment}
             />
           </div>
