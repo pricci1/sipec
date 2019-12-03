@@ -53,13 +53,16 @@ const UpdateTitularData = () => {
     setTitularInfo(data);
     console.log(data);
     setCompany(data.company.id);
-    setRegion({value: data.region.id , label: data.region.name});
+    setRegion({ value: data.region.id, label: data.region.name });
     setName(data.company.name);
     setEmail(data.company.email);
     setRUT(data.company.rut);
     setPhone(data.company.phone);
-    setNeighborhood({value: data.neighborhood.id , label: data.neighborhood.name});
-    setProvince({value: data.province.id , label: data.province.name});
+    setNeighborhood({
+      value: data.neighborhood.id,
+      label: data.neighborhood.name
+    });
+    setProvince({ value: data.province.id, label: data.province.name });
     setAddress(data.address.address);
     setLoading(false);
     return data;
@@ -81,16 +84,14 @@ const UpdateTitularData = () => {
     email
   ) {
     const titularId = api.titular.id;
-    const response = await api.put("/companies/"+ Company , {
+    const response = await api.put("/companies/" + Company, {
       id: id,
       phone: phone,
       address: address,
       neighborhood: neighborhood.value,
       email: email
     });
-    
 
-    
     if (response.data.status == "ok") {
       alert("Se modifico el titular con exito");
     }
@@ -100,8 +101,15 @@ const UpdateTitularData = () => {
   }
   return (
     <div className="body">
-      <div>{Name}</div>
-      <div>{RUT}</div>
+      <h3>Actualizar Datos del Titular</h3>
+      <br></br>
+      <div>
+        <b>Nombre:</b> {Name}
+      </div>
+      <div>
+        <b>RUT</b>: {RUT}
+      </div>
+      <br></br>
       <Formik
         initialValues={{
           id: Company,
@@ -140,76 +148,137 @@ const UpdateTitularData = () => {
             handleReset
           } = props;
           return (
-            <form onSubmit={handleSubmit}>
-              <Field
-                name="phone"
-                fieldvalue={values.phone}
-                label="Telefono"
-                touched={touched.phone}
-                value={props.values.phone} 
-                errors={errors.phone}
-                onBlur={props.handleBlur}
-                onChange={props.handleChange}
-              />
-              <Field
-                name="address"
-                fieldvalue={values.address}
-                labelname="Direccion"
-                touched={touched.address}
-                value={props.values.address} 
-                errors={errors.address}
-                onBlur={handleBlur}
-                onChange={handleChange}
-              />
-              <Selector
-                fieldName="region"
-                fieldValue={values.region}
-                labelName="Region"
-                onChange={setFieldValue}
-                onBlur={setFieldTouched}
-                touched={touched.region}
-                options={RegionData}
-                errors={errors.region}
-              />
-              <Selector
-                fieldName="province"
-                fieldValue={values.province}
-                labelName="Provincia"
-                onChange={setFieldValue}
-                onBlur={setFieldTouched}
-                touched={touched.province}
-                options={ProvinceData}
-                errors={errors.province}
-              />
-              <Selector
-                fieldName="neighborhood"
-                fieldValue={values.neighborhood}
-                labelName="Comuna"
-                onChange={setFieldValue}
-                onBlur={setFieldTouched}
-                touched={touched.neighborhood}
-                options={NeighborhoodData}
-                errors={errors.neighborhood}
-              />
-              <Field
-                name="email"
-                fieldvalue={values.email}
-                labelname="Email"
-                touched={touched.email}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                errors={errors.email}
-                value={props.values.email}
-              />
-
-              <button
-                className="btn btn-primary"
-                type="submit"
-                disabled={!dirty || isSubmitting}
-              >
-                Actualizar
-              </button>
-            </form>
+            <div className="container">
+              <form onSubmit={handleSubmit}>
+                <div className="row justify-content-start">
+                  <div className="col-sm-1">
+                    <p>
+                      <b>Telefono:</b>
+                    </p>
+                  </div>
+                  <div className="col-sm-9">
+                    <Field
+                      name="phone"
+                      fieldvalue={values.phone}
+                      label="Telefono"
+                      touched={touched.phone}
+                      value={props.values.phone}
+                      errors={errors.phone}
+                      onBlur={props.handleBlur}
+                      onChange={props.handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="row justify-content-start">
+                  <div className="col-sm-1">
+                    <p>
+                      <b>Direccion:</b>
+                    </p>
+                  </div>
+                  <div className="col-sm-9">
+                    <Field
+                      name="address"
+                      fieldvalue={values.address}
+                      labelname="Direccion"
+                      touched={touched.address}
+                      value={props.values.address}
+                      errors={errors.address}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+                <br></br>
+                <div className="row justify-content-start">
+                  <div className="col-sm-1">
+                    <p>
+                      <b>Region:</b>
+                    </p>
+                  </div>
+                  <div className="col-sm-7">
+                    <Selector
+                      fieldName="region"
+                      fieldValue={values.region}
+                      labelName="Region"
+                      onChange={setFieldValue}
+                      onBlur={setFieldTouched}
+                      touched={touched.region}
+                      options={RegionData}
+                      errors={errors.region}
+                    />
+                  </div>
+                </div>
+                <div className="row justify-content-start">
+                  <div className="col-sm-1">
+                    <p>
+                      <b>Provincia:</b>
+                    </p>
+                  </div>
+                  <div className="col-sm-7">
+                    <Selector
+                      fieldName="province"
+                      fieldValue={values.province}
+                      labelName="Provincia"
+                      onChange={setFieldValue}
+                      onBlur={setFieldTouched}
+                      touched={touched.province}
+                      options={ProvinceData}
+                      errors={errors.province}
+                    />
+                  </div>
+                </div>
+                <div className="row justify-content-start">
+                  <div className="col-sm-1">
+                    <p>
+                      <b>Comuna:</b>
+                    </p>
+                  </div>
+                  <div className="col-sm-7">
+                    <Selector
+                      fieldName="neighborhood"
+                      fieldValue={values.neighborhood}
+                      labelName="Comuna"
+                      onChange={setFieldValue}
+                      onBlur={setFieldTouched}
+                      touched={touched.neighborhood}
+                      options={NeighborhoodData}
+                      errors={errors.neighborhood}
+                    />
+                  </div>
+                </div>
+                <br></br>
+                <div className="row margin:50px">
+                  <div className="col-sm-2" float="left">
+                    <p>
+                      <b>Email:</b>
+                    </p>
+                  </div>
+                  <div className="col-sm-9">
+                    <Field
+                      name="email"
+                      fieldvalue={values.email}
+                      labelname="Email"
+                      touched={touched.email}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      errors={errors.email}
+                      value={props.values.email}
+                    />
+                  </div>
+                  <div className="col-md"></div>
+                </div>
+                <br></br>
+                <div className="row" padding="50px" width="20%">
+                  <button
+                    classNameName="btn btn-primary"
+                    type="submit"
+                    disabled={!dirty || isSubmitting}
+                  >
+                    Actualizar
+                  </button>
+                </div>
+              </form>
+            </div>
           );
         }}
       </Formik>
