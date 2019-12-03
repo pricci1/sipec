@@ -161,6 +161,7 @@ export const getEstablishmentSpeciesApi = async (
     value: id,
     label: name
   }));
+};
 
 export const getEstablishmentPersonals = async (
   apiInstance,
