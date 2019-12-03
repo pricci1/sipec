@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import APIContext from "../APIProvider";
 import AsyncSelect from "react-select/async";
 import { getEstablishmentsApi } from "../../lib/ApiAnimalAdministration";
+import { getExternalEstablishmentInfo } from "../../lib/ApiEstablishment";
 
 const promiseOptions = inputValue =>
   new Promise(resolve => {
@@ -28,10 +29,17 @@ const mockData = {
 const ExternalEstablishments = () => {
   const api = useContext(APIContext);
   const [selectedEstablishment, setSelectedEstablishment] = useState();
-  const [fetchedData, setFetchedData] = useState(mockData);
+  const [fetchedData, setFetchedData] = useState(
+    getEstablishmentInfo(selectedEstablishment)
+  );
 
   async function getEstablishments() {
     const data = await getEstablishmentsApi(api);
+    return data;
+  }
+
+  async function getEstablishmentInfo(establishment) {
+    const data = await getExternalEstablishmentInfo(api, establishment);
     return data;
   }
 
@@ -64,6 +72,7 @@ const ExternalEstablishments = () => {
           disabled={!selectedEstablishment}
           type="submit"
           className="btn btn-primary mb-2"
+          onClick={setFetchedData}
         >
           Buscar
         </button>
@@ -95,11 +104,11 @@ const ExternalEstablishments = () => {
               </tr>
               <tr>
                 <th className="text-nowrap">Cooredenada X</th>
-                <td>{fetchedData.locationX}</td>
+                <td>{fetchedData.coordinate_x}</td>
               </tr>
               <tr>
                 <th className="text-nowrap">Coordenada Y</th>
-                <td>{fetchedData.locationY}</td>
+                <td>{fetchedData.coordinate_y}</td>
               </tr>
               <tr>
                 <th className="text-nowrap">Huso</th>
@@ -115,11 +124,13 @@ const ExternalEstablishments = () => {
               </tr>
               <tr>
                 <th className="text-nowrap">Titular</th>
-                <td>{fetchedData.titularName}</td>
+                <td>
+                  {fetchedData.titular.lastname}, {fetchedData.titular.name}
+                </td>
               </tr>
               <tr>
                 <th className="text-nowrap">RUT Titular</th>
-                <td>{fetchedData.titularRut}</td>
+                <td>{fetchedData.titular.run}</td>
               </tr>
             </tbody>
           </table>
