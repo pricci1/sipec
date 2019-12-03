@@ -10,6 +10,7 @@ const EstablishmentSectorsTable = ({ data }) => {
           <th scope="col">Pabellones</th>
           <th scope="col">Coord. X</th>
           <th scope="col">Coord. Y</th>
+          <th scope="col">Huso</th>
         </tr>
       </thead>
       <tbody>
@@ -19,7 +20,7 @@ const EstablishmentSectorsTable = ({ data }) => {
             <td>{sector.name}</td>
             <td>{sector.pabellones}</td>
             <td>{sector.coord_x}</td>
-            <td>{sector.coord_7}</td>
+            <td>{sector.coord_y}</td>
             <td>{sector.huso}</td>
           </tr>
         ))}
