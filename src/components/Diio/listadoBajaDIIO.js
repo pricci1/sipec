@@ -2,21 +2,17 @@ import React, { useContext, useState, useEffect } from "react";
 import { Formik } from "formik";
 import { Datepicker } from "react-formik-ui";
 import * as Yup from "yup";
-import Selector from "../components/Diio/Utilities/FormikSelector";
-// import DatePicker from "react-datepicker";
+import Selector from "./Utilities/FormikSelector";
 
-// import SIPECtable from "../components/AnimalMoves/SIPECtable";
+import { getSpecies, getDownListTableApi } from "../../lib/APIDiio";
+import APIContext from "../APIProvider";
 
-import { getSpecies, getDownListTableApi } from "../lib/APIDiio";
-import APIContext from "../components/APIProvider";
-
-import ListDroppedDiioTab from "../routes/DIIOMenuTabs/ListDroppedDiioTab";
+import ListDroppedDiioTab from "../../routes/DIIOMenuTabs/ListDroppedDiioTab";
 import "./listadoBajaDIIO.css";
 
 const ListadoBajaDIIO = () => {
   const api = useContext(APIContext);
   const [data, setData] = useState([]);
-  useEffect(() => {}, []);
 
   async function getDataTable(specie, desde, hasta) {
     var new_desde = new String();
@@ -37,6 +33,10 @@ const ListadoBajaDIIO = () => {
     setData(data);
     return data;
   }
+
+  useEffect(() => {
+    getDataTable
+  }, []);
 
   async function getSpeciesAPI() {
     const data = await getSpecies(api);

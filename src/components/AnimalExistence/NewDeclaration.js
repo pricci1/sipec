@@ -8,6 +8,7 @@ import {
   getTitularEstablishments,
   getSpeciesGroups
 } from "../../lib/APICommon";
+import { getUserEstablishmentsApi } from "../../lib/ApiEstablishment";
 import { Selector } from "./Utils/FormikSelectors";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
@@ -51,6 +52,12 @@ const NewDeclaration = () => {
   const [selectedSpecieGroup, setSelectedSpecieGroup] = useState();
   const [species, updateSpecies] = useReducer(speciesReducer, []);
   const [fetchedData, setFetchedData] = useState({});
+  const [establishmentData, setEstablishmentsData] = useState([]);
+
+  async function getMyEstablishments() {
+    const data = await getUserEstablishmentsApi(api, api.currentUserId);
+    return data;
+  }
 
   useEffect(() => {
     const tasks = [
@@ -65,17 +72,24 @@ const NewDeclaration = () => {
           ...oldState,
           species_groups: res
         }))
-      )
+      ),
+      getMyEstablishments().then(res => {
+        const establishmentNames = res.map(element => ({
+          value: element.id,
+          label: element.rup + " - " + element.name
+        }));
+        setEstablishmentsData(establishmentNames);
+      })
     ];
     Promise.all(tasks);
-    setFetchedData(oldState => ({
+    /* setFetchedData(oldState => ({
       ...oldState,
       establishments: [
         { value: 1, label: "123456789 - Pajaro Bobo" },
         { value: 2, label: "135792468 - Cimera Brindacolobitos" },
         { value: 3, label: "246813579 - Bigotes" }
       ]
-    }));
+    }));*/
   }, []);
   return (
     <div className="body">
@@ -180,7 +194,7 @@ const NewDeclaration = () => {
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.establishment}
-                options={fetchedData.establishments}
+                options={establishmentData}
                 errors={errors.establishment}
               />
               <br />

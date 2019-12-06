@@ -13,19 +13,7 @@ import {
   getAnimalDeathTableFilteredApi
 } from "../../lib/ApiAnimalAdministration";
 // import { getUserEstablishments } from "../../lib/APIDiio";
-import * as Yup from "yup";
 
-const searchAnimalDownSchema = Yup.object().shape({
-  establishment_id: Yup.string()
-    .nullable()
-    .required("Requerido"),
-  desde: Yup.string()
-    .nullable()
-    .required("Requerido"),
-  hasta: Yup.string()
-    .nullable()
-    .required("Requerido")
-});
 
 const SearchAnimalDownDIIO = () => {
   const api = useContext(APIContext);
