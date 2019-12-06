@@ -41,7 +41,6 @@ const MenuRouter = () => {
           <DiioMenu path="/diio">
             <PurchaseListDiioTab path="lista-compra" />
             <NewPurchaseDiio path="compra" />
-            <StockDIIOEstablecimiento path="inventario" />
             <NotAppliedDroppedDiio path="baja-diios" />
             <ListadoBajaDIIO path="lista-baja-diios" />
           </DiioMenu>

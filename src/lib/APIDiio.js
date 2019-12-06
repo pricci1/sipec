@@ -17,13 +17,16 @@ export const getProviders = async apiInstance => {
   }));
 };
 
-export const dropDiioRanges = (apiInstance, range) => {
-  let data = { range };
-  apiInstance.post("/diio_drops", data);
+export const dropDiioRanges = async (apiInstance, range) => {
+  const result = await apiInstance.post(
+    "/diio_drops",
+    JSON.stringify({ range: range })
+  );
+  return result;
 };
 
 export const getSpecies = async apiInstance => {
-  const result = await apiInstance.get("/species");
+  const result = await apiInstance.get("/species_groups");
 
   return result.data.map(({ id, name }) => ({
     value: id,
