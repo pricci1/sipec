@@ -10,15 +10,14 @@ const ChangeDiioDetails = ({ changeId }) => {
 
   async function getModalData() {
     const data = await getChangeRegistryDataApi(api, changeId);
-    console.log();
     
     setmodaldata(data);
   }
 
-  
 
   useEffect(() => {
     getModalData();
+    
   }, []);
   const columns = [
     {
