@@ -30,6 +30,7 @@ import UpdateTitularData from "../components/Establishment/UpdateTitularData";
 import EstablishmentRubros from "../components/Establishment/EstablishmentRubros";
 import EstablishmentSpecies from "../components/Establishment/EstablishmentSpecies";
 import EstablishmentOtherData from "../components/Establishment/EstablishmentOtherData";
+import fondo from "./fondo_vacas.jpg";
 
 const MenuRouter = () => {
   return (
@@ -42,7 +43,7 @@ const MenuRouter = () => {
           <DiioMenu path="/diio">
             <PurchaseListDiioTab path="lista-compra" />
             <NewPurchaseDiio path="compra" />
-            <StockDIIOEstablecimiento path="inventario" />
+
             <NotAppliedDroppedDiio path="baja-diios" />
             <ListadoBajaDIIO path="lista-baja-diios" />
           </DiioMenu>
