@@ -37,6 +37,7 @@ const PucharseDetailsDiioModal = props => {
       diio_range
     });
     setState({ infoAvailable: true });
+    console.log(details.brand);
   }
 
   useEffect(() => {
@@ -84,7 +85,8 @@ const PucharseDetailsDiioModal = props => {
         {state.infoAvailable ? (
           <>
             <p>
-              <b>Marca:</b> {details.brand}
+              <b>Marca:</b>{" "}
+              {details.brand == null ? "Sin marca" : details.brand}
             </p>
             <p>
               <b>Estado:</b> {getStringState(details.confirmed)}
