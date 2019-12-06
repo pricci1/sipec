@@ -52,9 +52,15 @@ const NotAppliedDroppedDiio = () => {
               values.dropReason
             ])
           ).then(resp => {
+            let dropNotApplied = resp.data.unprocesed_ids;
+            if (dropNotApplied.length == 0) {
+              dropNotApplied = "ninguno.";
+            }
             resp.success
-              ? alert("Baja realizada")
-              : alert(`Error en la baja: ${resp.data}`);
+              ? alert(
+                  `Baja realizada. Diios que no se dieron de baja: ${dropNotApplied}`
+                )
+              : alert(`Error en la baja. ${resp.data}`);
           });
           setSubmitting(false);
         }}
@@ -68,21 +74,23 @@ const NotAppliedDroppedDiio = () => {
           dropReason: Yup.string()
             .nullable()
             .required("Requerido"),
-          diio_ranges: Yup.array().of(
-            Yup.object()
-              .shape({
-                desde: Yup.number()
-                  .min(0, "Desde debe ser >= 0")
-                  .required("Requerido"),
-                hasta: Yup.number()
-                  .min(
-                    Yup.ref("desde"),
-                    `"Hasta" debe ser igual o mayor a "Desde"`
-                  )
-                  .required("Requerido")
-              })
-              .required()
-          )
+          diio_ranges: Yup.array()
+            .of(
+              Yup.object()
+                .shape({
+                  desde: Yup.number()
+                    .min(0, "Desde debe ser >= 0")
+                    .required("Requerido"),
+                  hasta: Yup.number()
+                    .min(
+                      Yup.ref("desde"),
+                      `"Hasta" debe ser igual o mayor a "Desde"`
+                    )
+                    .required("Requerido")
+                })
+                .required()
+            )
+            .required()
         })}
       >
         {props => {
@@ -92,12 +100,9 @@ const NotAppliedDroppedDiio = () => {
             errors,
             dirty,
             isSubmitting,
-            handleChange,
-            handleBlur,
             handleSubmit,
             setFieldValue,
-            setFieldTouched,
-            handleReset
+            setFieldTouched
           } = props;
           return (
             <form onSubmit={handleSubmit}>
