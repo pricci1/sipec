@@ -53,8 +53,8 @@ const NotAppliedDroppedDiio = () => {
             ])
           ).then(resp => {
             resp.success
-              ? alert("Baja realizada")
-              : alert(`Error en la baja: ${resp.data}`);
+              ? alert("¡Baja realizada con éxito!")
+              : alert(`Error en la baja. ${resp.data}`);
           });
           setSubmitting(false);
         }}
@@ -92,12 +92,9 @@ const NotAppliedDroppedDiio = () => {
             errors,
             dirty,
             isSubmitting,
-            handleChange,
-            handleBlur,
             handleSubmit,
             setFieldValue,
-            setFieldTouched,
-            handleReset
+            setFieldTouched
           } = props;
           return (
             <form onSubmit={handleSubmit}>
