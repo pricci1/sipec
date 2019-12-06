@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 // import { Formik, Field, FieldArray } from "formik";
 // import * as Yup from "yup";
 import APIContext from "../APIProvider";
@@ -8,21 +8,24 @@ import useModal from "../Modal";
 import DatePicker from "react-datepicker";
 import { Selector } from "./Utils/FormikSelectors";
 import { AnimalEstablishmentRegistryTable } from "./AnimalEstablishmentRegistryTable";
+import { getUserEstablishmentsApi } from "../../lib/ApiAnimalAdministration";
 import AnimalEstablishmentRecordDetails from "./AnimalEstablishmentRecordDetails";
-
-const getEstablishments = () => {
-  return [
-    { value: 1, label: "96.865.754-k - El Salto de Pilmaiquen" },
-    { value: 2, label: "12.345.123-2 - La Mosqueta" }
-  ];
-};
 
 const AnimalEstablishmentRegistry = () => {
   const api = useContext(APIContext);
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
   const [modalRegistryId, setModalRegistryId] = useState();
   const [data, setData] = useState([]);
+  const [establishments, setestablishments] = useState();
 
+  useEffect(() => {
+    getEstablishments();
+  }, []);
+
+  async function getEstablishments() {
+    const data = await getUserEstablishmentsApi(api, api.titular.id);
+    setestablishments(data);
+  }
   return (
     <div className="body">
       <h1 className="d-md-inline pr-3">Buscar Registro Animal</h1>
@@ -58,39 +61,53 @@ const AnimalEstablishmentRegistry = () => {
               <Selector
                 fieldName="establishment"
                 fieldValue={values.establishment}
-                label="Establecimiento"
-                onChange={setFieldValue}
+                label="RUP - Establecimiento"
+                onChange={(field, fieldValue) => {
+                  setFieldValue(field, fieldValue);
+                }}
                 onBlur={setFieldTouched}
                 touched={touched.establishment}
-                options={getEstablishments()}
+                options={establishments}
                 errors={errors.establishment}
               />
               <br />
-              <h6>Fecha de Registro</h6>
-              <DatePicker
-                onBlur={handleBlur}
-                className="form-control"
-                selected={values.date.from}
-                onChange={value => {
-                  setFieldValue("date.from", value);
-                }}
-                onSelect={handleChange}
-                name="date.from"
-                dateFormat="dd/MM/yy"
-              />
-              <span> </span>
-              <DatePicker
-                onBlur={handleBlur}
-                className="form-control"
-                selected={values.date.to}
-                onChange={value => {
-                  setFieldValue("date.to", value);
-                }}
-                minDate={values.date.from}
-                onSelect={handleChange}
-                name="date.to"
-                dateFormat="dd/MM/yy"
-              />
+              <div
+                className="row"
+                style={{ textAlign: "justify", marginTop: "10px" }}
+              >
+                <div className="col-md-2" style={{ direction: "rtl" }}>
+                  <label htmlFor="from-date">Fecha de verificación</label>
+                </div>
+                <div className="col-md-2">
+                  <DatePicker
+                    onBlur={handleBlur}
+                    className="form-control"
+                    selected={values.date.from}
+                    onChange={value => {
+                      setFieldValue("date.from", value);
+                    }}
+                    onSelect={handleChange}
+                    name="date.from"
+                    dateFormat="dd/MM/yy"
+                  />
+                </div>
+                <div className="col-md-2">
+                  <DatePicker
+                    onBlur={handleBlur}
+                    className="form-control"
+                    selected={values.date.to}
+                    onChange={value => {
+                      setFieldValue("date.to", value);
+                    }}
+                    
+                    minDate={values.date.from}
+                    onSelect={handleChange}
+                    name="date.to"
+                    dateFormat="dd/MM/yy"
+                  />
+                </div>
+              </div>
+
               <br />
               <button
                 className="btn btn-primary mt-4"

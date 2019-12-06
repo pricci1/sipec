@@ -74,15 +74,12 @@ const NewChangeDiio = () => {
   }
   async function getMvas() {
     let data = await getEstablishmentMvasApi(api, establishment_id);
-    // data = [
-    //   { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
-    //   { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
-    // ];
     setmvasData(data);
   }
   return (
     <div className="body">
       <h2>Nuevo Cambio de Diio</h2>
+      <br/>
       <Formik
         initialValues={{
           specie: "",
