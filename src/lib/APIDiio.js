@@ -68,7 +68,14 @@ export const getUserEstablishments = async apiInstance => {
 };
 
 export const getDroppedDiioList = async apiInstance => {
-  data = await apiInstance.get("/diio_drops")
+  const result = await apiInstance.get("/diio_drops")
+
+  return result.data.map(({diio_id, drop_cause, created_at, specie}) => ({
+    diio_id,
+    drop_cause,
+    date: created_at.split("T")[0],
+    specie: specie.name
+  }))
 }
 
 //TODO: Create the route

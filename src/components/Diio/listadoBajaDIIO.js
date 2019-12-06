@@ -4,7 +4,11 @@ import { Datepicker } from "react-formik-ui";
 import * as Yup from "yup";
 import Selector from "./Utilities/FormikSelector";
 
-import { getSpecies, getDownListTableApi } from "../../lib/APIDiio";
+import {
+  getSpecies,
+  getDownListTableApi,
+  getDroppedDiioList
+} from "../../lib/APIDiio";
 import APIContext from "../APIProvider";
 
 import ListDroppedDiioTab from "../../routes/DIIOMenuTabs/ListDroppedDiioTab";
@@ -14,7 +18,7 @@ const ListadoBajaDIIO = () => {
   const api = useContext(APIContext);
   const [data, setData] = useState([]);
 
-  async function getDataTable(specie, desde, hasta) {
+  async function getDataTableFiltered(specie, desde, hasta) {
     var new_desde = new String();
     var new_hasta = new String();
     new_desde =
@@ -34,8 +38,13 @@ const ListadoBajaDIIO = () => {
     return data;
   }
 
+  async function getDataTable() {
+    let response = await getDroppedDiioList(api);
+    setData(response);
+  }
+
   useEffect(() => {
-    getDataTable
+    getDataTable();
   }, []);
 
   async function getSpeciesAPI() {
@@ -46,7 +55,6 @@ const ListadoBajaDIIO = () => {
     <div className="body">
       <h2>Listado Baja de DIIOs</h2>
       <div>
-        <h4>Buscar Baja de DIIO</h4>
         <Formik
           initialValues={{ desde: "", hasta: "", specie: "" }}
           onSubmit={(values, { setSubmitting }) => {
@@ -89,33 +97,42 @@ const ListadoBajaDIIO = () => {
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.specie}
-                // data={getSpecies}
                 data={getSpeciesAPI}
                 required={true}
                 errors={errors.specie}
               />
               <br />
-              <p className="label">Fecha</p>
-              <div className="fecha">
-                <Datepicker
-                  selected={values.desde}
-                  dateFormat="MMMM d, yyyy"
-                  className="form-control"
-                  name="desde"
-                  placeholder="Desde"
-                  errors={errors.desde}
-                  required={true}
-                />
-                <Datepicker
-                  selected={values.hasta}
-                  dateFormat="MMMM d, yyyy"
-                  className="form-control"
-                  name="hasta"
-                  placeholder="Hasta"
-                  errors={errors.hasta}
-                  required={true}
-                />
+              <div
+                className="row"
+                style={{ textAlign: "justify", marginTop: "10px" }}
+              >
+                <div className="col-md-2" style={{ direction: "rtl" }}>
+                  <label htmlFor="from-date">Fecha de verificación</label>
+                </div>
+                <div className="col-md-2">
+                  <Datepicker
+                    selected={values.desde}
+                    dateFormat="dd/MM/yy"
+                    className="form-control"
+                    name="desde"
+                    placeholder="Desde"
+                    errors={errors.desde}
+                    required={true}
+                  />
+                </div>
+                <div className="col-md-2">
+                  <Datepicker
+                    selected={values.hasta}
+                    dateFormat="dd/MM/yy"
+                    className="form-control"
+                    name="hasta"
+                    placeholder="Hasta"
+                    errors={errors.hasta}
+                    required={true}
+                  />
+                </div>
               </div>
+
               <div className="row" style={{ justifyContent: "flex-end" }}>
                 <div className="col-md-7">
                   <button
