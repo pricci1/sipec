@@ -1,19 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import APIContext from "../APIProvider";
 import DualListBox from "react-dual-listbox";
+import {
+  getEstablishmentByIdApi,
+  getEntries,
+  getEntryByIdApi
+} from "../../lib/ApiEstablishment";
 import "react-dual-listbox/lib/react-dual-listbox.css";
 
-const options = [
-  { value: 1, label: "Miel" },
-  { value: 2, label: "Leche" },
-  { value: 3, label: "Huevo" },
-  { value: 4, label: "Carne" },
-  { value: 5, label: "Reproducción" },
-  { value: 6, label: "Pelo" }
-];
-
 const EstablishmentRubros = ({ establishmentId }) => {
-  const [selected, setSelected] = useState([2, 5]);
+  const api = useContext(APIContext);
+  const [selected, setSelected] = useState([]);
+  const [establishmentName, setEstablishmentName] = useState();
+  const [entries, setEntries] = useState([]);
+  useEffect(() => {
+    getEstablishmentById();
+  }, [establishmentName]);
+  useEffect(() => {
+    getAllEntries();
+  }, []);
+  useEffect(() => {
+    getEntryById();
+  }, []);
 
+  async function getAllEntries() {
+    const data = await getEntries(api);
+    setEntries(data);
+  }
+
+  async function getEntryById() {
+    var entrylist = [];
+    const data = await getEntryByIdApi(api, establishmentId);
+    if (!data) {
+      //null
+    } else {
+      for (var key in data.entries) {
+        entrylist.push(data.entries[key].id);
+      }
+      setSelected(entrylist);
+    }
+  }
+
+  async function getEstablishmentById() {
+    const data = await getEstablishmentByIdApi(api, establishmentId);
+    if (!data) {
+      setEstablishmentName("Default");
+    } else {
+      setEstablishmentName(data.name);
+    }
+  }
   const onChange = selected => {
     setSelected(selected);
   };
@@ -27,7 +62,7 @@ const EstablishmentRubros = ({ establishmentId }) => {
     <>
       <h3>Rubros {establishmentId}</h3>
       <DualListBox
-        options={options}
+        options={entries}
         selected={selected}
         onChange={onChange}
         icons={{

@@ -1,18 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import APIContext from "../APIProvider";
 import DualListBox from "react-dual-listbox";
 import "react-dual-listbox/lib/react-dual-listbox.css";
-
-const options = [
-  { value: 1, label: "Ovinos" },
-  { value: 2, label: "Mulares" },
-  { value: 3, label: "Bobinos" },
-  { value: 4, label: "Caballares" },
-  { value: 5, label: "Caprinos" },
-  { value: 6, label: "Conejos" }
-];
+import {
+  getEstablishmentByIdApi,
+  getSpeciesApi,
+  getEstablishmentSpeciesApi,
+  updateSpecieChangeApi
+} from "../../lib/ApiEstablishment";
 
 const EstablishmentSpecies = ({ establishmentId }) => {
+  const api = useContext(APIContext);
   const [selected, setSelected] = useState([2, 5]);
+  const [establishmentName, setEstablishmentName] = useState();
+  const [species, setSpecies] = useState([]);
+  useEffect(() => {
+    getEstablishmentById();
+  }, [establishmentName]);
+  useEffect(() => {
+    getAllSpecies();
+  }, []);
+  useEffect(() => {
+    getEstablishmentSpecies();
+  }, []);
+  async function getAllSpecies() {
+    const data = await getSpeciesApi(api);
+    setSpecies(data);
+  }
+
+  async function getEstablishmentSpecies() {
+    const data = await getEstablishmentSpeciesApi(api, establishmentId);
+    let selectedList = [];
+    for (var key in data) {
+      selectedList.push(data[key].value);
+    }
+    setSelected(selectedList);
+  }
+
+  async function getEstablishmentById() {
+    const data = await getEstablishmentByIdApi(api, establishmentId);
+    if (!data) {
+      setEstablishmentName("Default");
+    } else {
+      setEstablishmentName(data.name);
+    }
+  }
 
   const onChange = selected => {
     setSelected(selected);
@@ -20,14 +52,15 @@ const EstablishmentSpecies = ({ establishmentId }) => {
 
   const onClickCallback = () => {
     // TODO: send to backend
+    updateSpecieChangeApi(api, selected, parseInt(establishmentId, 10));
     alert(selected);
   };
 
   return (
     <>
-      <h3>Especies {establishmentId}</h3>
+      <h3>Especies {establishmentName}</h3>
       <DualListBox
-        options={options}
+        options={species}
         selected={selected}
         onChange={onChange}
         icons={{

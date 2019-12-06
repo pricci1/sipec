@@ -9,7 +9,8 @@ import { Link } from "@reach/router";
 import AnimalEstablishmentRecordDetails from "./AnimalDownDIIODetails";
 import {
   getEstablishmentsApi,
-  getAnimalDeathTableApi
+  getAnimalDeathTableApi,
+  getAnimalDeathTableFilteredApi
 } from "../../lib/ApiAnimalAdministration";
 // import { getUserEstablishments } from "../../lib/APIDiio";
 import * as Yup from "yup";
@@ -31,19 +32,41 @@ const SearchAnimalDownDIIO = () => {
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
   const [modalRegistryId, setModalRegistryId] = useState();
   const [data, setData] = useState([]);
+  useEffect(() => {}, []);
 
   async function getEstablishments() {
     const data = await getEstablishmentsApi(api);
     return data;
   }
 
-  async function getTableData() {
-    const data = await getAnimalDeathTableApi(api);
+  async function getDataTable(establishment, desde, hasta) {
+
+    var new_desde = new String();
+    var new_hasta = new String();
+    new_desde =
+      desde.getFullYear().toString() +
+      "-" +
+      (desde.getMonth() + 1).toString() +
+      "-" +
+      desde.getDate().toString();
+    new_hasta =
+      hasta.getFullYear().toString() +
+      "-" +
+      (hasta.getMonth() + 1).toString() +
+      "-" +
+      hasta.getDate().toString();
+    const data = await getAnimalDeathTableFilteredApi(
+      api,
+      establishment.value,
+      new_desde,
+      new_hasta
+    );
     setData(data);
+    return data;
   }
-  useEffect(() => {
-    getTableData();
-  }, []);
+  // useEffect(() => {
+  //   getTableData();
+  // }, []);
 
   return (
     <div className="body">
@@ -55,7 +78,10 @@ const SearchAnimalDownDIIO = () => {
             desde: "",
             hasta: ""
           }}
-          onSubmit={formData => {}}
+          onSubmit={(values, { setSubmitting }) => {
+            getDataTable(values.establishment, values.desde, values.hasta);
+            setSubmitting(false);
+          }}
         >
           {({
             values,
