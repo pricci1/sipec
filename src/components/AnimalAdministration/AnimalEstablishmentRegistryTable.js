@@ -28,7 +28,7 @@ export const AnimalEstablishmentRegistryTable = ({
         label: "Establecimiento",
         field: "establishment",
         sort: "asc",
-        width: 270  
+        width: 270
       },
       {
         label: "Titular",
@@ -54,10 +54,12 @@ export const AnimalEstablishmentRegistryTable = ({
         show: (
           <button
             type="button"
-            className="btn btn-info btn-sm p-0"
+            className="btn btn-info btn-sm p-0 center"
             onClick={() => handleEntryClick(1)}
           >
-            &#10010;
+            <span role="img" aria-label="magGlass">
+              &#128269;
+            </span>
           </button>
         ),
         rup: "1.1.1.1",
@@ -69,11 +71,14 @@ export const AnimalEstablishmentRegistryTable = ({
       {
         show: (
           <button
+            color="primary"
             type="button"
             className="btn btn-info btn-sm p-0"
             onClick={() => handleEntryClick(2)}
           >
-            &#10010;
+            <span role="img" aria-label="magGlass">
+              &#128269;
+            </span>
           </button>
         ),
         rup: "1.1.1.1",
