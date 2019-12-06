@@ -94,7 +94,6 @@ const NewChangeDiio = () => {
         }}
         validationSchema={changeDiioSchema}
         onSubmit={(values, { setSubmitting }) => {
-          console.log(values);
           postDiioChange(
             api,
             values.specie.value,
@@ -253,6 +252,7 @@ const NewChangeDiio = () => {
                 className="btn btn-primary"
                 type="submit"
                 disabled={!dirty || isSubmitting}
+                
               >
                 Guardar cambios
               </button>

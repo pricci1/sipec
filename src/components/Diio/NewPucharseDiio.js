@@ -3,6 +3,7 @@ import { Formik, Field, FieldArray } from "formik";
 import Selector from "./Utilities/FormikSelector";
 import * as Yup from "yup";
 import { postDiioPurchase, getProviders } from "../../lib/APIDiio";
+import { getUserEstablishmentsApi } from "../../lib/ApiAnimalAdministration"
 import APIContext from "../APIProvider";
 import "./newPucharseDiio.css";
 
@@ -14,9 +15,6 @@ const buyDiioSchema = Yup.object().shape({
     .nullable()
     .required("Requerido"),
   buyer_type: Yup.string()
-    .nullable()
-    .required("Requerido"),
-  buyer_rut: Yup.string()
     .nullable()
     .required("Requerido"),
   establishment_id: Yup.string()
@@ -46,17 +44,16 @@ const NewPurchaseDiio = () => {
   const [selectedSellerRut, setSelectedSellerRut] = useState();
   
   const getBuyerRut = () => {
-    return "123456789";
+    return api.titular.rut
   };
   const getBuyerName = () => {
-    return "Agrosuper";
+    return api.titular.name
   };
 
   async function getBuyerEstablishments() {
-    return [
-      { value: 1, label: "El Salto de Pilmaiquen" },
-      { value: 2, label: "La Mosqueta" }
-    ];
+    const data = await getUserEstablishmentsApi(api, api.titular.id);
+    console.log(data)
+    return data
   }
 
   async function getProvidersApi() {
@@ -123,6 +120,8 @@ const NewPurchaseDiio = () => {
                   data={getSellerTypes}
                   errors={errors.seller_type}
                 />
+                <br/>
+
                 <Selector
                   fieldName="provider_id"
                   fieldValue={values.provider_id}
@@ -136,7 +135,7 @@ const NewPurchaseDiio = () => {
                   data={getProvidersApi}
                   errors={errors.provider_id}
                 />
-                <label>Rut: {selectedSellerRut}</label>
+                
               </div>
               <div className="">
                 <h4>Datos de Comprador</h4>
@@ -150,8 +149,7 @@ const NewPurchaseDiio = () => {
                   data={getSellerTypes}
                   errors={errors.buyer_type}
                 />
-                <p>Rut: {values.buyer_rut}</p>
-                <p>Nombre: {getBuyerName()}</p>
+                <br/>
                 <Selector
                   fieldName="establishment_id"
                   fieldValue={values.establishment_id}

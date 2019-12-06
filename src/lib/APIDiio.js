@@ -67,6 +67,10 @@ export const getUserEstablishments = async apiInstance => {
   return establishments.data;
 };
 
+export const getDroppedDiioList = async apiInstance => {
+  data = await apiInstance.get("/diio_drops")
+}
+
 //TODO: Create the route
 export const getDownListTableApi = async (
   apiInstance,
@@ -75,8 +79,6 @@ export const getDownListTableApi = async (
   hasta
 ) => {
   let data = { specie, desde, hasta };
-  console.log("data:", data);
-  console.log("try:", data.desde);
   const result = await apiInstance.get("/down_list_filtered", data);
   console.log(result);
 
