@@ -72,8 +72,7 @@ export const getUserEstablishments = async apiInstance => {
 
 export const getDroppedDiioList = async apiInstance => {
   const result = await apiInstance.get("/diio_drops")
-
-  return result.data.map(({diio_id, drop_cause, created_at, specie}) => ({
+  return result.data.diios.map(({diio_id, drop_cause, created_at, specie}) => ({
     diio_id,
     drop_cause,
     date: created_at.split("T")[0],

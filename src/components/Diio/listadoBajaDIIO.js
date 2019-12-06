@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import { Datepicker } from "react-formik-ui";
 import * as Yup from "yup";
 import Selector from "./Utilities/FormikSelector";
+import DroppedDiioTable from "./DroppedDiioTable"
 
 import {
   getSpecies,
@@ -11,7 +12,6 @@ import {
 } from "../../lib/APIDiio";
 import APIContext from "../APIProvider";
 
-import ListDroppedDiioTab from "../../routes/DIIOMenuTabs/ListDroppedDiioTab";
 import "./listadoBajaDIIO.css";
 
 const ListadoBajaDIIO = () => {
@@ -61,17 +61,6 @@ const ListadoBajaDIIO = () => {
             getDataTable(values.establishment, values.desde, values.hasta);
             setSubmitting(false);
           }}
-          validationSchema={Yup.object().shape({
-            desde: Yup.string()
-              .nullable()
-              .required("Requerido"),
-            hasta: Yup.string()
-              .nullable()
-              .required("Requerido"),
-            specie: Yup.string()
-              .nullable()
-              .required("Requerido")
-          })}
         >
           {({
             values,
@@ -155,9 +144,10 @@ const ListadoBajaDIIO = () => {
           )}
         </Formik>
       </div>
-      <div>
-        <ListDroppedDiioTab data={data} />
-      </div>
+      <DroppedDiioTable
+        tableData={data}
+      />
+      
     </div>
   );
 };
