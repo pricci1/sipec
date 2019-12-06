@@ -114,7 +114,7 @@ const PurchaseListDiioTab = () => {
             getStringRegister(purchase.id),
             purchase.provider_name,
             purchase.purchaser_name,
-            purchase.date,
+            purchase.date.split("T")[0],
             getStringState(purchase.confirmed),
             purchase.purchaser_rut
           ])}
