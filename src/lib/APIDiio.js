@@ -18,10 +18,8 @@ export const getProviders = async apiInstance => {
 };
 
 export const dropDiioRanges = async (apiInstance, range) => {
-  const result = await apiInstance.post(
-    "/diio_drops",
-    JSON.stringify({ range: range })
-  );
+  const data = { range: range };
+  const result = await apiInstance.post("/diio_drops", data);
   return result;
 };
 
