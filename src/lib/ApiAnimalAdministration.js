@@ -162,7 +162,6 @@ export const postAnimalDeathRegistration = async (
       death_date: year + "-" + month + "-" + day,
       serial_diio: diio_array[i].diio
     };
-    console.log(data);
     const response = await apiInstance.post("/report_death", data);
     result.success = result.success || response.success;
     if (response.success === false) {

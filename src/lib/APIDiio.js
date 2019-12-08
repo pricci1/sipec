@@ -17,13 +17,16 @@ export const getProviders = async apiInstance => {
   }));
 };
 
-export const dropDiioRanges = (apiInstance, range) => {
-  let data = { range };
-  apiInstance.post("/diio_drops", data);
+export const dropDiioRanges = async (apiInstance, range) => {
+  const result = await apiInstance.post(
+    "/diio_drops",
+    JSON.stringify({ range: range })
+  );
+  return result;
 };
 
 export const getSpecies = async apiInstance => {
-  const result = await apiInstance.get("/species");
+  const result = await apiInstance.get("/species_groups");
 
   return result.data.map(({ id, name }) => ({
     value: id,
@@ -67,6 +70,16 @@ export const getUserEstablishments = async apiInstance => {
   return establishments.data;
 };
 
+export const getDroppedDiioList = async apiInstance => {
+  const result = await apiInstance.get("/diio_drops")
+  return result.data.diios.map(({diio_id, drop_cause, created_at, specie}) => ({
+    diio_id,
+    drop_cause,
+    date: created_at.split("T")[0],
+    specie: specie.name
+  }))
+}
+
 //TODO: Create the route
 export const getDownListTableApi = async (
   apiInstance,
@@ -75,8 +88,6 @@ export const getDownListTableApi = async (
   hasta
 ) => {
   let data = { specie, desde, hasta };
-  console.log("data:", data);
-  console.log("try:", data.desde);
   const result = await apiInstance.get("/down_list_filtered", data);
   console.log(result);
 

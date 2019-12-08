@@ -13,14 +13,20 @@ const NotAppliedDroppedDiio = () => {
     return api.titular.run;
   };
   const getOwnerName = () => {
-    return `${api.titular.name} ${api.titular.last_name}` ;
+    return `${api.titular.name} ${api.titular.last_name}`;
   };
   async function getSpeciesData() {
     const data = await getSpecies(api);
     return data;
   }
   async function getDropReasons() {
-    return [{ value: 1, label: "Motivo 1" }, { value: 2, label: "Motivo 2" }];
+    return [
+      { value: "ROBO O HURTO", label: "ROBO O HURTO" },
+      { value: "EXTRAVIO", label: "EXTRAVIO" },
+      { value: "FALLA PLASTICO", label: "FALLA PLASTICO" },
+      { value: "FALLA TINTA", label: "FALLA TINTA" },
+      { value: "RUPTURA POR TENAZA", label: "RUPTURA POR TENAZA" }
+    ];
   }
 
   return (
@@ -39,10 +45,17 @@ const NotAppliedDroppedDiio = () => {
         onSubmit={(values, { setSubmitting }) => {
           dropDiioRanges(
             api,
-            JSON.stringify(
-              values.diio_ranges.map(range => [range.desde, range.hasta])
-            )
-          );
+            values.diio_ranges.map(range => [
+              range.desde,
+              range.hasta,
+              values.specie,
+              values.dropReason
+            ])
+          ).then(resp => {
+            resp.success
+              ? alert("¡Baja realizada con éxito!")
+              : alert(`Error en la baja. ${resp.data}`);
+          });
           setSubmitting(false);
         }}
         validationSchema={Yup.object().shape({
@@ -79,17 +92,24 @@ const NotAppliedDroppedDiio = () => {
             errors,
             dirty,
             isSubmitting,
-            handleChange,
-            handleBlur,
             handleSubmit,
             setFieldValue,
-            setFieldTouched,
-            handleReset
+            setFieldTouched
           } = props;
           return (
             <form onSubmit={handleSubmit}>
-              <p>Rut: {values.ownerRut}</p>
-              <p>Nombre: {getOwnerName()}</p>
+              <div className="row">
+                <div className="col-md-1"></div>
+                <div className="col-md-1" align="right">
+                  <p>Rut </p>
+                  <p>Nombre </p>
+                </div>
+                <br />
+                <div className="col-md-4">
+                  <p>{values.ownerRut}</p>
+                  <p> {getOwnerName()}</p>
+                </div>
+              </div>
               <div className="">
                 <Selector
                   fieldName="specie"
@@ -168,7 +188,7 @@ const NotAppliedDroppedDiio = () => {
               <button
                 className="btn btn-primary"
                 type="submit"
-                disabled={isSubmitting}
+                disabled={!dirty || isSubmitting}
               >
                 Guardar cambios
               </button>
