@@ -30,6 +30,12 @@ export const RegisterAnimalTable = ({
           width: 150
         },
         {
+          label: "Marca DIIO",
+          field: "marca",
+          sort: "asc",
+          width: 150
+        },
+        {
           label: "Especie",
           field: "specie",
           sort: "asc",

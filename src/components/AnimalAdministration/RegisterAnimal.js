@@ -50,7 +50,10 @@ const changeDiioSchema = Yup.object().shape({
     .required("Requerido"),
   birthDate: Yup.date()
     .nullable()
-    .required("Requerido")
+    .required("Requerido"),
+  pabco: Yup.string()
+    .nullable()
+    .required("Requerido"),
 });
 
 const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
@@ -86,8 +89,12 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
     return data;
   }
 
+  
   async function getOrigin() {
     return [{ value: 1, label: "Nacional" }, { value: 2, label: "Extranjero" }];
+  }
+  async function getPabco() {
+    return [{ value: 1, label: "SI" }, { value: 2, label: "NO" }];
   }
   async function getSex() {
     return [{ value: 1, label: "Macho" }, { value: 2, label: "Hembra" }];
@@ -103,7 +110,8 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
     breed,
     sex,
     birthDate,
-    category
+    category,
+    pabco
   ) {
     const response = await api.post("/animals", {
       specie: specie,
@@ -116,7 +124,8 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
       breed: breed,
       sex: sex,
       birthDate: birthDate,
-      category: category
+      category: category,
+      pabco, pabco,
     });
 
     /*getItem({
@@ -151,7 +160,9 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
           breed: "",
           sex: "",
           birthDate: "",
-          category: ""
+          category: "",
+          pabco: "",
+
         }}
         validationSchema={changeDiioSchema}
         onSubmit={(values, { setSubmitting }) => {
@@ -165,7 +176,8 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
             values.breed,
             values.sex,
             values.birthDate,
-            values.category
+            values.category,
+            values.pabco,
           ).then(response => {});
           setSubmitting(false); // This can also be used for displaying a spinner
         }}
@@ -225,6 +237,16 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
                 touched={touched.mva}
                 data={getMvas}
                 errors={errors.mva}
+              />
+              <Selector
+                fieldName="pabco"
+                fieldValue={values.specie}
+                labelName="PABCO"
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                touched={touched.specie}
+                data={getPabco}
+                errors={errors.specie}
               />
               <div>Fecha Registro: {getCurrentDate("/")}</div>
               <div>

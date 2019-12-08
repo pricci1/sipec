@@ -9,6 +9,7 @@ import {
 import { Selector } from "../AnimalAdministration/Utils/FormikSelectors";
 import { Formik, Field } from "formik";
 import { set } from "date-fns/esm";
+import * as Yup from "yup";
 
 const UpdateTitularData = () => {
   const [TitularInfo, setTitularInfo] = useState([]);
@@ -26,17 +27,15 @@ const UpdateTitularData = () => {
   const [RUT, setRUT] = useState();
   const [Loading, setLoading] = useState(true);
   const api = useContext(APIContext);
+
   async function getRegion() {
     const data = await getRegions(api);
     setRegionData(data);
-    console.log(data);
-
     return data;
   }
 
   async function getProvince() {
     const data = await getProvinces(api);
-    console.log(data);
     setProvinceData(data);
     return data;
   }
@@ -44,14 +43,14 @@ const UpdateTitularData = () => {
   async function getNeighborhood() {
     const data = await getNeighborhoods(api);
     setNeighborhoodData(data);
-    console.log(data);
+    
     return data;
   }
 
   async function getClientData() {
     const data = await getTitular(api);
     setTitularInfo(data);
-    console.log(data);
+    
     setCompany(data.company.id);
     setRegion({ value: data.region.id, label: data.region.name });
     setName(data.company.name);
@@ -67,6 +66,46 @@ const UpdateTitularData = () => {
     setLoading(false);
     return data;
   }
+
+  function validateEmail(value) {
+    let error;
+    if (!value) {
+      error = 'Requerido';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+      error = 'email invalido';
+    }
+    return error;
+  }
+
+  function validateAddress(value) {
+    let error;
+    if (!value) {
+      error = 'Requerido';
+    }
+    return error;
+  }
+
+  function validatePhone(value) {
+
+
+    let error;
+    if (!value) {
+      
+      error = 'Requerido';
+    }
+    else if (!/^[0-9]/i.test(value)) {
+      c
+      error = 'Solo numeros'
+
+    }
+    else if (value.length != 9) {
+     
+      error = 'tiene que ser 9 digitos'
+
+    }
+    return error;
+  }
+
   useEffect(() => {
     getRegion();
     getProvince();
@@ -83,6 +122,9 @@ const UpdateTitularData = () => {
     neighborhood,
     email
   ) {
+
+   
+
     const titularId = api.titular.id;
     const response = await api.put("/companies/" + Company, {
       id: id,
@@ -91,10 +133,10 @@ const UpdateTitularData = () => {
       neighborhood: neighborhood.value,
       email: email
     });
-
     if (response.data.status == "ok") {
       alert("Se modifico el titular con exito");
     }
+    
   }
   if (Loading) {
     return <div></div>;
@@ -120,6 +162,7 @@ const UpdateTitularData = () => {
           neighborhood: Neighborhood,
           email: Email
         }}
+
         onSubmit={(values, { setSubmitting }) => {
           sendRequest(
             values.id,
@@ -129,7 +172,10 @@ const UpdateTitularData = () => {
             values.province,
             values.neighborhood,
             values.email
-          ).then(response => {});
+          ).then(response => {
+           ;
+          });
+
           setSubmitting(false); // This can also be used for displaying a spinner
         }}
       >
@@ -166,7 +212,10 @@ const UpdateTitularData = () => {
                       errors={errors.phone}
                       onBlur={props.handleBlur}
                       onChange={props.handleChange}
+                      validate={validatePhone}
+                      
                     />
+                    {errors.phone && touched.phone && <div style={{color: "red"}}>{errors.phone}</div>}
                   </div>
                 </div>
                 <div className="row justify-content-start">
@@ -180,12 +229,14 @@ const UpdateTitularData = () => {
                       name="address"
                       fieldvalue={values.address}
                       labelname="Direccion"
-                      touched={touched.address}
+                      validate={validateAddress}
                       value={props.values.address}
                       errors={errors.address}
                       onBlur={handleBlur}
                       onChange={handleChange}
+                      
                     />
+                    {errors.address && touched.address && <div style={{color: "red"}}>{errors.address}</div>}
                   </div>
                 </div>
                 <br></br>
@@ -263,14 +314,16 @@ const UpdateTitularData = () => {
                       onChange={handleChange}
                       errors={errors.email}
                       value={props.values.email}
+                      validate={validateEmail} 
                     />
+                    {errors.email && touched.email && <div style={{color: "red"}}>{errors.email}</div>}
                   </div>
                   <div className="col-md"></div>
                 </div>
                 <br></br>
                 <div className="row" padding="50px" width="20%">
                   <button
-                    classNameName="btn btn-primary"
+                    className="btn btn-primary"
                     type="submit"
                     disabled={!dirty || isSubmitting}
                   >
