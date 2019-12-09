@@ -223,7 +223,12 @@ export const getAnimalsByRegisterApi = async apiInstance => {
   return result;
 };
 
-export const getInfoDiioRange = async (apiInstance, diioStart, diioEnd, user_id) => {
+export const getInfoDiioRange = async (
+  apiInstance,
+  diioStart,
+  diioEnd,
+  user_id
+) => {
   const info = await apiInstance.get(
     `/diio/range?desde=${diioStart}&hasta=${diioEnd}&id=${user_id}`
   );
