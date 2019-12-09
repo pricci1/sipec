@@ -120,7 +120,7 @@ const NewDeathRegistration = () => {
             }
             resp.success
               ? alert(
-                  `Baja realizada. Serial de los DIIOS de animales muertos registrados anteriormente: ${resp.not_applied}.`
+                  `Baja realizada. Serial de los DIIOS de animales muertos registrados anteriormente o de otro establecimiento: ${resp.not_applied}.`
                 )
               : alert(
                   `Error en la baja. DIIO no existe o no aplicado. \n${resp.data}`
