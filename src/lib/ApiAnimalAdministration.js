@@ -227,3 +227,12 @@ export const getInfoDiioRange = async (apiInstance, diioStart, diioEnd) => {
   );
   return info.data;
 };
+
+export const getAnimalsApi = async (apiInstance, establishment_id) => {
+  const info = await apiInstance.get(
+    `/companies/${establishment_id}/animal_register`
+  );
+  console.log("RUTA:", `/companies/${establishment_id}/animal_register`);
+  //console.log(info.data);
+  return info.data;
+};
