@@ -163,22 +163,26 @@ export const getEstablishmentSpeciesApi = async (
   }));
 };
 
+export const getExternalEstablishmentInfo = async (
+  apiInstance,
+  establishmentId
+) => {
+  let info = await apiInstance.get(`/establishment_info?id=${establishmentId}`);
+  if (!info.success) {
+    return null;
+  }
+  return info.data;
+};
+
 export const getEstablishmentPersonals = async (
   apiInstance,
   establishmentId
 ) => {
   const personals = await apiInstance.get(
-    `/establishments/${establishmentId}/personals`
+    `/establishment/${establishmentId}/personals`
   );
   if (!personals.success) {
     return null;
   }
   return personals.data;
-};
-
-export const getExternalEstablishmentInfo = async (
-  apiInstance,
-  establishmentId
-) => {
-  return await apiInstance.get(`/establishment_info/${establishmentId}`);
 };

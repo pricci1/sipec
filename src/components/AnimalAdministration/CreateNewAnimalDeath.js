@@ -83,15 +83,15 @@ const NewDeathRegistration = () => {
 
   async function getDown() {
     return [
-      { value: 1, label: "Baja tipo 1" },
-      { value: 2, label: "Baja tipo 2" }
+      { value: 1, label: "SACRIFICIO EMERGENCIA" },
+      { value: 2, label: "SIN ANTECEDENTES" }
     ];
   }
 
   async function getDownDetails() {
     return [
-      { value: 1, label: "Detalle baja tipo 1" },
-      { value: 2, label: "Detalle baja tipo 2" }
+      { value: 1, label: "ENFERMEDAD METABOLICA" },
+      { value: 2, label: "OTRO" }
     ];
   }
 

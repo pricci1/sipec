@@ -12,7 +12,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "@reach/router";
 import { getRegions, getNeighborhoods } from "../../lib/APICommon";
 import AnimalExistanceDetails from "./AnimalExistanceDetails";
-import { getAnimalExistnceDeclarations } from "../../lib/APIAnimalExistence";
+import { getAnimalExistenceDeclarations } from "../../lib/APIAnimalExistence";
+import {
+  getUserEstablishmentsApi,
+  getEstablishmentByIdApi
+} from "../../lib/ApiEstablishment";
 
 const filterDeclarations = (declarations, criteria) => {
   function notNullAndIncludes(item, thing) {
@@ -47,6 +51,12 @@ const DeclarationsList = ({ declarations }) => {
   const [modalDeclarationId, setModalDeclarationId] = useState();
   const [fetchedData, setFetchedData] = useState({});
   const [declarationList, setDeclarationList] = useState([]);
+  const [establishmentData, setEstablishmentsData] = useState([]);
+
+  async function getMyEstablishments() {
+    const data = await getUserEstablishmentsApi(api, api.currentUserId);
+    return data;
+  }
 
   useEffect(() => {
     const tasks = [
@@ -55,7 +65,28 @@ const DeclarationsList = ({ declarations }) => {
       ),
       getNeighborhoods(api).then(resp =>
         setFetchedData(oldState => ({ ...oldState, comunas: resp }))
-      )
+      ),
+      getMyEstablishments().then(res => {
+        const establishmentNames = res.map(element => ({
+          value: element.id,
+          label: element.rup + " - " + element.name
+        }));
+        setEstablishmentsData(establishmentNames);
+      }),
+      getAnimalExistenceDeclarations(api).then(res => {
+        const declarationsRecieved = res.map(d => ({
+          id: d.id,
+          rup: d.establishment_id,
+          name: d.establishment_id,
+          year: d.year,
+          neighborhood: d.establishment_id,
+          declarationDate: d.created_at,
+          registrationDate: d.created_at,
+          existence_specie_declarations: d.existence_specie_declarations,
+          type: "Anual"
+        }));
+        setDeclarationList(declarationsRecieved);
+      })
     ];
     Promise.all(tasks);
   }, []);
@@ -118,8 +149,19 @@ const DeclarationsList = ({ declarations }) => {
 
           return (
             <form onSubmit={handleSubmit}>
-              <h6>RUP</h6>
-              <Field name="rup" className="form-control" />
+              <h6>RUP - Establecimiento</h6>
+              <Selector
+                className="form-control"
+                fieldName="establishment"
+                fieldValue={values.establishment}
+                label=""
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                touched={touched.establishment}
+                options={establishmentData}
+                errors={errors.establishment}
+              />
+              {/*
               <h6>Nombre del Establecimiento</h6>
               <Field name="name" className="form-control" />
               <Selector
@@ -131,11 +173,12 @@ const DeclarationsList = ({ declarations }) => {
                 touched={touched.region}
                 options={fetchedData.regions}
                 errors={errors.region}
-              />
+              />*/}
+              <h6>Comuna</h6>
               <Selector
                 fieldName="comuna"
                 fieldValue={values.comuna}
-                label="Comuna"
+                label=""
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.comuna}

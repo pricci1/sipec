@@ -13,7 +13,7 @@ export const Selector = ({
 }) => {
   return (
     <div>
-      <div className="row" style={{ textAlign: "justify" }}>
+      <div className="row" style={{ textAlign: "right" }}>
         <div className="col-md-2" style={{ direction: "rtl" }}>
           <label htmlFor={fieldName}>{label}</label>
         </div>

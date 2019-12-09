@@ -60,7 +60,7 @@ const NewChangeDiio = () => {
   }, [establishment_id]);
 
   async function getSpecies() {
-    const data = await getSpeciesApi(api);  
+    const data = await getSpeciesApi(api);
     setspeciesData(data);
   }
   async function getEstablishments() {
@@ -79,7 +79,7 @@ const NewChangeDiio = () => {
   return (
     <div className="body">
       <h2>Nuevo Cambio de Diio</h2>
-      <br/>
+      <br />
       <Formik
         initialValues={{
           specie: "",
@@ -248,7 +248,6 @@ const NewChangeDiio = () => {
                 className="btn btn-primary"
                 type="submit"
                 disabled={!dirty || isSubmitting}
-                
               >
                 Guardar cambios
               </button>
