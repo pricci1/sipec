@@ -39,7 +39,6 @@ const NewDeathRegistration = () => {
 
   const [establishment_id, setestablishment_id] = useState("");
   const [mvasData, setmvasData] = useState([]);
-  const [speciesData, setspeciesData] = useState([]);
   const [ownersData, setownersData] = useState([]);
   useEffect(() => {
     getSpecies();
@@ -84,15 +83,15 @@ const NewDeathRegistration = () => {
 
   async function getDown() {
     return [
-      { value: 1, label: "Baja tipo 1" },
-      { value: 2, label: "Baja tipo 2" }
+      { value: 1, label: "SACRIFICIO EMERGENCIA" },
+      { value: 2, label: "SIN ANTECEDENTES" }
     ];
   }
 
   async function getDownDetails() {
     return [
-      { value: 1, label: "Detalle baja tipo 1" },
-      { value: 2, label: "Detalle baja tipo 2" }
+      { value: 1, label: "ENFERMEDAD METABOLICA" },
+      { value: 2, label: "OTRO" }
     ];
   }
 
@@ -120,9 +119,15 @@ const NewDeathRegistration = () => {
             values.death_date,
             values.diio_array
           ).then(resp => {
+            let deadAnimals = resp.not_applied;
+            if (deadAnimals.length === 0) {
+              deadAnimals = "ninguno.";
+            }
             resp.success
-              ? alert("Baja realizada")
-              : alert(`Error en la baja: ${resp.data}`);
+              ? alert(
+                  `Baja realizada. Serial de los DIIOS de animales muertos registrados anteriormente: ${resp.not_applied}.`
+                )
+              : alert(`Error en la baja. ${resp.data}`);
           });
           setSubmitting(false);
         }}
@@ -261,6 +266,7 @@ const NewDeathRegistration = () => {
                         >
                           Agregar DIIO
                         </button>
+                        <br />
                         {values.diio_array && values.diio_array.length > 0
                           ? values.diio_array.map((_, index) => (
                               <div key={index}>

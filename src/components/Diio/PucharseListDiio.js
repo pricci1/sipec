@@ -60,6 +60,7 @@ const PucharseListDiio = props => {
       <h2>{title}</h2>
       <MDBDataTable
         className="data-table"
+        sortable
         striped
         scrollY
         hover

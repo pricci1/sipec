@@ -16,6 +16,7 @@ export const getTitularEstablishments = async apiInstance => {
   return establishments.data;
 };
 
+
 export const getTitular = async apiInstance => {
   const titularId = apiInstance.titular.id;
   const titular = await apiInstance.get(

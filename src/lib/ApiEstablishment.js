@@ -32,12 +32,10 @@ export const updateSpecieChangeApi = async (
     establishment_id,
     input
   };
-  console.log(data);
   const result = await apiInstance.post(
     "/update_species_by_establishment",
     data
   );
-  console.log(result);
   return result;
 };
 
@@ -78,7 +76,6 @@ export const getEstablishmentAnimalsApi = async (
   if (dateTo != "") {
     request = request + `&fecha_hasta=${dateTo}`;
   }
-  //console.log("RUTA:", request);
 
   info = await apiInstance.get(request);
   return info.data;
@@ -166,22 +163,26 @@ export const getEstablishmentSpeciesApi = async (
   }));
 };
 
+export const getExternalEstablishmentInfo = async (
+  apiInstance,
+  establishmentId
+) => {
+  let info = await apiInstance.get(`/establishment_info?id=${establishmentId}`);
+  if (!info.success) {
+    return null;
+  }
+  return info.data[0];
+};
+
 export const getEstablishmentPersonals = async (
   apiInstance,
   establishmentId
 ) => {
   const personals = await apiInstance.get(
-    `/establishments/${establishmentId}/personals`
+    `/establishment/${establishmentId}/personals`
   );
   if (!personals.success) {
     return null;
   }
   return personals.data;
-};
-
-export const getExternalEstablishmentInfo = async (
-  apiInstance,
-  establishmentId
-) => {
-  return await apiInstance.get(`/establishment_info/${establishmentId}`);
 };

@@ -177,7 +177,6 @@ const DetailsTable = () => {
         category: category
       })
     );
-    console.log(d);
   };
   useEffect(() => {
     getAnimalsByRegister();

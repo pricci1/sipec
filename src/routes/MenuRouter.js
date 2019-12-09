@@ -7,13 +7,12 @@ import PurchaseListDiioTab from "./DIIOMenuTabs/PurchaseListDiioTab";
 import NotAppliedDroppedDiio from "../components/Diio/NotAppliedDroppedDiio";
 import NewPurchaseDiio from "../components/Diio/NewPucharseDiio";
 import StockDIIOEstablecimiento from "../pages/stockDIIOEstablecimiento";
-import ListadoBajaDIIO from "../pages/listadoBajaDIIO";
+import ListadoBajaDIIO from "../components/Diio/listadoBajaDIIO";
 import CreateAnimalMoves from "../components/AnimalMoves/CreateAnimalMoves";
 import AnimalMoves from "../pages/AnimalMoves";
 import AnimalExistence from "../components/AnimalExistence/AnimalExistence";
 import AnimalAdministrationDIIOMenu from "./AnimalAdministrationDIIOMenu";
 import ConsultDataSingleDiio from "../components/AnimalAdministration/ConsultDataSingleDiio";
-import AnimalDeathRegistrationTab from "./AnimalAdministrationMenuTabs/AnimalDeathRegistrationTab";
 import CreateNewAnimalDeath from "../components/AnimalAdministration/CreateNewAnimalDeath";
 import AnimalEstablishmentRegistry from "../components/AnimalAdministration/AnimalEstablishmentRegistry";
 import NewChangeDiio from "../components/AnimalAdministration/NewChangeDiio";
@@ -22,7 +21,6 @@ import ChangeDiioList from "../components/AnimalAdministration/ChangeDiioList";
 import ConsultDataDiioRange from "../components/AnimalAdministration/ConsultDataDiioRange";
 import MyEstablishmentMenu from "./MyEstablishmentMenu";
 import EstablishmentPeople from "../components/Establishment/EstablishmentPeople";
-
 import EstablishmentMenu from "./EstablishmentMenu";
 import MyEstablishments from "../components/Establishment/MyEstablishments";
 import ExternalEstablishments from "../components/Establishment/ExternalEstablishments";
@@ -31,6 +29,7 @@ import EstablishmentRubros from "../components/Establishment/EstablishmentRubros
 import EstablishmentSpecies from "../components/Establishment/EstablishmentSpecies";
 import EstablishmentOtherData from "../components/Establishment/EstablishmentOtherData";
 import AnimalMovement from "../components/AnimalMovement/AnimalMovement";
+import AnimalDownDIIO from "../components/AnimalAdministration/AnimalDownDIIO";
 
 const MenuRouter = () => {
   return (
@@ -43,7 +42,6 @@ const MenuRouter = () => {
           <DiioMenu path="/diio">
             <PurchaseListDiioTab path="lista-compra" />
             <NewPurchaseDiio path="compra" />
-            <StockDIIOEstablecimiento path="inventario" />
             <NotAppliedDroppedDiio path="baja-diios" />
             <ListadoBajaDIIO path="lista-baja-diios" />
           </DiioMenu>
@@ -52,7 +50,7 @@ const MenuRouter = () => {
             <CreateNewAnimalRegister path="animales/new" />
             <ConsultDataSingleDiio path="consulta-un-diio" />
             <ConsultDataDiioRange path="consulta-grupo-diio" />
-            <AnimalDeathRegistrationTab path="registro-muerte-animal" />
+            <AnimalDownDIIO path="registro-muerte-animal" />
             <CreateNewAnimalDeath path="registro-muerte-animal/nueva" />
             <ChangeDiioList path="cambio-diio" />
             <NewChangeDiio path="cambio-diio/new" />

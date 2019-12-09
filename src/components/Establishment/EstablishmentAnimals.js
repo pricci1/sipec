@@ -112,7 +112,6 @@ const EstablishmentAnimals = ({ establishmentId }) => {
 
   useEffect(() => {
     getEstablishmentRupName(establishmentId);
-    // console.log(data);
   }, []);
 
   return (

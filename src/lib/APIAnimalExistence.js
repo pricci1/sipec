@@ -1,4 +1,4 @@
-export const getAnimalExistnceDeclarations = async apiInstance => {
+export const getAnimalExistenceDeclarations = async apiInstance => {
   const declarations = await apiInstance.get("/existence_declarations");
   //   const establishments = await apiInstance.get(
   //     `/establishments`

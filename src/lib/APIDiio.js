@@ -5,6 +5,7 @@ export const postDiioPurchase = async (
   diio_ranges
 ) => {
   let data = { provider_id, establishment_id, diio_ranges };
+  console.log(data);
   const result = await apiInstance.post("/diio_purchases/range", data);
   return result;
 };
@@ -17,13 +18,14 @@ export const getProviders = async apiInstance => {
   }));
 };
 
-export const dropDiioRanges = (apiInstance, range) => {
-  let data = { range };
-  apiInstance.post("/diio_drops", data);
+export const dropDiioRanges = async (apiInstance, range) => {
+  const data = { range: range };
+  const result = await apiInstance.post("/diio_drops", data);
+  return result;
 };
 
 export const getSpecies = async apiInstance => {
-  const result = await apiInstance.get("/species");
+  const result = await apiInstance.get("/species_groups");
 
   return result.data.map(({ id, name }) => ({
     value: id,
@@ -35,6 +37,8 @@ export const getDiioPurchases = async (apiInstance, establishmentId) => {
   const diios = await apiInstance.get(
     `/diio_purchases/establishment/${establishmentId}`
   );
+  
+  
   return diios.data;
 };
 
@@ -67,6 +71,16 @@ export const getUserEstablishments = async apiInstance => {
   return establishments.data;
 };
 
+export const getDroppedDiioList = async apiInstance => {
+  const result = await apiInstance.get("/diio_drops")
+  return result.data.diios.map(({diio_id, drop_cause, created_at, specie}) => ({
+    diio_id,
+    drop_cause,
+    date: created_at.split("T")[0],
+    specie: specie.name
+  }))
+}
+
 //TODO: Create the route
 export const getDownListTableApi = async (
   apiInstance,
@@ -75,10 +89,7 @@ export const getDownListTableApi = async (
   hasta
 ) => {
   let data = { specie, desde, hasta };
-  console.log("data:", data);
-  console.log("try:", data.desde);
   const result = await apiInstance.get("/down_list_filtered", data);
-  console.log(result);
 
   return result.data.map(({ diio, reason, date, specie }) => ({
     diio: diio,
@@ -112,10 +123,7 @@ export const getStockDIIOEstablishmentTableApi = async (
     desde,
     hasta
   };
-  console.log("data:", data);
-  console.log("try:", data.desde);
   const result = await apiInstance.get("/down_list_filtered", data);
-  console.log(result);
 
   return result.data.map(({ diio, buyer, date, name }) => ({
     diio: diio,
