@@ -103,7 +103,6 @@ const NewChangeDiio = () => {
             )
           ).then(resp => {
             alert(resp.data);
-            console.log(resp);
           });
           setSubmitting(false);
         }}

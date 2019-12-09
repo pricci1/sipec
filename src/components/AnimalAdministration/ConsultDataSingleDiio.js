@@ -39,7 +39,6 @@ const ConsultDataSingleDiio = () => {
 
   async function getInfoSingleDiioConsultApi(diioId) {
     const info = await getInfoSingleDiioConsult(api, diioId);
-    console.log(info);
     setData({
       movements: info.movements.map(
         ({

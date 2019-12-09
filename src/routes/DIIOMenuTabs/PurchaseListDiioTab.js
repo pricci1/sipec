@@ -40,7 +40,6 @@ const PurchaseListDiioTab = () => {
 
   async function getUserEstablishments() {
     const data = await getUserEstablishmentsApi(api, api.titular.id);
-    console.log(data);
     return data;
     //return data.map(({ id, name }) => ({ value: id, label: name }));
   }

@@ -92,8 +92,6 @@ const AnimalMoves = () => {
     );
 
     if (originRUP ) {
-      console.log(originRUP);
-      console.log(movesMap);
       
       
       movesMap = movesMap.filter(d => d.rup_origin == originRUP.split(" ")[0]
@@ -102,32 +100,27 @@ const AnimalMoves = () => {
     }
 
     if (destinyRUP) {
-      console.log("2");
       
       movesMap = movesMap.filter(d => d.rup_destination == destinyRUP.split(" ")[0]);
 
     }
 
     if (dateDeparture != "") {
-      console.log(3);
       
       var dtd = new Date(dateDeparture);
       movesMap = movesMap.filter(d => new Date(d.departure).getTime() >= dtd);
     }
     if (dateArrival != "") {
-      console.log(4);
       
       var dta = new Date(dateArrival);
       movesMap = movesMap.filter(d => new Date(d.arrival).getTime() <= dta);
     }
     if (nForm != "") {
-      console.log(5);
       
       movesMap = movesMap.filter(d => d.id == nForm);
     }
 
     if (state != null) {
-      console.log(6);
       
       if (state == "Aceptado") {
         movesMap = movesMap.filter(
@@ -146,7 +139,6 @@ const AnimalMoves = () => {
       }
     }
     if (radioGroup != "") {
-      console.log(7);
       
       if (radioGroup == "lote") {
         movesMap = movesMap.filter(d => d.diio.length !== 0);
@@ -159,7 +151,6 @@ const AnimalMoves = () => {
     return movesMap;
   }
   if (loading) {
-    console.log("ACA");
     return (
       <div>
         <h2> Movimiento Animal </h2>{" "}
@@ -191,7 +182,6 @@ const AnimalMoves = () => {
             values.radioGroup
           ).then(response => {
             setData(response);
-            console.log(response);
           });
 
           setSubmitting(false); // This can also be used for displaying a spinner
