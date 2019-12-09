@@ -6,8 +6,7 @@ import { MDBDataTable } from "mdbreact";
 const ChangeDiioDetails = ({ changeId }) => {
   const api = useContext(ApiContext);
   const [modaldata, setmodaldata] = useState({});
-
-
+  
   async function getModalData() {
     const data = await getChangeRegistryDataApi(api, changeId);
     

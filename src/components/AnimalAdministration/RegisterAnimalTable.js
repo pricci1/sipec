@@ -19,7 +19,6 @@ export const RegisterAnimalTable = ({
   useEffect(() => {}, []);
   async function getAnimal() {
     const data1 = await getAnimalTableApi(api);
-    console.log(data1);
     
     const Data = {
       columns: [

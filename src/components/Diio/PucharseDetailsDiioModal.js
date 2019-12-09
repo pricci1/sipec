@@ -37,7 +37,6 @@ const PucharseDetailsDiioModal = props => {
       diio_range
     });
     setState({ infoAvailable: true });
-    console.log(details.brand);
   }
 
   useEffect(() => {
