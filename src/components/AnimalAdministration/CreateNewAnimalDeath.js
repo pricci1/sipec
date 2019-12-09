@@ -39,7 +39,6 @@ const NewDeathRegistration = () => {
 
   const [establishment_id, setestablishment_id] = useState("");
   const [mvasData, setmvasData] = useState([]);
-  const [speciesData, setspeciesData] = useState([]);
   const [ownersData, setownersData] = useState([]);
   useEffect(() => {
     getSpecies();

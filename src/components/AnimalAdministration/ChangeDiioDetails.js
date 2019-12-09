@@ -1,22 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
-import {getChangeRegistryDataApi} from "../../lib/ApiAnimalAdministration";
+import { getChangeRegistryDataApi } from "../../lib/ApiAnimalAdministration";
 import ApiContext from "../APIProvider";
 import { MDBDataTable } from "mdbreact";
 
 const ChangeDiioDetails = ({ changeId }) => {
   const api = useContext(ApiContext);
   const [modaldata, setmodaldata] = useState({});
-  
+
   async function getModalData() {
     const data = await getChangeRegistryDataApi(api, changeId);
-    
+    console.log(data);
     setmodaldata(data);
   }
 
-
   useEffect(() => {
     getModalData();
-    
   }, []);
   const columns = [
     {
@@ -67,7 +65,7 @@ const ChangeDiioDetails = ({ changeId }) => {
         bordered
         small
         maxHeight="250px"
-        data={{ columns: columns, rows: modaldata.changes}}
+        data={{ columns: columns, rows: modaldata.changes }}
         entriesLabel={["Entradas por página"]}
         infoLabel={["Mostrando de", "a", "entradas, de"]}
         paginationLabel={["Anterior", "Siguiente"]}
