@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import PucharseListDiio from "../../components/Diio/PucharseListDiio";
-import axios from "axios";
 
 const InventoryDiioTab = () => {
   const [data, setData] = useState([]);
-
-  const backendUrl = "http://sipec-backend.herokuapp.com";
 
   //   function getStringState(state) {
   //     if (state) {
@@ -17,7 +14,6 @@ const InventoryDiioTab = () => {
 
   async function getDiioPurchases() {
     var diios = [];
-    diios = await axios.get(`${backendUrl}/diio_drops_by_date`);
 
     setData(
       diios.data.map(

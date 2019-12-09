@@ -24,7 +24,9 @@ const Sidebar = () => {
                 <li key={index} className="nav-item">
                   <Link
                     className={`nav-link ${
-                      pathname.split("/")[1] === linkTo.split("/")[1]
+                      pathname.split("/")[1] === linkTo.split("/")[1] ||
+                      (pathname.split("/")[1] === "establecimiento" &&
+                        linkTo.split("/")[1] === "establecimientos")
                         ? "active"
                         : ""
                     }`}

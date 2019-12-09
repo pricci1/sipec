@@ -21,7 +21,7 @@ export const postDiioChange = async (
 };
 
 export const getSpeciesApi = async apiInstance => {
-  const result = await apiInstance.get("/species");
+  const result = await apiInstance.get("/species_groups");
 
   return result.data.map(({ id, name }) => ({
     value: id,
@@ -151,7 +151,7 @@ export const postAnimalDeathRegistration = async (
   death_date,
   diio_array
 ) => {
-  let result = { success: false, data: "OK" };
+  let result = { success: false, data: [], not_applied: [] };
   let year = death_date.getFullYear();
   let month = death_date.getMonth() + 1;
   let day = death_date.getDate();
@@ -163,12 +163,12 @@ export const postAnimalDeathRegistration = async (
       serial_diio: diio_array[i].diio
     };
     const response = await apiInstance.post("/report_death", data);
-    result.success = result.success || response.success;
-    if (response.success === false) {
-      result.data = response.data;
+    result.success = response.success;
+    result.data.push(response.data);
+    if (response.data.error !== undefined) {
+      result.not_applied.push(data.serial_diio);
     }
   }
-
   return result;
 };
 

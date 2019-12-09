@@ -6,6 +6,14 @@ const EstablishmentOtherData = ({ establishmentId }) => {
   const api = useContext(APIContext);
   const [sectors, setSectors] = useState([]);
   const [data, setData] = useState({});
+  const [establishmentName, setEstablishmentName] = useState("");
+
+  const getEstablishmentName = async () => {
+    const name = await api.get(`/establishments/${establishmentId}`);
+    if (name.success) {
+      setEstablishmentName(`${name.data.rup} -${name.data.name}`);
+    }
+  };
 
   const getEstablishmentSectors = async () => {
     const sectors = await api.get(
@@ -17,6 +25,7 @@ const EstablishmentOtherData = ({ establishmentId }) => {
   };
   useEffect(() => {
     getEstablishmentSectors();
+    getEstablishmentName();
   }, []);
 
   const onChange = e => {
@@ -56,8 +65,29 @@ const EstablishmentOtherData = ({ establishmentId }) => {
 
   return (
     <>
-      <h3>Editar Sectores</h3>
+      <h3>Editar Sectores y Superficie</h3>
+      <table className="table table-borderless w-50">
+        <tbody>
+          <tr>
+            <th className="text-nowrap">Establecimiento</th>
+            <td>{establishmentName}</td>
+          </tr>
+          <tr>
+            <th className="text-nowrap">Superficie en hectáreas</th>
+            <td>
+              <input type="number" name="area" className="form-control w-50" />
+            </td>
+          </tr>
+          <tr>
+            <th> </th>
+            <td>
+              <button className="btn btn-primary">Actualizar hectáreas</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
+      <hr />
       <table className="table table-borderless">
         <tbody>
           <tr>
