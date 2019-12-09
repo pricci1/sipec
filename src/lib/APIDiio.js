@@ -87,7 +87,6 @@ export const getDownListTableApi = async (
 ) => {
   let data = { specie, desde, hasta };
   const result = await apiInstance.get("/down_list_filtered", data);
-  console.log(result);
 
   return result.data.map(({ diio, reason, date, specie }) => ({
     diio: diio,
@@ -121,10 +120,7 @@ export const getStockDIIOEstablishmentTableApi = async (
     desde,
     hasta
   };
-  console.log("data:", data);
-  console.log("try:", data.desde);
   const result = await apiInstance.get("/down_list_filtered", data);
-  console.log(result);
 
   return result.data.map(({ diio, buyer, date, name }) => ({
     diio: diio,

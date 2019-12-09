@@ -47,7 +47,6 @@ const NewPurchaseDiio = () => {
   };
   async function getBuyerEstablishments() {
     const data = await getUserEstablishmentsApi(api, api.titular.id);
-    console.log(data)
     return data
   }
 

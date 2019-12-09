@@ -38,7 +38,6 @@ const AnimalEstablishmentRegistry = () => {
           // send formData to backend
           // set 'data' using 'setData' with backend's response with thisstructure:
           // [{rup, establishment, tiutlar, date, quantity},{rup, establishment, ttiutlar, date, quantity}]
-          console.log(formData);
         }}
       >
         {props => {

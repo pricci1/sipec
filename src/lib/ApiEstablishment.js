@@ -32,12 +32,10 @@ export const updateSpecieChangeApi = async (
     establishment_id,
     input
   };
-  console.log(data);
   const result = await apiInstance.post(
     "/update_species_by_establishment",
     data
   );
-  console.log(result);
   return result;
 };
 
@@ -78,7 +76,6 @@ export const getEstablishmentAnimalsApi = async (
   if (dateTo != "") {
     request = request + `&fecha_hasta=${dateTo}`;
   }
-  //console.log("RUTA:", request);
 
   info = await apiInstance.get(request);
   return info.data;

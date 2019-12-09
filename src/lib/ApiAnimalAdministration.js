@@ -192,12 +192,9 @@ export const getAnimalDeathTableFilteredApi = async (
   hasta
 ) => {
   let data = { establishment, desde, hasta };
-  console.log("data:", data);
-  console.log("try:", data.desde);
   const result = await apiInstance.get(
     `/animal_death_filtered?desde=${desde}&establishment_id=${establishment}&hasta=${hasta}`
   );
-  console.log("Result: ", result.data);
 
   return result.data.map(
     ({ diio, specie, date, down_type, detail, establishment }) => ({
@@ -213,7 +210,6 @@ export const getAnimalDeathTableFilteredApi = async (
 
 export const getMvaApi = async (apiInstance, establishment_id) => {
   const result = await apiInstance.get("/veterinarios");
-  console.log();
 
   return result.data.map(({ id, name, run }) => ({
     value: id,

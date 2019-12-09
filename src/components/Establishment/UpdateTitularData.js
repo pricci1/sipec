@@ -29,14 +29,12 @@ const UpdateTitularData = () => {
   async function getRegion() {
     const data = await getRegions(api);
     setRegionData(data);
-    console.log(data);
 
     return data;
   }
 
   async function getProvince() {
     const data = await getProvinces(api);
-    console.log(data);
     setProvinceData(data);
     return data;
   }
@@ -44,14 +42,12 @@ const UpdateTitularData = () => {
   async function getNeighborhood() {
     const data = await getNeighborhoods(api);
     setNeighborhoodData(data);
-    console.log(data);
     return data;
   }
 
   async function getClientData() {
     const data = await getTitular(api);
     setTitularInfo(data);
-    console.log(data);
     setCompany(data.company.id);
     setRegion({ value: data.region.id, label: data.region.name });
     setName(data.company.name);
