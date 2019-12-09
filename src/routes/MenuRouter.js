@@ -13,7 +13,6 @@ import AnimalMoves from "../pages/AnimalMoves";
 import AnimalExistence from "../components/AnimalExistence/AnimalExistence";
 import AnimalAdministrationDIIOMenu from "./AnimalAdministrationDIIOMenu";
 import ConsultDataSingleDiio from "../components/AnimalAdministration/ConsultDataSingleDiio";
-import AnimalDeathRegistrationTab from "./AnimalAdministrationMenuTabs/AnimalDeathRegistrationTab";
 import CreateNewAnimalDeath from "../components/AnimalAdministration/CreateNewAnimalDeath";
 import AnimalEstablishmentRegistry from "../components/AnimalAdministration/AnimalEstablishmentRegistry";
 import NewChangeDiio from "../components/AnimalAdministration/NewChangeDiio";
@@ -29,6 +28,7 @@ import UpdateTitularData from "../components/Establishment/UpdateTitularData";
 import EstablishmentRubros from "../components/Establishment/EstablishmentRubros";
 import EstablishmentSpecies from "../components/Establishment/EstablishmentSpecies";
 import EstablishmentOtherData from "../components/Establishment/EstablishmentOtherData";
+import AnimalDownDIIO from "../components/AnimalAdministration/AnimalDownDIIO";
 
 const MenuRouter = () => {
   return (
@@ -49,7 +49,7 @@ const MenuRouter = () => {
             <CreateNewAnimalRegister path="animales/new" />
             <ConsultDataSingleDiio path="consulta-un-diio" />
             <ConsultDataDiioRange path="consulta-grupo-diio" />
-            <AnimalDeathRegistrationTab path="registro-muerte-animal" />
+            <AnimalDownDIIO path="registro-muerte-animal" />
             <CreateNewAnimalDeath path="registro-muerte-animal/nueva" />
             <ChangeDiioList path="cambio-diio" />
             <NewChangeDiio path="cambio-diio/new" />

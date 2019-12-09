@@ -2,11 +2,9 @@ import React from "react";
 import AsyncSelect from "react-select/async";
 
 const EstablishmentDestinationSelect = props => {
-  console.log(props)
   if(props.establishmentDestination.lenght == 0){
     return(<div></div>)
   }
-  console.log(props)
     return (
       <>
         <label htmlFor="establishmentDestination">

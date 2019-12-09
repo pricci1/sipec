@@ -21,7 +21,7 @@ export const postDiioChange = async (
 };
 
 export const getSpeciesApi = async apiInstance => {
-  const result = await apiInstance.get("/species");
+  const result = await apiInstance.get("/species_groups");
 
   return result.data.map(({ id, name }) => ({
     value: id,
@@ -46,9 +46,9 @@ export const getOwnersApi = async (apiInstance, establishment_id) => {
   const result = await apiInstance.get(
     `/establishments/${establishment_id}/personals?role_id=5`
   );
-  return result.data.map(({ id, name, run }) => ({
+  return result.data.map(({ id, name, run, last_name }) => ({
     value: id,
-    label: run + " - " + name
+    label: run + " - " + name + " " + last_name
   }));
 };
 
@@ -153,7 +153,7 @@ export const postAnimalDeathRegistration = async (
   death_date,
   diio_array
 ) => {
-  let result = { success: false, data: "OK" };
+  let result = { success: false, data: [], not_applied: [] };
   let year = death_date.getFullYear();
   let month = death_date.getMonth() + 1;
   let day = death_date.getDate();
@@ -165,25 +165,24 @@ export const postAnimalDeathRegistration = async (
       serial_diio: diio_array[i].diio
     };
     const response = await apiInstance.post("/report_death", data);
-    result.success = result.success || response.success;
-    if (response.success === false) {
-      result.data = response.data;
+    result.success = response.success;
+    result.data.push(response.data);
+    if (response.data.error !== undefined) {
+      result.not_applied.push(data.serial_diio);
     }
   }
-
   return result;
 };
 
 export const getAnimalDeathTableApi = async apiInstance => {
   const result = await apiInstance.get("/animal_death_list");
   return result.data.map(
-    ({ diio, specie, date, down_type, detail, establishment }) => ({
-      diio: diio,
-      specie: specie,
-      date: date,
-      down_type: down_type,
-      detail: detail,
-      establishment: establishment
+    ({ diio_id, especie, death_date, death_motive, establishment }) => ({
+      diio_id,
+      specie: especie.name,
+      death_date: death_date.split("T")[0],
+      death_motive,
+      establishment: establishment.name
     })
   );
 };
@@ -194,29 +193,27 @@ export const getAnimalDeathTableFilteredApi = async (
   desde,
   hasta
 ) => {
-  let data = { establishment, desde, hasta };
-  console.log("data:", data);
-  console.log("try:", data.desde);
+  let from_url = ((desde.length > 0) ? `&desde=${desde}` : "")
+  let to_url = ((hasta.length > 0) ? `&hasta=${hasta}` : "")
+  let establishment_id_url = ((establishment.toString().length > 0) ? `&establishment_id=${establishment}` : "")
+  
   const result = await apiInstance.get(
-    `/animal_death_filtered?desde=${desde}&establishment_id=${establishment}&hasta=${hasta}`
+    `/animal_death_filtered?${from_url}${to_url}${establishment_id_url}`
   );
-  console.log("Result: ", result.data);
 
   return result.data.map(
-    ({ diio, specie, date, down_type, detail, establishment }) => ({
-      diio: diio,
-      specie: specie,
-      date: date,
-      down_type: down_type,
-      detail: detail,
-      establishment: establishment
+    ({ diio_id, especie, death_date, death_motive, establishment }) => ({
+      diio_id,
+      specie: especie.name,
+      death_date: death_date.split("T")[0],
+      death_motive,
+      establishment: establishment.name
     })
   );
 };
 
-export const getMvaApi = async (apiInstance, establishment_id) => {
+export const getMvaApi = async (apiInstance) => {
   const result = await apiInstance.get("/veterinarios");
-  console.log();
 
   return result.data.map(({ id, name, run }) => ({
     value: id,
@@ -228,9 +225,14 @@ export const getAnimalsByRegisterApi = async apiInstance => {
   return result;
 };
 
-export const getInfoDiioRange = async (apiInstance, diioStart, diioEnd) => {
+export const getInfoDiioRange = async (
+  apiInstance,
+  diioStart,
+  diioEnd,
+  user_id
+) => {
   const info = await apiInstance.get(
-    `/diio/range?desde=${diioStart}&hasta=${diioEnd}`
+    `/diio/range?desde=${diioStart}&hasta=${diioEnd}&id=${user_id}`
   );
   return info.data;
 };
