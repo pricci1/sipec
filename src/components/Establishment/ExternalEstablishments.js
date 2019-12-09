@@ -29,9 +29,7 @@ const mockData = {
 const ExternalEstablishments = () => {
   const api = useContext(APIContext);
   const [selectedEstablishment, setSelectedEstablishment] = useState();
-  const [fetchedData, setFetchedData] = useState(
-    getEstablishmentInfo(selectedEstablishment)
-  );
+  const [fetchedData, setFetchedData] = useState();
 
   async function getEstablishments() {
     const data = await getEstablishmentsApi(api);
@@ -39,7 +37,8 @@ const ExternalEstablishments = () => {
   }
 
   async function getEstablishmentInfo(establishment) {
-    const data = await getExternalEstablishmentInfo(api, establishment);
+    const data = await getExternalEstablishmentInfo(api, establishment.value);
+    console.log(establishment.value, data);
     return data;
   }
 
@@ -49,6 +48,7 @@ const ExternalEstablishments = () => {
       <form
         onSubmit={e => {
           e.preventDefault();
+          e.setFetchedData = getEstablishmentInfo(selectedEstablishment);
         }}
       >
         <div className="form-group row">
@@ -72,7 +72,6 @@ const ExternalEstablishments = () => {
           disabled={!selectedEstablishment}
           type="submit"
           className="btn btn-primary mb-2"
-          onClick={setFetchedData}
         >
           Buscar
         </button>

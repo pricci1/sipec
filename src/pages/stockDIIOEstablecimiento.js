@@ -84,6 +84,12 @@ const StockDIIOEstablecimiento = () => {
   return (
     <div className="body">
       <h2>Consulta Stock DIIO Establecimiento</h2>
+      <hr
+        style={{
+          color: "grey",
+          height: 1
+        }}
+      />
       <h4>Buscar Folio Productor</h4>
       <Formik
         initialValues={{
@@ -116,64 +122,89 @@ const StockDIIOEstablecimiento = () => {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h6>Comprador</h6>
-            <Field name="comprador" className="form-control" />
-            <h6>Vendedor</h6>
-            <Field name="vendedor" className="form-control" />
-            <h6>Establecimiento</h6>
-            <Field name="establecimiento" className="form-control" />
-            <h6>RUP</h6>
-            <Field name="rup" className="form-control" />
-            <br></br>
-            <Selector
-              fieldName="brand"
-              fieldValue={values.specie}
-              labelName="Marca"
-              onChange={(field, fieldValue) => {
-                setFieldValue(field, fieldValue.label);
-              }}
-              onBlur={setFieldTouched}
-              touched={touched.selectedSpecie}
-              data={getBrandsAPI}
-            />
-            <Selector
-              fieldName="tipo"
-              fieldValue={values.specie}
-              labelName="Tipo"
-              onChange={(field, fieldValue) => {
-                setFieldValue(field, fieldValue.label);
-              }}
-              onBlur={setFieldTouched}
-              touched={touched.selectedSpecie}
-              data={getModelsAPI}
-            />
-            <Selector
-              fieldName="specie"
-              fieldValue={values.specie}
-              labelName="Especie"
-              onChange={(field, fieldValue) => {
-                setFieldValue(field, fieldValue.label);
-              }}
-              onBlur={setFieldTouched}
-              touched={touched.selectedSpecie}
-              data={getSpeciesAPI}
-            />
-            <h6>Fecha</h6>
-            <div className="fecha">
-              <Datepicker
-                placeholder="Desde"
-                selected={values.desde}
-                dateFormat="MMMM d, yyyy"
-                className="form-control"
-                name="desde"
+            <div className="row mb-1 mt-3" style={{ textAlign: "right" }}>
+              <div className="col-md-2" style={{ direction: "rtl" }}>
+                <label>Comprador</label>
+              </div>
+              <Field name="comprador" className="form-control col-md-4" />
+            </div>
+            <div className="row mb-1 mt-3" style={{ textAlign: "right" }}>
+              <div className="col-md-2" style={{ direction: "rtl" }}>
+                <label>Vendedor</label>
+              </div>
+              <Field name="vendedor" className="form-control col-md-4" />
+            </div>
+            <div className="row mb-1 mt-3" style={{ textAlign: "right" }}>
+              <div className="col-md-2" style={{ direction: "rtl" }}>
+                <label>Establecimiento</label>
+              </div>
+              <Field name="establecimiento" className="form-control col-md-4" />
+            </div>
+            <div className="row mb-1 mt-3" style={{ textAlign: "right" }}>
+              <div className="col-md-2" style={{ direction: "rtl" }}>
+                <label>RUP</label>
+              </div>
+              <Field name="rup" className="form-control col-md-4" />
+            </div>
+            <div className="mb-1 mt-3">
+              <Selector
+                fieldName="brand"
+                fieldValue={values.specie}
+                labelName="Marca"
+                onChange={(field, fieldValue) => {
+                  setFieldValue(field, fieldValue.label);
+                }}
+                onBlur={setFieldTouched}
+                touched={touched.selectedSpecie}
+                data={getBrandsAPI}
               />
-              <Datepicker
-                selected={values.hasta}
-                dateFormat="MMMM d, yyyy"
-                className="form-control"
-                name="hasta"
-                placeholder="Hasta"
+            </div>
+            <div className="mb-1 mt-3">
+              <Selector
+                fieldName="tipo"
+                fieldValue={values.specie}
+                labelName="Tipo"
+                onChange={(field, fieldValue) => {
+                  setFieldValue(field, fieldValue.label);
+                }}
+                onBlur={setFieldTouched}
+                touched={touched.selectedSpecie}
+                data={getModelsAPI}
               />
+            </div>
+            <div className="mb-1 mt-3">
+              <Selector
+                fieldName="specie"
+                fieldValue={values.specie}
+                labelName="Especie"
+                onChange={(field, fieldValue) => {
+                  setFieldValue(field, fieldValue.label);
+                }}
+                onBlur={setFieldTouched}
+                touched={touched.selectedSpecie}
+                data={getSpeciesAPI}
+              />
+            </div>
+            <div className="row mb-1 mt-3" style={{ textAlign: "right" }}>
+              <div className="col-md-2" style={{ direction: "rtl" }}>
+                <label>Fecha</label>
+              </div>
+              <div className="fecha col-md-4">
+                <Datepicker
+                  placeholder="Desde"
+                  selected={values.desde}
+                  dateFormat="MMMM d, yyyy"
+                  className="form-control"
+                  name="desde"
+                />
+                <Datepicker
+                  selected={values.hasta}
+                  dateFormat="MMMM d, yyyy"
+                  className="form-control"
+                  name="hasta"
+                  placeholder="Hasta"
+                />
+              </div>
             </div>
             <div className="row" style={{ justifyContent: "flex-end" }}>
               <div className="col-md-7">
@@ -197,6 +228,12 @@ const StockDIIOEstablecimiento = () => {
         )}
       </Formik>
 
+      <hr
+        style={{
+          color: "grey",
+          height: 1
+        }}
+      />
       <div>
         <InventoryDiioTab data={data} />
       </div>
