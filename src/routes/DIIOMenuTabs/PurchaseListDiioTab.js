@@ -103,7 +103,7 @@ const PurchaseListDiioTab = () => {
       {state.infoAvailable ? (
         <PucharseListDiio
           headers={[
-            "Registro",
+            "Diio",
             "Vendedor",
             "Establecimiento comprador",
             "Fecha",
