@@ -9,7 +9,6 @@ const ChangeDiioDetails = ({ changeId }) => {
 
   async function getModalData() {
     const data = await getChangeRegistryDataApi(api, changeId);
-    console.log(data);
     setmodaldata(data);
   }
 

@@ -101,7 +101,10 @@ export const getChangeDiioDataApi = async (apiInstance, titular_id) => {
   const result = await apiInstance.get(`/diio_changes_details/${titular_id}`);
   return result;
 };
-
+export const getChangeDiioDataFilteredApi = async (apiInstance, establishment_id, desde, hasta) => {
+  const result = await apiInstance.get(`/diio_changes_details_filtered/?desde=${desde}&hasta=${hasta}&establishment_id=${establishment_id}`);
+  return result;
+};
 export const getChangeRegistryDataApi = async (apiInstance, registry_id) => {
   const result = await apiInstance.get(
     `/diio_changes_by_batch?diio_batch_id=${registry_id}`
@@ -235,5 +238,14 @@ export const getInfoDiioRange = async (
   const info = await apiInstance.get(
     `/diio/range?desde=${diioStart}&hasta=${diioEnd}&id=${user_id}`
   );
+  return info.data;
+};
+
+export const getAnimalsApi = async (apiInstance, establishment_id) => {
+  const info = await apiInstance.get(
+    `/companies/${establishment_id}/animal_register`
+  );
+  console.log("RUTA:", `/companies/${establishment_id}/animal_register`);
+  //console.log(info.data);
   return info.data;
 };
