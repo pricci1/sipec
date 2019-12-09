@@ -7,7 +7,7 @@ import Selector from "../Diio/Utilities/FormikSelector";
 import { AnimalDownTable } from "./AnimalDownDIIOTable";
 import { Link } from "@reach/router";
 import {
-  getEstablishmentsApi,
+  getUserEstablishmentsApi,
   getAnimalDeathTableApi,
   getAnimalDeathTableFilteredApi
 } from "../../lib/ApiAnimalAdministration";
@@ -18,38 +18,22 @@ const AnimalDownDIIO = () => {
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
   const [modalRegistryId, setModalRegistryId] = useState();
   const [data, setData] = useState([]);
-  useEffect(() => {}, []);
+  
 
   async function getEstablishments() {
-    const data = await getEstablishmentsApi(api);
-    return data;
+    const result = await getUserEstablishmentsApi(api, api.titular.id);
+    return result;
   }
 
-  async function getDataTable(establishment, desde, hasta) {
-
-    var new_desde = new String();
-    var new_hasta = new String();
-    new_desde =
-      desde.getFullYear().toString() +
-      "-" +
-      (desde.getMonth() + 1).toString() +
-      "-" +
-      desde.getDate().toString();
-    new_hasta =
-      hasta.getFullYear().toString() +
-      "-" +
-      (hasta.getMonth() + 1).toString() +
-      "-" +
-      hasta.getDate().toString();
-    const data = await getAnimalDeathTableFilteredApi(
-      api,
-      establishment.value,
-      new_desde,
-      new_hasta
-    );
+  async function getTableData() {
+    const data = await getAnimalDeathTableApi(api);
+    console.log(data);
     setData(data);
-    return data;
   }
+
+  useEffect(() => {
+    getTableData();
+  }, []);
   
 
   return (

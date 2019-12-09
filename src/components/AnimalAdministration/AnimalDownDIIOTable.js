@@ -1,17 +1,26 @@
-import React, { useContext, useEffect } from "react";
+import React, {useEffect } from "react";
 import { MDBDataTable } from "mdbreact";
-import ApiContext from "../APIProvider";
-import {
-  getAnimalDeathTableApi,
-  getAnimalDeathTableFilteredApi
-} from "../../lib/ApiAnimalAdministration";
 
-export const AnimalDownTable = ({
-  data,
-  setModalRegistryId,
-  toggleModal
-}) => {
-  const api = useContext(ApiContext);
+
+export const AnimalDownTable = ({ data, setModalRegistryId, toggleModal }) => {
+  let rows = [];
+  useEffect(() => {
+    if (data) {
+      
+      console.log(data)
+      data.map(d => {
+        rows.push({
+          diio: d.diio_id,
+          specie: d.specie,
+          death_date: d.death_date,
+          establishment: d.establishment,
+          death_motive: d.death_motive
+        });
+      });
+    }
+    
+  }, [data]);
+
   var columns = [
     {
       label: "DIIO",
@@ -26,8 +35,8 @@ export const AnimalDownTable = ({
       width: 150
     },
     {
-      label: "Fecha de Registro",
-      field: "date",
+      label: "Fecha de Muerte",
+      field: "death_date",
       sort: "asc",
       width: 150
     },
@@ -39,31 +48,11 @@ export const AnimalDownTable = ({
     },
     {
       label: "Tipo baja",
-      field: "down_type",
-      sort: "asc",
-      width: 150
-    },
-    {
-      label: "Detalle",
-      field: "detail",
+      field: "death_motive",
       sort: "asc",
       width: 150
     }
   ];
-  let rows = [];
-
-  useEffect(() => {
-    data.map(animals => {
-      rows.push({
-        diio: animals.diio,
-        specie: animals.specie,
-        date: animals.date,
-        establishment: animals.establishment.name,
-        down_type: animals.down_type,
-        detail: animals.detail
-      });
-    });
-  }, [data]);
 
   return (
     <>
@@ -79,7 +68,7 @@ export const AnimalDownTable = ({
         data={{
           columns: columns,
           rows: rows
-        }} // TODO: change with 'data'
+        }} 
         entriesLabel={["Entradas por página"]}
         infoLabel={["Mostrando de", "a", "entradas, de"]}
         paginationLabel={["Anterior", "Siguiente"]}
