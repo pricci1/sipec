@@ -171,7 +171,7 @@ export const getExternalEstablishmentInfo = async (
   if (!info.success) {
     return null;
   }
-  return info.data;
+  return info.data[0];
 };
 
 export const getEstablishmentPersonals = async (
