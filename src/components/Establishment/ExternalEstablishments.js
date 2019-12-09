@@ -1,24 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import APIContext from "../APIProvider";
-import AsyncSelect from "react-select/async";
+import { Formik } from "formik";
+import Selector from "../Diio/Utilities/FormikSelector";
 import { getEstablishmentsApi } from "../../lib/ApiAnimalAdministration";
 import { getExternalEstablishmentInfo } from "../../lib/ApiEstablishment";
 
-const promiseOptions = inputValue =>
-  new Promise(resolve => {
-    setTimeout(() => {
-      !!inputValue && resolve([{ value: 1, label: inputValue }]);
-    }, 1000);
-  });
-
 const mockData = {
-  rup: "1.1.1.1",
+  rup: "123456789",
   region: "Valparaiso",
   neighborhood: "Casablanca",
-  name: "Los Castaños",
+  name: "Pajaro Bobo",
   address: "El Estero, Lote 42",
-  locationX: "12.12312",
-  locationY: "-2.3323",
+  coordinate_x: "12.12312",
+  coordinate_y: "-2.3323",
   huso: "19",
   anabolics: "No",
   pabco: "--",
@@ -29,57 +23,79 @@ const mockData = {
 const ExternalEstablishments = () => {
   const api = useContext(APIContext);
   const [selectedEstablishment, setSelectedEstablishment] = useState();
-  const [fetchedData, setFetchedData] = useState();
-
+  const [fetchedData, setFetchedData] = useState(mockData);
+  const [currentestablishments, setcurrentestablishments] = useState([]);
+  useEffect(() => {
+    getEstablishments();
+  }, []);
   async function getEstablishments() {
     const data = await getEstablishmentsApi(api);
-    return data;
+    console.log(data);
+    setcurrentestablishments(data);
   }
 
   async function getEstablishmentInfo(establishment) {
     const data = await getExternalEstablishmentInfo(api, establishment.value);
-    console.log(establishment.value, data);
-    return data;
+    setFetchedData(data);
   }
 
   return (
     <div>
-      <h2>Establecimientos externos</h2>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          e.setFetchedData = getEstablishmentInfo(selectedEstablishment);
+      <h2 className="mt-2">Establecimientos externos</h2>
+      <Formik
+        initialValues={{
+          establishment: ""
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          console.log(values.establishment);
         }}
       >
-        <div className="form-group row">
-          <label htmlFor="establishment" className="col-sm-2 col-form-label">
-            Establecimiento
-          </label>
-          <div className="col-sm-10">
-            <AsyncSelect
-              id="establishment"
-              placeholder="RUP - Nombre"
-              cacheOptions
-              defaultOptions
-              loadOptions={getEstablishments}
-              onChange={setSelectedEstablishment}
-              onBlur={setSelectedEstablishment}
-              value={selectedEstablishment}
-            />
-          </div>
-        </div>
-        <button
-          disabled={!selectedEstablishment}
-          type="submit"
-          className="btn btn-primary mb-2"
-        >
-          Buscar
-        </button>
-      </form>
+        {props => {
+          const {
+            values,
+            touched,
+            errors,
+            dirty,
+            isSubmitting,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            setFieldValue,
+            setFieldTouched,
+            handleReset
+          } = props;
+          return (
+            <form onSubmit={handleSubmit}>
+              <Selector
+                fieldName="establishment"
+                fieldValue={values.establishment}
+                labelName="Establecimiento"
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                touched={touched.establishment}
+                options={currentestablishments}
+                errors={errors.establishment}
+              />
+              <div className="row" style={{ justifyContent: "flex-end" }}>
+                <div className="col-md-7">
+                  <button
+                    className="btn btn-outline-secondary mt-4"
+                    type="submit"
+                    disabled={!dirty || isSubmitting}
+                  >
+                    Buscar
+                  </button>
+                </div>
+              </div>
+            </form>
+          );
+        }}
+      </Formik>
       {!!fetchedData && (
         <>
-          <h2>Datos establecimiento</h2>
-          <table className="table">
+          <hr style={{ color: "grey", height: 1 }} />
+          <h4>Datos establecimiento</h4>
+          <table className="table table-striped">
             <tbody>
               <tr>
                 <th className="text-nowrap">RUP</th>
@@ -91,47 +107,50 @@ const ExternalEstablishments = () => {
               </tr>
               <tr>
                 <th className="text-nowrap">Región</th>
-                <td>{fetchedData.region}</td>
+                <td className="col-md-4">{fetchedData.region}</td>
               </tr>
               <tr>
                 <th className="text-nowrap">Comuna</th>
-                <td>{fetchedData.neighborhood}</td>
+                <td className="col-md-4">{fetchedData.neighborhood}</td>
               </tr>
               <tr>
                 <th className="text-nowrap">Dirección</th>
-                <td>{fetchedData.address}</td>
+                <td className="col-md-4">{fetchedData.address}</td>
               </tr>
               <tr>
                 <th className="text-nowrap">Cooredenada X</th>
-                <td>{fetchedData.coordinate_x}</td>
+                <td className="col-md-4">{fetchedData.coordinate_x}</td>
               </tr>
               <tr>
                 <th className="text-nowrap">Coordenada Y</th>
-                <td>{fetchedData.coordinate_y}</td>
+                <td className="col-md-4">{fetchedData.coordinate_y}</td>
               </tr>
               <tr>
                 <th className="text-nowrap">Huso</th>
-                <td>{fetchedData.huso}</td>
+                <td className="col-md-4">{fetchedData.huso}</td>
               </tr>
               <tr>
                 <th className="text-nowrap">Usa anabólicos</th>
-                <td>{fetchedData.anabolics}</td>
+                <td className="col-md-4">{fetchedData.anabolics}</td>
               </tr>
               <tr>
                 <th className="text-nowrap">Estado PABCO</th>
-                <td>{fetchedData.pabco}</td>
+                <td className="col-md-4">{fetchedData.pabco}</td>
               </tr>
               <tr>
                 <th className="text-nowrap">Titular</th>
-                <td>
+                <td className="col-md-4">
                   {/* {fetchedData.titular.lastname}, {fetchedData.titular.name} */}
                   {"name y lastname titular"}
                 </td>
               </tr>
               <tr>
                 <th className="text-nowrap">RUT Titular</th>
-                {/* <td>{fetchedData.titular.run}</td> */}
-                {"run"}
+                <td className="col-md-4">
+                  {" "}
+                  {/* <td>{fetchedData.titular.run}</td> */}
+                  {"run"}
+                </td>
               </tr>
             </tbody>
           </table>

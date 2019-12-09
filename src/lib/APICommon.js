@@ -16,8 +16,24 @@ export const getTitularEstablishments = async apiInstance => {
   return establishments.data;
 };
 
+
+export const getTitular = async apiInstance => {
+  const titularId = apiInstance.titular.id;
+  const titular = await apiInstance.get(
+    `/company_user/`,{
+      user_id: titularId
+    }
+  );
+  return titular.data;
+};
+
 export const getRegions = async apiInstance => {
   const regions = await apiInstance.get(`/regions`);
+  return regions.data.map(({ id: value, name: label }) => ({ value, label }));
+};
+
+export const getProvinces = async apiInstance => {
+  const regions = await apiInstance.get(`/provinces`);
   return regions.data.map(({ id: value, name: label }) => ({ value, label }));
 };
 
@@ -33,3 +49,4 @@ export const getSpeciesGroups = async apiInstance => {
     label
   }));
 };
+

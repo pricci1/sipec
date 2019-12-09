@@ -24,19 +24,16 @@ const StockDIIOEstablecimiento = () => {
 
   async function getSpeciesAPI() {
     const data = await getSpecies(api);
-    console.log(data);
     return data;
   }
 
   async function getBrandsAPI() {
     const data = await getBrands(api);
-    console.log(data);
     return data;
   }
 
   async function getModelsAPI() {
     const data = await getModels(api);
-    console.log(data);
     return data;
   }
 

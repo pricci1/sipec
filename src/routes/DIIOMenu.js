@@ -6,7 +6,7 @@ import "./DIIOMenu.css";
 const menuLinks = [
   { text: "Lista Compra", linkTo: "lista-compra" },
   { text: "Compra", linkTo: "compra" },
-  { text: "Inventario", linkTo: "inventario" },
+
   { text: "DIIOs de Baja", linkTo: "baja-diios" },
   { text: "Lista Baja de DIIOs", linkTo: "lista-baja-diios" }
 ];

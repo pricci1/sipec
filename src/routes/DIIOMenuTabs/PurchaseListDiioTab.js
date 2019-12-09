@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import PucharseListDiio from "../../components/Diio/PucharseListDiio";
 import APIContext from "../../components/APIProvider";
-import { getDiioPurchases, getUserEstablishments } from "../../lib/APIDiio";
+import { getDiioPurchases } from "../../lib/APIDiio";
+import { getUserEstablishmentsApi } from "../../lib/ApiAnimalAdministration";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Selector from "../../components/Diio/Utilities/FormikSelector";
@@ -37,13 +38,9 @@ const PurchaseListDiioTab = () => {
     setState({ infoAvailable: true });
   }
 
-  async function getUserEstablishmentsApi() {
-    const data = await getUserEstablishments(api);
-    return [
-      { value: 1, label: "Pajaro Bobo" },
-      { value: 2, label: "Cimera Brindacolobitos" },
-      { value: 3, label: "Bigotes" }
-    ];
+  async function getUserEstablishments() {
+    const data = await getUserEstablishmentsApi(api, api.titular.id);
+    return data;
     //return data.map(({ id, name }) => ({ value: id, label: name }));
   }
 
@@ -93,7 +90,7 @@ const PurchaseListDiioTab = () => {
                   setFieldValue(field, fieldValue);
                 }}
                 onBlur={setFieldTouched}
-                data={getUserEstablishmentsApi}
+                data={getUserEstablishments}
               />
               <button type="submit" className="btn btn-primary mt-1">
                 Filtrar
@@ -116,7 +113,7 @@ const PurchaseListDiioTab = () => {
             getStringRegister(purchase.id),
             purchase.provider_name,
             purchase.purchaser_name,
-            purchase.date,
+            purchase.date.split("T")[0],
             getStringState(purchase.confirmed),
             purchase.purchaser_rut
           ])}
