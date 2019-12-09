@@ -191,10 +191,13 @@ export const getAnimalDeathTableFilteredApi = async (
   desde,
   hasta
 ) => {
-  let from_url = ((desde.length > 0) ? `&desde=${desde}` : "")
-  let to_url = ((hasta.length > 0) ? `&hasta=${hasta}` : "")
-  let establishment_id_url = ((establishment.toString().length > 0) ? `&establishment_id=${establishment}` : "")
-  
+  let from_url = desde.length > 0 ? `&desde=${desde}` : "";
+  let to_url = hasta.length > 0 ? `&hasta=${hasta}` : "";
+  let establishment_id_url =
+    establishment.toString().length > 0
+      ? `&establishment_id=${establishment}`
+      : "";
+
   const result = await apiInstance.get(
     `/animal_death_filtered?${from_url}${to_url}${establishment_id_url}`
   );
@@ -210,7 +213,7 @@ export const getAnimalDeathTableFilteredApi = async (
   );
 };
 
-export const getMvaApi = async (apiInstance) => {
+export const getMvaApi = async apiInstance => {
   const result = await apiInstance.get("/veterinarios");
 
   return result.data.map(({ id, name, run }) => ({
