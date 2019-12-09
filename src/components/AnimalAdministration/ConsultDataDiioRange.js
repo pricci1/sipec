@@ -21,7 +21,8 @@ const ConsultDataDiioRange = () => {
   }
 
   async function getInfoDiioRangeApiConsult(diioStart, diioEnd) {
-    const data = await getInfoDiioRange(api, diioStart, diioEnd);
+    var number = parseInt(diioEnd, 10) + 1;
+    const data = await getInfoDiioRange(api, diioStart, number, api.titular.id);
 
     setData(
       data.map(
@@ -84,7 +85,7 @@ const ConsultDataDiioRange = () => {
                 }}
                 value={values.diioStart}
               />
-              <label htmlFor="diio fin">DIIO fin (exclusivo):</label>
+              <label htmlFor="diio fin">DIIO fin:</label>
               <input
                 id="diioEnd"
                 name="diioEnd"
