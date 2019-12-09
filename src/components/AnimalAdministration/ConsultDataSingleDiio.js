@@ -164,22 +164,30 @@ const ConsultDataSingleDiio = () => {
           } = props;
           return (
             <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
-              <label htmlFor="diio">DIIO:</label>
-              <input
-                id="diio"
-                name="diio"
-                className="diio"
-                type="number"
-                style={{ marginLeft: 10, marginRight: 10 }}
-                onBlur={setFieldTouched}
-                onChange={val => {
-                  setFieldValue("diio", val.target.value);
-                }}
-                value={values.diio}
-              />
-              <button type="submit" className="btn btn-primary">
-                Buscar
-              </button>
+              <div className="form-group row">
+                <label htmlFor="diio" className="col-sm-1 col-form-label">
+                  DIIO:
+                </label>
+                <div className="col-sm-3">
+                  <input
+                    id="diio"
+                    name="diio"
+                    className="diio form-control"
+                    type="number"
+                    style={{ marginLeft: 10, marginRight: 10 }}
+                    onBlur={setFieldTouched}
+                    onChange={val => {
+                      setFieldValue("diio", val.target.value);
+                    }}
+                    value={values.diio}
+                  />
+                </div>
+                <div className="col-sm-2">
+                  <button type="submit" className="btn btn-primary">
+                    Buscar
+                  </button>
+                </div>
+              </div>
             </form>
           );
         }}

@@ -46,9 +46,9 @@ export const getOwnersApi = async (apiInstance, establishment_id) => {
   const result = await apiInstance.get(
     `/establishments/${establishment_id}/personals?role_id=5`
   );
-  return result.data.map(({ id, name, run }) => ({
+  return result.data.map(({ id, name, run, last_name }) => ({
     value: id,
-    label: run + " - " + name
+    label: run + " - " + name + " " + last_name
   }));
 };
 
