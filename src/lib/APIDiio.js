@@ -5,6 +5,7 @@ export const postDiioPurchase = async (
   diio_ranges
 ) => {
   let data = { provider_id, establishment_id, diio_ranges };
+  console.log(data);
   const result = await apiInstance.post("/diio_purchases/range", data);
   return result;
 };
@@ -36,6 +37,8 @@ export const getDiioPurchases = async (apiInstance, establishmentId) => {
   const diios = await apiInstance.get(
     `/diio_purchases/establishment/${establishmentId}`
   );
+  
+  
   return diios.data;
 };
 

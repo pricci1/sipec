@@ -16,17 +16,18 @@ const PurchaseListDiioTab = () => {
 
   async function getDiioPurchasesApi(establishmentId) {
     const data = await getDiioPurchases(api, establishmentId);
-
+    console.log(data);
     var purchaser_rut = data.establishment.rup;
     var purchaser_name = data.establishment.name;
     setData(
       data.purchases.map(
         ({
           provider_name,
-          purchase: { id, confirmed, brand, created_at: date }
+          purchase: {confirmed, brand, created_at: date },
+          serial_id
         }) => ({
           provider_name,
-          id,
+          id: serial_id,
           confirmed,
           brand,
           date,
