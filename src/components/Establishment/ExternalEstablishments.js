@@ -46,6 +46,7 @@ const ExternalEstablishments = () => {
           establishment: ""
         }}
         onSubmit={(values, { setSubmitting }) => {
+          
           getEstablishmentInfo(values.establishment);
           setSubmitting(false);
         }}
