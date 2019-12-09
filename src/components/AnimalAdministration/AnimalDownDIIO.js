@@ -27,7 +27,6 @@ const AnimalDownDIIO = () => {
 
   async function getTableData() {
     const data = await getAnimalDeathTableApi(api);
-    console.log(data);
     setData(data);
   }
 
@@ -46,7 +45,14 @@ const AnimalDownDIIO = () => {
             date: { from: "", to: "" }
           }}
           onSubmit={(values, { setSubmitting }) => {
-            getDataTable(values.establishment, values.desde, values.hasta);
+            getAnimalDeathTableFilteredApi(
+              api,
+              values.establishment,
+              values.date.from,
+              values.date.to
+            ).then(resp => {
+              setData(resp)
+            })
             setSubmitting(false);
           }}
         >

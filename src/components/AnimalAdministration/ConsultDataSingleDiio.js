@@ -50,7 +50,6 @@ const ConsultDataSingleDiio = () => {
   async function getInfoSingleDiioConsultApi(diioId) {
     setMessage({ show: "Cargando..." });
     const info = await getInfoSingleDiioConsult(api, diioId);
-    console.log(info);
     if (typeof info !== "undefined") {
       setData({
         movements: info.movements.map(

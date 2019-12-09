@@ -7,7 +7,6 @@ export const AnimalDownTable = ({ data, setModalRegistryId, toggleModal }) => {
   useEffect(() => {
     if (data) {
       
-      console.log(data)
       data.map(d => {
         rows.push({
           diio: d.diio_id,
