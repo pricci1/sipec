@@ -7,8 +7,8 @@ import { getExternalEstablishmentInfo } from "../../lib/ApiEstablishment";
 
 const mockData = {
   rup: "",
-  region: {name: ""},
-  neighborhood: {name:""},
+  region: { name: "" },
+  neighborhood: { name: "" },
   name: "",
   address: "",
   coordinate_x: "",
@@ -16,7 +16,7 @@ const mockData = {
   huso: "",
   anabolics: "",
   pabco: "",
-  titular: {name: "", last_name: ""}
+  titular: { name: "", last_name: "" }
 };
 
 const ExternalEstablishments = () => {
@@ -30,14 +30,12 @@ const ExternalEstablishments = () => {
   async function getEstablishments() {
     const data = await getEstablishmentsApi(api);
     setEstablishmentsData(data);
-    
   }
 
   async function getEstablishmentInfo(establishment) {
     const data = await getExternalEstablishmentInfo(api, establishment.value);
     console.log(data);
     setFetchedData(data);
-    
   }
 
   return (
@@ -48,8 +46,7 @@ const ExternalEstablishments = () => {
           establishment: ""
         }}
         onSubmit={(values, { setSubmitting }) => {
-          console.log(values.establishment.value)
-          getEstablishmentInfo(values.establishment)
+          getEstablishmentInfo(values.establishment);
           setSubmitting(false);
         }}
       >
@@ -94,70 +91,68 @@ const ExternalEstablishments = () => {
           );
         }}
       </Formik>
-        <>
-          <hr style={{ color: "grey", height: 1 }} />
-          <h4>Datos establecimiento</h4>
-          <table className="table table-striped">
-            <tbody>
-              <tr>
-                <th className="text-nowrap">RUP</th>
-                <td>{fetchedData.rup}</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Nombre</th>
-                <td>{fetchedData.name}</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Región</th>
-                <td className="col-md-4">{fetchedData.region.name}</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Comuna</th>
-                <td className="col-md-4">{fetchedData.neighborhood.name}</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Dirección</th>
-                <td className="col-md-4">{fetchedData.address}</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Cooredenada X</th>
-                <td className="col-md-4">{fetchedData.coordinate_x}</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Coordenada Y</th>
-                <td className="col-md-4">{fetchedData.coordinate_y}</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Huso</th>
-                <td className="col-md-4">{fetchedData.huso}</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Usa anabólicos</th>
-                <td className="col-md-4">{fetchedData.anabolics}</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Estado PABCO</th>
-                <td className="col-md-4">{fetchedData.pabco}</td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">Titular</th>
-                <td className="col-md-4">
-                  {fetchedData.titular.name} {fetchedData.titular.last_name}
-                  
-                </td>
-              </tr>
-              <tr>
-                <th className="text-nowrap">RUT Titular</th>
-                <td className="col-md-4">
-                  {" "}
-                  {/* <td>{fetchedData.titular.run}</td> */}
-                  {"run"}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </>
-      
+      <>
+        <hr style={{ color: "grey", height: 1 }} />
+        <h4>Datos establecimiento</h4>
+        <table className="table table-striped">
+          <tbody>
+            <tr>
+              <th className="text-nowrap">RUP</th>
+              <td>{fetchedData.rup}</td>
+            </tr>
+            <tr>
+              <th className="text-nowrap">Nombre</th>
+              <td>{fetchedData.name}</td>
+            </tr>
+            <tr>
+              <th className="text-nowrap">Región</th>
+              <td className="col-md-4">{fetchedData.region.name}</td>
+            </tr>
+            <tr>
+              <th className="text-nowrap">Comuna</th>
+              <td className="col-md-4">{fetchedData.neighborhood.name}</td>
+            </tr>
+            <tr>
+              <th className="text-nowrap">Dirección</th>
+              <td className="col-md-4">{fetchedData.address}</td>
+            </tr>
+            <tr>
+              <th className="text-nowrap">Cooredenada X</th>
+              <td className="col-md-4">{fetchedData.coordinate_x}</td>
+            </tr>
+            <tr>
+              <th className="text-nowrap">Coordenada Y</th>
+              <td className="col-md-4">{fetchedData.coordinate_y}</td>
+            </tr>
+            <tr>
+              <th className="text-nowrap">Huso</th>
+              <td className="col-md-4">{fetchedData.huso}</td>
+            </tr>
+            <tr>
+              <th className="text-nowrap">Usa anabólicos</th>
+              <td className="col-md-4">{fetchedData.anabolics}</td>
+            </tr>
+            <tr>
+              <th className="text-nowrap">Estado PABCO</th>
+              <td className="col-md-4">{fetchedData.pabco}</td>
+            </tr>
+            <tr>
+              <th className="text-nowrap">Titular</th>
+              <td className="col-md-4">
+                {fetchedData.titular.name} {fetchedData.titular.last_name}
+              </td>
+            </tr>
+            <tr>
+              <th className="text-nowrap">RUT Titular</th>
+              <td className="col-md-4">
+                {" "}
+                {/* <td>{fetchedData.titular.run}</td> */}
+                {"run"}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </>
     </div>
   );
 };
