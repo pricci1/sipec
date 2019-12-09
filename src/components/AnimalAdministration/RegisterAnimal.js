@@ -11,7 +11,8 @@ import {
   getWorkerApi,
   getBreedApi,
   getCategoriesApi,
-  getMvaApi
+  getMvaApi,
+  getDiioPersonal
 } from "../../lib/ApiAnimalAdministration";
 
 export function getCurrentDate(separator = "") {
@@ -54,6 +55,9 @@ const changeDiioSchema = Yup.object().shape({
   pabco: Yup.string()
     .nullable()
     .required("Requerido"),
+  diio: Yup.string()
+    .nullable()
+    .required("Requerido"),
 });
 
 const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
@@ -74,6 +78,11 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
   }
   async function getCategory() {
     const data = await getCategoriesApi(api);
+    return data;
+  }
+
+  async function getDIIO() {
+    const data = await getDiioPersonal(api);
     return data;
   }
   async function getOwners() {
@@ -111,7 +120,8 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
     sex,
     birthDate,
     category,
-    pabco
+    pabco,
+    diio,
   ) {
     const response = await api.post("/animals", {
       specie: specie,
@@ -125,7 +135,8 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
       sex: sex,
       birthDate: birthDate,
       category: category,
-      pabco, pabco,
+      pabco: pabco,
+      diio: diio,
     });
 
     /*getItem({
@@ -162,6 +173,7 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
           birthDate: "",
           category: "",
           pabco: "",
+          diio: "",
 
         }}
         validationSchema={changeDiioSchema}
@@ -178,6 +190,7 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
             values.birthDate,
             values.category,
             values.pabco,
+            values.diio,
           ).then(response => {});
           setSubmitting(false); // This can also be used for displaying a spinner
         }}
@@ -207,6 +220,16 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
                 touched={touched.specie}
                 data={getSpecies}
                 errors={errors.specie}
+              />
+              <Selector
+                fieldName="diio"
+                fieldValue={values.diio}
+                labelName="DIIO"
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                touched={touched.diio}
+                data={getDIIO}
+                errors={errors.diio}
               />
               <Selector
                 fieldName="establishment"

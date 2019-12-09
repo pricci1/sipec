@@ -18,9 +18,20 @@ export const RegisterAnimalTable = ({
 
   useEffect(() => {}, []);
   async function getAnimal() {
-    const data1 = await getAnimalTableApi(api);
-    console.log(data1);
-    
+    const data = await getAnimalTableApi(api);
+    console.log(data);
+    const data1 =data.map(
+      ({ diio, specie, rut, breed,sex,date, category }) => ({
+        diio: diio,
+        marca: "Marca 1",
+        specie: specie,
+        rut: rut,
+        breed: breed,
+        sex: sex,
+        date: date,
+        category: category
+      })
+    );
     const Data = {
       columns: [
         {
