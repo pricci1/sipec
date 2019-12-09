@@ -101,7 +101,10 @@ export const getChangeDiioDataApi = async (apiInstance, titular_id) => {
   const result = await apiInstance.get(`/diio_changes_details/${titular_id}`);
   return result;
 };
-
+export const getChangeDiioDataFilteredApi = async (apiInstance, establishment_id, desde, hasta) => {
+  const result = await apiInstance.get(`/diio_changes_details_filtered/?desde=${desde}&hasta=${hasta}&establishment_id=${establishment_id}`);
+  return result;
+};
 export const getChangeRegistryDataApi = async (apiInstance, registry_id) => {
   const result = await apiInstance.get(
     `/diio_changes_by_batch?diio_batch_id=${registry_id}`

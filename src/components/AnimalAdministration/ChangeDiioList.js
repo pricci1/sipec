@@ -3,7 +3,8 @@ import APIContext from "../APIProvider";
 import { Formik } from "formik";
 import {
   getUserEstablishmentsApi,
-  getChangeDiioDataApi
+  getChangeDiioDataApi,
+  getChangeDiioDataFilteredApi
 } from "../../lib/ApiAnimalAdministration";
 import DatePicker from "react-datepicker";
 import Selector from "../Diio/Utilities/FormikSelector";
@@ -17,15 +18,34 @@ const ChangeDiioList = () => {
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
   const [modalChangeId, setModalChangeId] = useState();
   const [tableData, settableData] = useState([]);
-  
 
   async function getEstablishments() {
     let data = await getUserEstablishmentsApi(api, api.titular.id);
     return data;
   }
 
-  async function getTableData() {
-    const data = await getChangeDiioDataApi(api, api.titular.id);
+  async function getTableData(values) {
+    console.log(values);
+    var new_desde = new String();
+    var new_hasta = new String();
+    new_desde =
+      values.date.from.getFullYear().toString() +
+      "-" +
+      (values.date.from.getMonth() + 1).toString() +
+      "-" +
+      values.date.from.getDate().toString();
+    new_hasta =
+      values.date.to.getFullYear().toString() +
+      "-" +
+      (values.date.to.getMonth() + 1).toString() +
+      "-" +
+      values.date.to.getDate().toString();
+    const data = await getChangeDiioDataFilteredApi(
+      api,
+      values.establishment.id,
+      new_desde,
+      new_hasta
+    );
     console.log(data);
     settableData(data.data);
   }
@@ -41,7 +61,7 @@ const ChangeDiioList = () => {
           date: { from: "", to: "" }
         }}
         onSubmit={(values, { setSubmitting }) => {
-          getTableData();
+          getTableData(values);
           setSubmitting(false);
         }}
       >
@@ -112,12 +132,8 @@ const ChangeDiioList = () => {
               </div>
               <div className="row" style={{ justifyContent: "flex-end" }}>
                 <div className="col-md-7">
-                  <button
-                    className="btn btn-outline-secondary mt-4"
-                    type="submit"
-                    disabled={!dirty || isSubmitting}
-                  >
-                    Buscar registros
+                  <button type="submit" className="btn btn-primary mt-4 ml-1">
+                    Buscar
                   </button>
                   <button
                     onClick={handleReset}
@@ -140,7 +156,7 @@ const ChangeDiioList = () => {
       <ChangeDiioTable
         toggleModal={toggleModal}
         setModalChangeId={setModalChangeId}
-        tableData={tableData}
+        tableData={tableData || []}
       />
       {modalIsOpened && (
         <Modal>
