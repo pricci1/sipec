@@ -4,18 +4,16 @@ import { Datepicker } from "react-formik-ui";
 import useModal from "../Modal";
 import APIContext from "../APIProvider";
 import Selector from "../Diio/Utilities/FormikSelector";
-import { AnimalEstablishmentRegistryTable } from "./AnimalDownDIIOTable";
+import { AnimalDownTable } from "./AnimalDownDIIOTable";
 import { Link } from "@reach/router";
-import AnimalEstablishmentRecordDetails from "./AnimalDownDIIODetails";
 import {
   getEstablishmentsApi,
   getAnimalDeathTableApi,
   getAnimalDeathTableFilteredApi
 } from "../../lib/ApiAnimalAdministration";
-// import { getUserEstablishments } from "../../lib/APIDiio";
 
 
-const SearchAnimalDownDIIO = () => {
+const AnimalDownDIIO = () => {
   const api = useContext(APIContext);
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
   const [modalRegistryId, setModalRegistryId] = useState();
@@ -52,12 +50,10 @@ const SearchAnimalDownDIIO = () => {
     setData(data);
     return data;
   }
-  // useEffect(() => {
-  //   getTableData();
-  // }, []);
+  
 
   return (
-    <div className="body">
+    <div className="">
       <h1>Buscar baja animales con DIIO</h1>
       <div>
         <Formik
@@ -110,7 +106,6 @@ const SearchAnimalDownDIIO = () => {
                   placeholder="Hasta"
                 />
               </div>
-              {/* {errors.password && touched.password && errors.password} */}
               <br />
               <div className="row" style={{ justifyContent: "flex-end" }}>
                 <div className="col-md-7">
@@ -137,7 +132,7 @@ const SearchAnimalDownDIIO = () => {
         <Link to="nueva" className="btn btn-primary">
           &#10010; Nueva Muerte
         </Link>
-        <AnimalEstablishmentRegistryTable
+        <AnimalDownTable
           data={data}
           toggleModal={toggleModal}
           setModalRegistryId={setModalRegistryId}
@@ -147,4 +142,4 @@ const SearchAnimalDownDIIO = () => {
   );
 };
 
-export default SearchAnimalDownDIIO;
+export default AnimalDownDIIO;

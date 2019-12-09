@@ -28,8 +28,7 @@ const AnimalEstablishmentRegistry = () => {
   }
   return (
     <div className="body">
-      <h1 className="d-md-inline pr-3">Buscar Registro Animal</h1>
-      <br></br>
+      <h1>Buscar Registro Animal</h1>
       <Formik
         initialValues={{
           establishment: "",
@@ -121,8 +120,55 @@ const AnimalEstablishmentRegistry = () => {
                 className="btn btn-secondary mt-4 ml-1"
                 type="button"
               >
-                Limpiar
-              </button>
+                <div className="col-md-2" style={{ direction: "rtl" }}>
+                  <label htmlFor="from-date">Fecha de Registro</label>
+                </div>
+                <div className="col-md-2">
+                  <DatePicker
+                    onBlur={handleBlur}
+                    className="form-control"
+                    selected={values.date.from}
+                    onChange={value => {
+                      setFieldValue("date.from", value);
+                    }}
+                    onSelect={handleChange}
+                    name="date.from"
+                    dateFormat="dd/MM/yy"
+                  />
+                </div>
+                <div className="col-md-2">
+                  <DatePicker
+                    onBlur={handleBlur}
+                    className="form-control"
+                    selected={values.date.to}
+                    onChange={value => {
+                      setFieldValue("date.to", value);
+                    }}
+                    minDate={values.date.from}
+                    onSelect={handleChange}
+                    name="date.to"
+                    dateFormat="dd/MM/yy"
+                  />
+                </div>
+              </div>
+              <div className="row" style={{ justifyContent: "flex-end" }}>
+                <div className="col-md-7">
+                  <button
+                    className="btn btn-outline-secondary mt-4"
+                    type="submit"
+                    disabled={!dirty || isSubmitting}
+                  >
+                    Buscar registros
+                  </button>
+                  <button
+                    onClick={handleReset}
+                    className="btn btn-secondary mt-4 ml-1"
+                    type="button"
+                  >
+                    Limpiar
+                  </button>
+                </div>
+              </div>
             </form>
           );
         }}
