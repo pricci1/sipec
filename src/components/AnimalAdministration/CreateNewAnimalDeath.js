@@ -120,9 +120,15 @@ const NewDeathRegistration = () => {
             values.death_date,
             values.diio_array
           ).then(resp => {
+            let deadAnimals = resp.not_applied;
+            if (deadAnimals.length === 0) {
+              deadAnimals = "ninguno.";
+            }
             resp.success
-              ? alert("Baja realizada")
-              : alert(`Error en la baja: ${resp.data}`);
+              ? alert(
+                  `Baja realizada. Serial de los DIIOS de animales muertos registrados anteriormente: ${resp.not_applied}.`
+                )
+              : alert(`Error en la baja. ${resp.data}`);
           });
           setSubmitting(false);
         }}
@@ -261,6 +267,7 @@ const NewDeathRegistration = () => {
                         >
                           Agregar DIIO
                         </button>
+                        <br />
                         {values.diio_array && values.diio_array.length > 0
                           ? values.diio_array.map((_, index) => (
                               <div key={index}>

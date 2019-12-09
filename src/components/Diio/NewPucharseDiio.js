@@ -41,15 +41,10 @@ const NewPurchaseDiio = () => {
     return [{ value: 1, label: "Productor" }, { value: 2, label: "Proveedor" }];
   }
 
-  const [selectedSellerRut, setSelectedSellerRut] = useState();
   
   const getBuyerRut = () => {
     return api.titular.rut
   };
-  const getBuyerName = () => {
-    return api.titular.name
-  };
-
   async function getBuyerEstablishments() {
     const data = await getUserEstablishmentsApi(api, api.titular.id);
     return data
@@ -127,7 +122,7 @@ const NewPurchaseDiio = () => {
                   labelName="Nombre"
                   onChange={(field, fieldValue) => {
                     setFieldValue(field, fieldValue.value);
-                    setSelectedSellerRut(fieldValue.value);
+                  
                   }}
                   onBlur={setFieldTouched}
                   touched={touched.provider_id}
