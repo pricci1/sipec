@@ -1,6 +1,5 @@
-import React, {useEffect } from "react";
+import React, { useEffect } from "react";
 import { MDBDataTable } from "mdbreact";
-
 
 export const ChangeDiioTable = ({
   setModalChangeId,
@@ -14,20 +13,26 @@ export const ChangeDiioTable = ({
   let rows = [];
 
   useEffect(() => {
-    
     tableData.map(d => {
+      // var new_date = new Date();
+      // new_date =
+      //   d.date.getFullYear().toString() +
+      //   "-" +
+      //   (d.date.getMonth() + 1).toString() +
+      //   "-" +
+      //   d.date.getDate().toString();
       rows.push({
         show: (
           <button
             type="button"
             className="btn btn-info btn-sm p-0"
             onClick={() => handleEntryClick(d.id)}
-          > 
+          >
             &#10010;
           </button>
         ),
         rup: d.rup,
-        date: d.date,
+        date: d.date.split("T")[0],
         establishment: d.establishment,
         rut: d.rut,
         mva: d.mva
@@ -35,7 +40,6 @@ export const ChangeDiioTable = ({
     });
   }, [tableData]);
 
-  
   var columns = [
     {
       label: "Ver",
@@ -44,16 +48,16 @@ export const ChangeDiioTable = ({
       width: 40
     },
     {
-      label: "Fecha de Registro",
-      field: "date",
-      sort: "asc",
-      width: 100
-    },
-    {
       label: "RUP",
       field: "rup",
       sort: "asc",
       width: 150
+    },
+    {
+      label: "Fecha de Registro",
+      field: "date",
+      sort: "asc",
+      width: 100
     },
     {
       label: "Establecimiento",

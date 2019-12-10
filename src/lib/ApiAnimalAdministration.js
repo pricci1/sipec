@@ -86,6 +86,8 @@ export const getCategoriesApi = async apiInstance => {
 
 export const getAnimalTableApi = async apiInstance => {
   const result = await apiInstance.get("/animals_by_personal");
+  console.log(result.data);
+  
 
   return result.data.map(({ diio, specie, rut, breed, sex, date, model }) => ({
     diio: diio,
@@ -191,24 +193,26 @@ export const getAnimalDeathTableFilteredApi = async (
   desde,
   hasta
 ) => {
-  let data = { establishment, desde, hasta };
+  let from_url = ((desde.length > 0) ? `&desde=${desde}` : "")
+  let to_url = ((hasta.length > 0) ? `&hasta=${hasta}` : "")
+  let establishment_id_url = ((establishment.toString().length > 0) ? `&establishment_id=${establishment}` : "")
+  
   const result = await apiInstance.get(
-    `/animal_death_filtered?desde=${desde}&establishment_id=${establishment}&hasta=${hasta}`
+    `/animal_death_filtered?${from_url}${to_url}${establishment_id_url}`
   );
 
   return result.data.map(
-    ({ diio, specie, date, down_type, detail, establishment }) => ({
-      diio: diio,
-      specie: specie,
-      date: date,
-      down_type: down_type,
-      detail: detail,
-      establishment: establishment
+    ({ diio_id, especie, death_date, death_motive, establishment }) => ({
+      diio_id,
+      specie: especie.name,
+      death_date: death_date.split("T")[0],
+      death_motive,
+      establishment: establishment.name
     })
   );
 };
 
-export const getMvaApi = async (apiInstance, establishment_id) => {
+export const getMvaApi = async (apiInstance) => {
   const result = await apiInstance.get("/veterinarios");
 
   return result.data.map(({ id, name, run }) => ({
@@ -221,9 +225,26 @@ export const getAnimalsByRegisterApi = async apiInstance => {
   return result;
 };
 
-export const getInfoDiioRange = async (apiInstance, diioStart, diioEnd, user_id) => {
+export const getInfoDiioRange = async (
+  apiInstance,
+  diioStart,
+  diioEnd,
+  user_id
+) => {
   const info = await apiInstance.get(
     `/diio/range?desde=${diioStart}&hasta=${diioEnd}&id=${user_id}`
   );
   return info.data;
 };
+
+export const getDiioPersonal = async apiInstance => {
+  const result = await apiInstance.get("/diio_by_personal");
+  console.log(result.data);
+  
+  return result.data.diios.map(({ id, serial }) => ({
+    value: id,
+    label: serial
+  }));
+};
+
+

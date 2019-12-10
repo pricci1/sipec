@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext , useEffect} from "react";
 import * as Yup from "yup";
 import ApiContext from "../APIProvider";
 import { Formik, Field, FieldArray } from "formik";
@@ -7,11 +7,12 @@ import DatePickerField from "../AnimalMoves/DatePickerField";
 import Selector from "../Diio/Utilities/FormikSelector";
 import {
   getSpeciesApi,
-  getEstablishmentsApi,
   getWorkerApi,
   getBreedApi,
   getCategoriesApi,
-  getMvaApi
+  getMvaApi,
+  getDiioPersonal,
+  getUserEstablishmentsApi
 } from "../../lib/ApiAnimalAdministration";
 
 export function getCurrentDate(separator = "") {
@@ -50,7 +51,13 @@ const changeDiioSchema = Yup.object().shape({
     .required("Requerido"),
   birthDate: Yup.date()
     .nullable()
-    .required("Requerido")
+    .required("Requerido"),
+  pabco: Yup.string()
+    .nullable()
+    .required("Requerido"),
+  diio: Yup.string()
+    .nullable()
+    .required("Requerido"),
 });
 
 const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
@@ -66,11 +73,19 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
   }
 
   async function getEstablishments() {
-    const data = await getEstablishmentsApi(api);
+    const titularId = api.titular.id;
+    const data = await getUserEstablishmentsApi(api, titularId);
+    console.log(data);
+    
     return data;
   }
   async function getCategory() {
     const data = await getCategoriesApi(api);
+    return data;
+  }
+
+  async function getDIIO() {
+    const data = await getDiioPersonal(api);
     return data;
   }
   async function getOwners() {
@@ -78,16 +93,16 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
     return data;
   }
   async function getMvas() {
-    /*return [
-      { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
-      { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
-    ];*/
     const data = await getMvaApi(api);
     return data;
   }
 
+  
   async function getOrigin() {
     return [{ value: 1, label: "Nacional" }, { value: 2, label: "Extranjero" }];
+  }
+  async function getPabco() {
+    return [{ value: 1, label: "SI" }, { value: 2, label: "NO" }];
   }
   async function getSex() {
     return [{ value: 1, label: "Macho" }, { value: 2, label: "Hembra" }];
@@ -103,7 +118,9 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
     breed,
     sex,
     birthDate,
-    category
+    category,
+    pabco,
+    diio,
   ) {
     const response = await api.post("/animals", {
       specie: specie,
@@ -116,27 +133,17 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
       breed: breed,
       sex: sex,
       birthDate: birthDate,
-      category: category
+      category: category,
+      pabco: pabco,
+      diio: diio,
     });
 
-    /*getItem({
-      specie: specie,
-      rup: establishment,
-      personal_owner: owner,
-      mva: mva,
-      date: new Date(),
-      application_date: applicationDate,
-      origin: origin,
-      breed: breed,
-      sex: sex,
-      birthDate: birthDate,
-      category: category
-    });
-    handleFormSubmit();*/
+    getDIIO();
     setReloadHandler();
     if (response.data.status == "ok") {
       alert("Se creó el movimiento con éxito");
     }
+
   }
   return (
     <div className="body">
@@ -151,7 +158,10 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
           breed: "",
           sex: "",
           birthDate: "",
-          category: ""
+          category: "",
+          pabco: "",
+          diio: "",
+
         }}
         validationSchema={changeDiioSchema}
         onSubmit={(values, { setSubmitting }) => {
@@ -165,8 +175,11 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
             values.breed,
             values.sex,
             values.birthDate,
-            values.category
+            values.category,
+            values.pabco,
+            values.diio.value,
           ).then(response => {});
+          //values.diio = "";
           setSubmitting(false); // This can also be used for displaying a spinner
         }}
       >
@@ -197,6 +210,17 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
                 errors={errors.specie}
               />
               <Selector
+                fieldName="diio"
+                fieldValue={values.diio}
+                labelName="DIIO"
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                touched={touched.diio}
+                data={getDIIO}
+                errors={errors.diio}
+                
+              />
+              <Selector
                 fieldName="establishment"
                 fieldValue={values.establishment}
                 labelName="RUP - Establecimiento"
@@ -225,6 +249,16 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
                 touched={touched.mva}
                 data={getMvas}
                 errors={errors.mva}
+              />
+              <Selector
+                fieldName="pabco"
+                fieldValue={values.specie}
+                labelName="PABCO"
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                touched={touched.specie}
+                data={getPabco}
+                errors={errors.specie}
               />
               <div>Fecha Registro: {getCurrentDate("/")}</div>
               <div>

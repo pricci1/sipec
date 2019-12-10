@@ -7,7 +7,7 @@ import { Link } from "@reach/router";
 import useModal from "../Modal";
 import DatePicker from "react-datepicker";
 import { Selector } from "./Utils/FormikSelectors";
-import { RegisterAnimalTable } from "./RegisterAnimalTable";
+import  RegisterAnimalTable  from "./RegisterAnimalTable";
 import AnimalEstablishmentRecordDetails from "./AnimalEstablishmentRecordDetails";
 import RegisterAnimal from "./RegisterAnimal";
 import { set } from "date-fns";
@@ -52,7 +52,7 @@ const CreateNewAnimalRegister = () => {
         handleFormSubmit={handleFormSubmit}
         getItem={getItem}
       ></RegisterAnimal>
-      <h2 className="d-md-inline pr-3">Diios Seleccionados</h2>
+      <h2 className="d-md-inline pr-3">Animales creados</h2>
       <RegisterAnimalTable data={items}
         setReloadHandler={setReloadHandler}
         getReload={getReload}
