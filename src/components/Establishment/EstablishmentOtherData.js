@@ -39,7 +39,7 @@ const EstablishmentOtherData = ({ establishmentId }) => {
   const addSector = e => {
     e.preventDefault();
     api
-      .post("/establishments/1/establishment_sectors", {
+      .post(`/establishments/${establishmentId}/establishment_sectors`, {
         name: data.name,
         coord_x: data.xCoor,
         coord_y: data.yCoor,
@@ -48,8 +48,8 @@ const EstablishmentOtherData = ({ establishmentId }) => {
       })
       .then(resp => {
         resp.success
-          ? alert("Persona añadida")
-          : alert("Error al añadir persona");
+          ? alert("Sector añadido")
+          : alert("Error al añadir sector");
         getEstablishmentSectors();
       });
   };

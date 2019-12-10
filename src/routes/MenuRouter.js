@@ -28,6 +28,7 @@ import UpdateTitularData from "../components/Establishment/UpdateTitularData";
 import EstablishmentRubros from "../components/Establishment/EstablishmentRubros";
 import EstablishmentSpecies from "../components/Establishment/EstablishmentSpecies";
 import EstablishmentOtherData from "../components/Establishment/EstablishmentOtherData";
+import AnimalMovement from "../components/AnimalMovement/AnimalMovement";
 import AnimalDownDIIO from "../components/AnimalAdministration/AnimalDownDIIO";
 
 const MenuRouter = () => {
@@ -54,10 +55,7 @@ const MenuRouter = () => {
             <ChangeDiioList path="cambio-diio" />
             <NewChangeDiio path="cambio-diio/new" />
           </AnimalAdministrationDIIOMenu>
-          <AnimalMovementMenu path="/movimientos">
-            <CreateAnimalMoves path="create_animal_moves" />
-            <AnimalMoves path="animal_moves" />
-          </AnimalMovementMenu>
+          <AnimalMovement path="movimientos/*" />
           <AnimalExistence path="existencias/*" />
           <EstablishmentMenu path="establecimientos">
             <MyEstablishments path="mis-establecimientos" />
