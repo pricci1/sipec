@@ -33,10 +33,10 @@ const AnimalEstablishmentRegistry = () => {
     setestablishments(data);
   }
 
-  async function getAnimals(establishmentId) {
+  async function getAnimals(establishmentId, dateFrom, dateTo) {
     setMessage({ show: "Cargando..." });
     setState({ infoAvailable: false });
-    const info = await getAnimalsApi(api, establishmentId);
+    const info = await getAnimalsApi(api, establishmentId, dateFrom, dateTo);
     if (Object.keys(info).length !== 0) {
       var json = {};
       var list = [];
@@ -66,7 +66,11 @@ const AnimalEstablishmentRegistry = () => {
           date: { from: "", to: "" }
         }}
         onSubmit={(values, { setSubmitting }) => {
-          getAnimals(values.establishment.value);
+          getAnimals(
+            values.establishment.value,
+            values.date.from,
+            values.date.to
+          );
           setSubmitting(false);
         }}
         //onSubmit={formData => {
@@ -108,7 +112,7 @@ const AnimalEstablishmentRegistry = () => {
                 style={{ textAlign: "justify", marginTop: "10px" }}
               >
                 <div className="col-md-2" style={{ direction: "rtl" }}>
-                  <label htmlFor="from-date">Fecha de registro</label>
+                  <label htmlFor="from-date">Fecha de registro desde</label>
                 </div>
                 <div className="col-md-2">
                   <DatePicker
@@ -122,6 +126,9 @@ const AnimalEstablishmentRegistry = () => {
                     name="date.from"
                     dateFormat="dd/MM/yy"
                   />
+                </div>
+                <div style={{ direction: "rtl" }}>
+                  <label htmlFor="from-date">hasta</label>
                 </div>
                 <div className="col-md-2">
                   <DatePicker

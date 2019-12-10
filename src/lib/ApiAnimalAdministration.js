@@ -248,9 +248,14 @@ export const getInfoDiioRange = async (
   return info.data;
 };
 
-export const getAnimalsApi = async (apiInstance, establishment_id) => {
+export const getAnimalsApi = async (
+  apiInstance,
+  establishment_id,
+  date_from,
+  date_to
+) => {
   const info = await apiInstance.get(
-    `/companies/${establishment_id}/animal_register`
+    `/companies/${establishment_id}/animal_register?desde=${date_from}&hasta=${date_to}`
   );
   return info.data;
 };
