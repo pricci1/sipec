@@ -1,16 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MDBDataTable } from "mdbreact";
-import { Link } from "@reach/router";
 
 export const MovementListTable = ({
   setModalMovementId,
   toggleModal,
   tableData
 }) => {
+  const [processedData, setProcessedData] = useState([]);
   const handleEntryClick = movementId => {
     setModalMovementId(movementId);
     toggleModal();
   };
+  useEffect(() => {
+    setProcessedData(
+      tableData.map(data => ({
+        id: data.animal_move.id,
+        formId: data.animal_move.id,
+        formDate: new Date(data.animal_move.created_at).toLocaleDateString(
+          "es"
+        ),
+        origin: `${data.origin_establishment.rup} - ${data.origin_establishment.name}`,
+        destiny: `${data.destination_establishment.rup} - ${data.destination_establishment.name}`,
+        departure: new Date(data.animal_move.departure).toLocaleDateString(
+          "es"
+        ),
+        arrival: new Date(data.animal_move.arrival).toLocaleDateString("es"),
+        status: "Aceptado"
+      }))
+    );
+  }, [tableData]);
   const data = {
     columns: [
       {
@@ -20,48 +38,48 @@ export const MovementListTable = ({
       },
       {
         label: "N⁰ Formulario",
-        field: "rup",
+        field: "formId",
         sort: "asc",
         width: 100
       },
       {
         label: "Fecha Fromulario",
-        field: "inscriptionDate",
+        field: "formDate",
         sort: "asc",
         width: 100
       },
       {
         label: "Establecimiento de Origen",
-        field: "name",
+        field: "origin",
         sort: "asc",
         width: 270
       },
       {
         label: "Establecimiento de Destino",
-        field: "titular",
+        field: "destiny",
         sort: "asc",
-        width: 150
+        width: 270
       },
       {
         label: "Salida",
-        field: "neighborhood",
+        field: "departure",
         sort: "asc",
-        width: 150
+        width: 100
       },
       {
         label: "Llegada",
-        field: "sagBlocked",
+        field: "arrival",
         sort: "asc",
         width: 100
       },
       {
         label: "Estado",
-        field: "anabolics",
+        field: "status",
         sort: "asc",
-        width: 100
+        width: 80
       }
     ],
-    rows: tableData.map(({ id, ...dataWithoutId }) => ({
+    rows: processedData.map(({ id, ...dataWithoutId }) => ({
       show: (
         <span className="btn-group">
           <button
@@ -72,12 +90,6 @@ export const MovementListTable = ({
           >
             👁
           </button>
-          <Link
-            to={`/establecimiento/${id}`}
-            className="btn btn-info btn-sm p-0"
-          >
-            🖉
-          </Link>
         </span>
       ),
       ...dataWithoutId

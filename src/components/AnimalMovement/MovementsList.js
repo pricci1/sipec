@@ -61,6 +61,16 @@ const RadioGroup = ({ field, form, ...props }) => {
 const MovementList = () => {
   const api = useContext(APIContext);
   const [establishments, setEstablishments] = useState([]);
+  const [tableData, setTableData] = useState([]);
+
+  const getAnimalMovementTable = async () => {
+    const movements = await api.get("/animal_movement_table");
+    if (!movements.success) {
+      return null;
+    }
+    return movements.data;
+  };
+
   useEffect(() => {
     const tasks = [
       getUserEstablishmentsApi(api, api.titular.id).then(res =>
@@ -70,7 +80,8 @@ const MovementList = () => {
             label: `${rup} - ${name}`
           }))
         )
-      )
+      ),
+      getAnimalMovementTable().then(res => setTableData(res))
     ];
     Promise.all(tasks);
   }, []);
@@ -236,7 +247,7 @@ const MovementList = () => {
         + Nuevo movimiento
       </Link>
       <br />
-      <MovementListTable tableData={[]} />
+      <MovementListTable tableData={tableData || []} />
     </>
   );
 };
