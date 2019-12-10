@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Formik, Field, FieldArray, Select } from "formik";
+import { Formik, Field, FieldArray } from "formik";
 import { Datepicker } from "react-formik-ui";
-import Selector from "../Diio/Utilities/FormikSelector";
+import { Selector } from "../AnimalAdministration/Utils/FormikSelectors";
 import * as Yup from "yup";
 import {
   postAnimalDeathRegistration,
@@ -36,13 +36,18 @@ const newAnimalDownRegistration = Yup.object().shape({
 
 const NewDeathRegistration = () => {
   const api = useContext(APIContext);
-
   const [establishment_id, setestablishment_id] = useState("");
+  const [establishmentsData, setEstablishmentsData] = useState([]);
+  const [speciesData, setSpeciesData] = useState([]);
   const [mvasData, setmvasData] = useState([]);
   const [ownersData, setownersData] = useState([]);
+  const [downType, setDownType] = useState([]);
+  const [downDetailsType, setDownDetailsType] = useState([]);
   useEffect(() => {
     getSpecies();
     getEstablishments();
+    getDown();
+    getDownDetails();
   }, []);
   useEffect(() => {
     getMvas();
@@ -51,48 +56,38 @@ const NewDeathRegistration = () => {
 
   async function getSpecies() {
     const data = await getSpeciesApi(api);
-    return data;
+    setSpeciesData(data);
   }
 
   async function getEstablishments() {
-    const data = await getUserEstablishmentsApi(api, api.currentUserId); // user id
-    return data;
+    const data = await getUserEstablishmentsApi(api, api.titular.id);
+    setEstablishmentsData(data);
   }
 
   async function getOwners() {
-    try {
-      const data = await getOwnersApi(api, establishment_id);
-      setownersData(data);
-      return data;
-    } catch {
-      setownersData(getOwnersApi(api, "2"));
-      return getOwnersApi(api, "2");
-    }
+    const data = await getOwnersApi(api, establishment_id);
+    setownersData(data);
   }
 
   async function getMvas() {
-    try {
-      const data = await getEstablishmentMvasApi(api, establishment_id);
-      setmvasData(data);
-      return data;
-    } catch {
-      setmvasData(getEstablishmentMvasApi(api, "2"));
-      return getEstablishmentMvasApi(api, "2");
-    }
+    const data = await getEstablishmentMvasApi(api, establishment_id);
+    setmvasData(data);
   }
 
-  async function getDown() {
-    return [
+  function getDown() {
+    let data = [
       { value: 1, label: "SACRIFICIO EMERGENCIA" },
       { value: 2, label: "SIN ANTECEDENTES" }
     ];
+    setDownType(data);
   }
 
-  async function getDownDetails() {
-    return [
-      { value: 1, label: "ENFERMEDAD METABOLICA" },
-      { value: 2, label: "OTRO" }
+  function getDownDetails() {
+    let data = [
+      { value: "ENFERMEDAD METABOLICA", label: "ENFERMEDAD METABOLICA" },
+      { value: "SIN ANTECEDENTES", label: "SIN ANTECEDENTES" }
     ];
+    setDownDetailsType(data);
   }
 
   return (
@@ -125,9 +120,11 @@ const NewDeathRegistration = () => {
             }
             resp.success
               ? alert(
-                  `Baja realizada. Serial de los DIIOS de animales muertos registrados anteriormente: ${resp.not_applied}.`
+                  `Baja realizada. Serial de los DIIOS de animales muertos registrados anteriormente o de otro establecimiento: ${resp.not_applied}.`
                 )
-              : alert(`Error en la baja. ${resp.data}`);
+              : alert(
+                  `Error en la baja. DIIO no existe o no aplicado. \n${resp.data}`
+                );
           });
           setSubmitting(false);
         }}
@@ -151,36 +148,36 @@ const NewDeathRegistration = () => {
               <Selector
                 fieldName="establishment"
                 fieldValue={values.establishment}
-                labelName="RUP - Establecimiento"
+                label="RUP - Establecimiento"
                 onChange={(field, fieldValue) => {
                   setFieldValue(field, fieldValue);
                   setestablishment_id(fieldValue.value);
                 }}
                 onBlur={setFieldTouched}
                 touched={touched.establishment}
-                data={getEstablishments}
+                options={establishmentsData}
                 errors={errors.establishment}
               />
               <br />
               <Selector
                 fieldName="owner"
                 fieldValue={values.owner}
-                labelName="Titular o mandatario"
+                label="Titular o mandatario"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.owner}
-                data={getOwners}
+                options={ownersData}
                 errors={errors.owner}
               />
               <br />
               <Selector
                 fieldName="mva"
                 fieldValue={values.mva}
-                labelName="MVA"
+                label="MVA"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.mva}
-                data={getMvas}
+                options={mvasData}
                 errors={errors.mva}
               />
               <br />
@@ -194,37 +191,33 @@ const NewDeathRegistration = () => {
               <Selector
                 fieldName="specie"
                 fieldValue={values.specie}
-                labelName="*Especie"
+                label="*Especie"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.specie}
-                data={getSpecies}
+                options={speciesData}
                 errors={errors.specie}
               />
               <br />
               <Selector
                 fieldName="down"
                 fieldValue={values.down}
-                labelName="*Tipo de Baja"
-                onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.label);
-                }}
+                label="*Tipo de Baja"
+                onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.down}
-                data={getDown}
+                options={downType}
                 errors={errors.down}
               />
               <br />
               <Selector
                 fieldName="down_details"
                 fieldValue={values.down_details}
-                labelName="*Detalle del Tipo de Baja"
-                onChange={(field, fieldValue) => {
-                  setFieldValue(field, fieldValue.value);
-                }}
+                label="*Detalle del Tipo de Baja"
+                onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.down_details}
-                data={getDownDetails}
+                options={downDetailsType}
                 errors={errors.down_details}
               />
               <br />

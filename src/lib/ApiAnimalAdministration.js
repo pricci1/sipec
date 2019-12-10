@@ -103,7 +103,17 @@ export const getChangeDiioDataApi = async (apiInstance, titular_id) => {
   const result = await apiInstance.get(`/diio_changes_details/${titular_id}`);
   return result;
 };
-
+export const getChangeDiioDataFilteredApi = async (
+  apiInstance,
+  establishment_id,
+  desde,
+  hasta
+) => {
+  const result = await apiInstance.get(
+    `/diio_changes_details_filtered/?desde=${desde}&hasta=${hasta}&establishment_id=${establishment_id}`
+  );
+  return result;
+};
 export const getChangeRegistryDataApi = async (apiInstance, registry_id) => {
   const result = await apiInstance.get(
     `/diio_changes_by_batch?diio_batch_id=${registry_id}`
@@ -193,10 +203,13 @@ export const getAnimalDeathTableFilteredApi = async (
   desde,
   hasta
 ) => {
-  let from_url = ((desde.length > 0) ? `&desde=${desde}` : "")
-  let to_url = ((hasta.length > 0) ? `&hasta=${hasta}` : "")
-  let establishment_id_url = ((establishment.toString().length > 0) ? `&establishment_id=${establishment}` : "")
-  
+  let from_url = desde.length > 0 ? `&desde=${desde}` : "";
+  let to_url = hasta.length > 0 ? `&hasta=${hasta}` : "";
+  let establishment_id_url =
+    establishment.toString().length > 0
+      ? `&establishment_id=${establishment}`
+      : "";
+
   const result = await apiInstance.get(
     `/animal_death_filtered?${from_url}${to_url}${establishment_id_url}`
   );
@@ -212,7 +225,7 @@ export const getAnimalDeathTableFilteredApi = async (
   );
 };
 
-export const getMvaApi = async (apiInstance) => {
+export const getMvaApi = async apiInstance => {
   const result = await apiInstance.get("/veterinarios");
 
   return result.data.map(({ id, name, run }) => ({
@@ -237,6 +250,36 @@ export const getInfoDiioRange = async (
   return info.data;
 };
 
+export const getAnimalsApi = async (
+  apiInstance,
+  establishment_id,
+  date_from,
+  date_to
+) => {
+  const info = await apiInstance.get(
+    `/companies/${establishment_id}/animal_register?desde=${date_from}&hasta=${date_to}`
+  );
+  return info.data;
+};
+
+export const getAnimalsByThisRegisterApi = async (
+  apiInstance,
+  registerDate
+) => {
+  const species = await apiInstance.get(`/species`);
+  const breeds = await apiInstance.get("/breeds");
+
+  const info = await apiInstance.get(`/animals`);
+  const filtered = info.data.filter(
+    animal => animal.sag_register_date == registerDate
+  );
+
+  for (let i = 0; i < filtered.length; i++) {
+    filtered[i].species_id = species.data[filtered[i].species_id - 1].name;
+    filtered[i].breed_id = breeds.data[filtered[i].breed_id - 1].name;
+  }
+  return filtered;
+};
 export const getDiioPersonal = async apiInstance => {
   const result = await apiInstance.get("/diio_by_personal");
   console.log(result.data);
