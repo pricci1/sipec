@@ -179,10 +179,33 @@ export const getEstablishmentPersonals = async (
   establishmentId
 ) => {
   const personals = await apiInstance.get(
-    `/establishment/${establishmentId}/personals`
+    `/establishments/${establishmentId}/personals`
   );
   if (!personals.success) {
     return null;
   }
   return personals.data;
+};
+
+export const postEstablishmentPersonals = async (
+  apiInstance,
+  establishmentId,
+  data
+) => {
+  const personals = await apiInstance.post(
+    `/establishments/${establishmentId}/personals`,
+    data
+  );
+  if (!personals.success) {
+    return null;
+  }
+  return personals.data;
+};
+
+export const getTransporters = async apiInstance => {
+  const transporters = await apiInstance.get(`/transporters`);
+  if (!transporters.success) {
+    return null;
+  }
+  return transporters.data;
 };

@@ -4,7 +4,10 @@ import * as Yup from "yup";
 import DatePicker from "react-datepicker";
 import { Selector } from "../AnimalExistence/Utils/FormikSelectors";
 import APIContext from "../APIProvider";
-import { getUserEstablishmentsApi } from "../../lib/ApiEstablishment";
+import {
+  getUserEstablishmentsApi,
+  getTransporters
+} from "../../lib/ApiEstablishment";
 import { getSpecies } from "../../lib/APICommon";
 
 const validations = Yup.object().shape({
@@ -33,12 +36,12 @@ const validations = Yup.object().shape({
     .shape({
       from: Yup.number()
         .nullable(true)
-        .transform(v => (v === "" ? null : v))
+        .transform(v => (v === "" || !v ? null : v))
         .min(0, '"Desde" debe ser >= 0')
         .required("Requerido"),
       to: Yup.number()
         .nullable(true)
-        .transform(v => (v === "" ? null : v))
+        .transform(v => (v === "" || !v ? null : v))
         .min(Yup.ref("from"), `"Hasta" debe ser igual o mayor a "Desde"`)
     })
     .required()
@@ -48,6 +51,30 @@ const NewMovement = () => {
   const api = useContext(APIContext);
   const [establishments, setEstablishments] = useState([]);
   const [species, setSpecies] = useState([]);
+  const [drivers, setDrivers] = useState([]);
+
+  const postNewAnimalMovement = async values => {
+    const data = {
+      originRUP: values.origin,
+      destinyRUP: values.destiny,
+      driver: values.driver,
+      arriveDate: values.arrivalDate,
+      registerDate: values.registerDate,
+      initialRange: values.diio_range.from,
+      finalRange: values.diio_range.to
+    };
+    const newMovement = await api.post(`/create_animal_movement`, data);
+    return newMovement.success;
+    // {
+    //     "originRUP": "246813579",
+    //     "destinyRUP": "246813579",
+    //     "driver": "23894765-3",
+    //     "arriveDate": "2019-12-06T19:58:55.495Z",
+    //     "registerDate": "2019-12-09T19:58:55.495Z",
+    //     "initialRange": "1",
+    //     "finalRange": "1"
+    // }
+  };
   useEffect(() => {
     const tasks = [
       getUserEstablishmentsApi(api, api.titular.id).then(res =>
@@ -58,7 +85,15 @@ const NewMovement = () => {
           }))
         )
       ),
-      getSpecies(api).then(res => setSpecies(res))
+      getSpecies(api).then(res => setSpecies(res)),
+      getTransporters(api).then(res =>
+        setDrivers(
+          res.map(({ id, run, name, last_name }) => ({
+            value: run,
+            label: `${run} - ${name} ${last_name}`
+          }))
+        )
+      )
     ];
     Promise.all(tasks);
   }, []);
@@ -79,8 +114,13 @@ const NewMovement = () => {
         validationSchema={validations}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
-          alert(JSON.stringify(values));
-          setSubmitting(false);
+          postNewAnimalMovement(values).then(resp => {
+            resp.success
+              ? alert("Movimiento realizado")
+              : alert("Error en la operación");
+            setSubmitting(false);
+          });
+          //   alert(JSON.stringify(values));
         }}
       >
         {props => {
@@ -116,6 +156,11 @@ const NewMovement = () => {
                         name="registrationDate"
                         dateFormat="dd/MM/yy"
                       />
+                      {errors.registrationDate && (
+                        <td className="text-danger text-wrap mw-50">
+                          {errors.registrationDate || ""}
+                        </td>
+                      )}
                     </td>
                   </tr>
                   <tr>
@@ -125,8 +170,8 @@ const NewMovement = () => {
                         placeholderText="DD/MM/AA"
                         onBlur={handleBlur}
                         className="form-control"
-                        selected={values.arrivalDate}
-                        minDate={values.arrivalDate}
+                        // selected={values.arrivalDate}
+                        maxDate={new Date()}
                         onChange={value => {
                           setFieldValue("arrivalDate", value);
                         }}
@@ -134,6 +179,11 @@ const NewMovement = () => {
                         name="arrivalDate"
                         dateFormat="dd/MM/yy"
                       />
+                      {errors.arrivalDate && (
+                        <td className="text-danger text-wrap mw-50">
+                          {errors.arrivalDate || ""}
+                        </td>
+                      )}
                     </td>
                   </tr>
                   <tr>
@@ -190,11 +240,17 @@ const NewMovement = () => {
                   <tr>
                     <th className="mr-2">Conductor</th>
                     <td>
-                      <Field
-                        className="form-control"
-                        type="text"
-                        name="driver"
-                        placeholder="Conductor"
+                      <Selector
+                        row={false}
+                        overrideClass={"mw-100"}
+                        fieldName="driver"
+                        fieldValue={values.driver}
+                        // label="Especie"
+                        onChange={setFieldValue}
+                        onBlur={setFieldTouched}
+                        touched={touched.driver}
+                        options={drivers || []}
+                        errors={errors.driver}
                       />
                     </td>
                   </tr>
@@ -207,6 +263,11 @@ const NewMovement = () => {
                         name="license_plate"
                         placeholder="Patente"
                       />
+                      {errors.license_plate && (
+                        <td className="text-danger text-wrap mw-50">
+                          {errors.license_plate || ""}
+                        </td>
+                      )}
                     </td>
                   </tr>
                   <tr>
