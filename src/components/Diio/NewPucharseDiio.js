@@ -77,6 +77,8 @@ const NewPurchaseDiio = () => {
             values.establishment_id.value,
               values.diio_ranges.map(range => [range.desde, range.hasta])
           ).then(resp => {
+            console.log(resp);
+            
             resp.success
               ? alert("Compra realizada")
               : alert("Error en la compra");

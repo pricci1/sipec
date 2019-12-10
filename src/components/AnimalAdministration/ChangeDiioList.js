@@ -17,6 +17,8 @@ const ChangeDiioList = () => {
   const { modal: Modal, modalIsOpened, toggleModal } = useModal();
   const [modalChangeId, setModalChangeId] = useState();
   const [tableData, settableData] = useState([]);
+  
+
   async function getEstablishments() {
     let data = await getUserEstablishmentsApi(api, api.titular.id);
     return data;
@@ -24,12 +26,11 @@ const ChangeDiioList = () => {
 
   async function getTableData() {
     const data = await getChangeDiioDataApi(api, api.titular.id);
+    console.log(data);
     settableData(data.data);
   }
 
-  useEffect(() => {
-    getTableData();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -39,7 +40,10 @@ const ChangeDiioList = () => {
           establishment: "",
           date: { from: "", to: "" }
         }}
-        onSubmit={formData => {}}
+        onSubmit={(values, { setSubmitting }) => {
+          getTableData();
+          setSubmitting(false);
+        }}
       >
         {props => {
           const {
@@ -60,11 +64,11 @@ const ChangeDiioList = () => {
               <Selector
                 fieldName="establishment"
                 fieldValue={values.establishment}
-                labelName="Establecimiento"
+                labelName="RUP - Establecimiento"
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 touched={touched.establishment}
-                options={getEstablishments()}
+                data={getEstablishments}
                 errors={errors.establishment}
               />
 
@@ -81,6 +85,7 @@ const ChangeDiioList = () => {
                     onBlur={handleBlur}
                     className="form-control"
                     selected={values.date.from}
+                    placeholderText="Desde"
                     onChange={value => {
                       setFieldValue("date.from", value);
                     }}
@@ -94,6 +99,7 @@ const ChangeDiioList = () => {
                     onBlur={handleBlur}
                     className="form-control"
                     selected={values.date.to}
+                    placeholderText="Hasta"
                     onChange={value => {
                       setFieldValue("date.to", value);
                     }}

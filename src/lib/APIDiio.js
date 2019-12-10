@@ -50,6 +50,8 @@ export const getBrands = async apiInstance => {
   }));
 };
 
+
+
 export const getModels = async apiInstance => {
   const result = await apiInstance.get("/diio_models");
   return result.data.map(({ id, model }) => ({

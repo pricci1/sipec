@@ -47,7 +47,7 @@ const AnimalDownDIIO = () => {
           onSubmit={(values, { setSubmitting }) => {
             getAnimalDeathTableFilteredApi(
               api,
-              values.establishment,
+              values.establishment.value,
               values.date.from,
               values.date.to
             ).then(resp => {
