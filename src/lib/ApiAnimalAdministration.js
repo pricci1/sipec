@@ -86,6 +86,8 @@ export const getCategoriesApi = async apiInstance => {
 
 export const getAnimalTableApi = async apiInstance => {
   const result = await apiInstance.get("/animals_by_personal");
+  console.log(result.data);
+  
 
   return result.data.map(({ diio, specie, rut, breed, sex, date, model }) => ({
     diio: diio,
@@ -278,3 +280,14 @@ export const getAnimalsByThisRegisterApi = async (
   }
   return filtered;
 };
+export const getDiioPersonal = async apiInstance => {
+  const result = await apiInstance.get("/diio_by_personal");
+  console.log(result.data);
+  
+  return result.data.diios.map(({ id, serial }) => ({
+    value: id,
+    label: serial
+  }));
+};
+
+

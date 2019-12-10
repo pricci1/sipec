@@ -9,15 +9,19 @@ export const Selector = ({
   onBlur,
   fieldValue,
   errors,
-  touched
+  touched,
+  overrideClass,
+  row = true
 }) => {
   return (
     <div>
-      <div className="row" style={{ textAlign: "justify" }}>
-        <div className="col-md-2" style={{ direction: "rtl" }}>
-          <label htmlFor={fieldName}>{label}</label>
-        </div>
-        <div className="col-md-4">
+      <div className={row ? "row" : ""} style={{ textAlign: "justify" }}>
+        {label ? (
+          <div className="col-md-2" style={{ direction: "rtl" }}>
+            <label htmlFor={fieldName}>{label}</label>
+          </div>
+        ) : null}
+        <div className={overrideClass ? overrideClass : "col-md-4"}>
           <Select
             id={fieldName}
             options={options}

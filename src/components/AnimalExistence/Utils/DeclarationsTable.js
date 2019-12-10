@@ -68,10 +68,18 @@ export const DeclarationsTable = ({
           className="btn btn-info btn-sm p-0"
           onClick={() => handleEntryClick(data.id)}
         >
-          &#10010;
+          <span role="img" aria-label="magGlass">
+            &#128269;
+          </span>
         </button>
       ),
-      ...data
+      rup: data.rup,
+      name: data.name,
+      neighborhood: data.neighborhood,
+      declarationDate: data.declarationDate,
+      registrationDate: data.registrationDate,
+      type: data.type,
+      year: data.year
     }))
   };
   return (

@@ -76,7 +76,6 @@ const NewPurchaseDiio = () => {
             values.provider_id,
             values.establishment_id.value,
               values.diio_ranges.map(range => [range.desde, range.hasta])
-            
           ).then(resp => {
             console.log(resp);
             
