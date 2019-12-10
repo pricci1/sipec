@@ -22,6 +22,7 @@ const AnimalEstablishmentRegistry = () => {
   const [data, setData] = useState([]);
   const [establishments, setestablishments] = useState();
   const [state, setState] = useState({ infoAvailable: false });
+  const [message, setMessage] = useState({ show: "" });
 
   useEffect(() => {
     getEstablishments();
@@ -33,24 +34,27 @@ const AnimalEstablishmentRegistry = () => {
   }
 
   async function getAnimals(establishmentId) {
+    setMessage({ show: "Cargando..." });
     setState({ infoAvailable: false });
     const info = await getAnimalsApi(api, establishmentId);
-    //console.log(info);
-    var json = {};
-    var list = [];
-    for (let entry in info) {
-      let animal_json = {};
-      animal_json.rup = info[entry][0].rup;
-      animal_json.titular = info[entry][0].titular;
-      animal_json.register_date = info[entry][0].register_date;
-      animal_json.establishment = info[entry][0].origin_establishment;
-      animal_json.quantity = info[entry].length;
-      list.push(animal_json);
+    if (Object.keys(info).length !== 0) {
+      var json = {};
+      var list = [];
+      for (let entry in info) {
+        let animal_json = {};
+        animal_json.rup = info[entry][0].rup;
+        animal_json.establishment = info[entry][0].origin_establishment;
+        animal_json.titular = info[entry][0].titular;
+        animal_json.register_date = info[entry][0].register_date;
+        animal_json.quantity = info[entry].length;
+        list.push(animal_json);
+      }
+      json.animals = list;
+      setData(json);
+      setState({ infoAvailable: true });
+    } else {
+      setMessage({ show: "No hay información disponible" });
     }
-    json.animals = list;
-    console.log(json);
-    setData(json);
-    setState({ infoAvailable: true });
   }
 
   return (
@@ -140,7 +144,7 @@ const AnimalEstablishmentRegistry = () => {
                   <button
                     className="btn btn-primary mt-4"
                     type="submit"
-                    //disabled={!dirty || isSubmitting}
+                    disabled={!dirty || isSubmitting}
                   >
                     Buscar registros
                   </button>
@@ -166,9 +170,9 @@ const AnimalEstablishmentRegistry = () => {
           <AnimalEstablishmentRegistryTable
             headers={[
               "RUP",
+              "Establecimiento",
               "Titular",
               "Fecha de registro",
-              "Establecimiento",
               "Cantidad"
             ]}
             data={data.animals}
@@ -177,13 +181,27 @@ const AnimalEstablishmentRegistry = () => {
           />
           {modalIsOpened && (
             <Modal>
-              <AnimalEstablishmentRecordDetails registryId={modalRegistryId} />
-              <h2>{modalRegistryId}</h2>
+              <AnimalEstablishmentRecordDetails
+                registryId={modalRegistryId}
+                selectedRegisterDate={
+                  data.animals[modalRegistryId - 1].register_date
+                }
+                selectedRup={data.animals[modalRegistryId - 1].rup}
+                selectedTitular={data.animals[modalRegistryId - 1].titular}
+                selectedEstablishment={
+                  data.animals[modalRegistryId - 1].establishment
+                }
+                selectedQuantity={data.animals[modalRegistryId - 1].quantity}
+              />
             </Modal>
           )}
         </>
       ) : (
-        <p>Cargando...</p>
+        <div style={{ marginTop: "5vh", marginLeft: "5vw" }}>
+          <p>
+            <b>{message.show}</b>
+          </p>
+        </div>
       )}
     </div>
   );
