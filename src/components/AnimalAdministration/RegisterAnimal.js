@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext , useEffect} from "react";
 import * as Yup from "yup";
 import ApiContext from "../APIProvider";
 import { Formik, Field, FieldArray } from "formik";
@@ -7,12 +7,12 @@ import DatePickerField from "../AnimalMoves/DatePickerField";
 import Selector from "../Diio/Utilities/FormikSelector";
 import {
   getSpeciesApi,
-  getEstablishmentsApi,
   getWorkerApi,
   getBreedApi,
   getCategoriesApi,
   getMvaApi,
-  getDiioPersonal
+  getDiioPersonal,
+  getUserEstablishmentsApi
 } from "../../lib/ApiAnimalAdministration";
 
 export function getCurrentDate(separator = "") {
@@ -73,7 +73,10 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
   }
 
   async function getEstablishments() {
-    const data = await getEstablishmentsApi(api);
+    const titularId = api.titular.id;
+    const data = await getUserEstablishmentsApi(api, titularId);
+    console.log(data);
+    
     return data;
   }
   async function getCategory() {
@@ -90,10 +93,6 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
     return data;
   }
   async function getMvas() {
-    /*return [
-      { value: 1, label: "XXXXXXX - Abello Caucau Luis" },
-      { value: 2, label: "XXXXXXX - Ejemplo de nombre" }
-    ];*/
     const data = await getMvaApi(api);
     return data;
   }
@@ -139,24 +138,12 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
       diio: diio,
     });
 
-    /*getItem({
-      specie: specie,
-      rup: establishment,
-      personal_owner: owner,
-      mva: mva,
-      date: new Date(),
-      application_date: applicationDate,
-      origin: origin,
-      breed: breed,
-      sex: sex,
-      birthDate: birthDate,
-      category: category
-    });
-    handleFormSubmit();*/
+    getDIIO();
     setReloadHandler();
     if (response.data.status == "ok") {
       alert("Se creó el movimiento con éxito");
     }
+
   }
   return (
     <div className="body">
@@ -190,8 +177,9 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
             values.birthDate,
             values.category,
             values.pabco,
-            values.diio,
+            values.diio.value,
           ).then(response => {});
+          //values.diio = "";
           setSubmitting(false); // This can also be used for displaying a spinner
         }}
       >
@@ -230,6 +218,7 @@ const RegisterAnimal = ({ handleFormSubmit, getItem, setReloadHandler }) => {
                 touched={touched.diio}
                 data={getDIIO}
                 errors={errors.diio}
+                
               />
               <Selector
                 fieldName="establishment"

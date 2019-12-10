@@ -241,9 +241,9 @@ export const getDiioPersonal = async apiInstance => {
   const result = await apiInstance.get("/diio_by_personal");
   console.log(result.data);
   
-  return result.data.map(({ id, diio }) => ({
+  return result.data.diios.map(({ id, serial }) => ({
     value: id,
-    label: diio
+    label: serial
   }));
 };
 

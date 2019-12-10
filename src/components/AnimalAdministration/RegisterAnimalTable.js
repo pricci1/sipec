@@ -3,9 +3,10 @@ import { MDBDataTable } from "mdbreact";
 import ApiContext from "../APIProvider";
 import DatePicker from "react-datepicker";
 import { getAnimalTableApi } from "../../lib/ApiAnimalAdministration";
+import RegisterAnimal from "./RegisterAnimal";
 //import Selector from "../Diio/Utilities/FormikSelector";
 
-export const RegisterAnimalTable = ({
+const RegisterAnimalTable = ({
   setModalRegistryId,
   getReload,
   setReloadHandler,
@@ -16,12 +17,12 @@ export const RegisterAnimalTable = ({
   const api = useContext(ApiContext);
   const [data, setData] = useState([]);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
   async function getAnimal() {
     const data = await getAnimalTableApi(api);
     console.log(data);
-    const data1 =data.map(
-      ({ diio, specie, rut, breed,sex,date, category }) => ({
+    const data1 = data.map(
+      ({ diio, specie, rut, breed, sex, date, category }) => ({
         diio: diio,
         marca: "Marca 1",
         specie: specie,
@@ -208,3 +209,5 @@ export const RegisterAnimalTable = ({
     </>
   );
 };
+
+export default RegisterAnimalTable;

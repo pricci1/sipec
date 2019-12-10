@@ -37,6 +37,8 @@ export const getDiioPurchases = async (apiInstance, establishmentId) => {
   const diios = await apiInstance.get(
     `/diio_purchases/establishment/${establishmentId}`
   );
+  
+  
   return diios.data;
 };
 
